@@ -4,7 +4,7 @@ import React from "react";
 import { Link } from "react-router-dom";
 
 const ProductCard = ({ product }) => (
-  <div className="bg-white rounded shadow p-4">
+    <div className="bg-white rounded shadow p-4 border-2 border-transparent hover:border-gray-500 hover:border-4 transition-all duration-300">
     <img
       src={product.image}
       alt={product.name}
