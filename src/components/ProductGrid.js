@@ -22,11 +22,18 @@ const ProductCard = ({ product }) => (
 
 const ProductGrid = ({ products }) => {
   return (
-    <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
-      {products.map((product) => (
-        <ProductCard key={product.id} product={product} />
-      ))}
-    </div>
+      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+
+          {products.length === 0 ? (
+              <p className="text-2xl sm:text-3xl md:text-4xl font-semibold text-gray-600 text-center">
+                  No products found.
+              </p>
+          ) : (
+              products.map((product) => (
+                  <ProductCard key={product.id} product={product} />
+              ))
+          )}
+      </div>
   );
 };
 

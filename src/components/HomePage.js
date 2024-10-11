@@ -134,7 +134,11 @@ const HomePage = () => {
     ];
 
     // filter Inside HomePage component
-    const [priceRange, setPriceRange] = useState(1600);
+    const [priceRange, setPriceRange] = useState(10000);
+    const filteredProducts = products.filter(product => {
+    const priceValue = parseInt(product.price.replace(/[^0-9]/g, '')); // Extract price value
+        return priceValue <= priceRange; // Filter condition
+    });
 
   return (
     <div>
@@ -149,17 +153,22 @@ const HomePage = () => {
 
         {/* main content below header*/}
 
-        <div className="container mx-auto mt-28 px-4"> 
+          <div className="container mx-auto mt-28 px-4"> 
+
+        {/* fitler and product grid */ } 
         <div className="flex flex-col md:flex-row gap-8">
           <div
             ref={filterRef}
             className={`md:w-1/4 ${
               isFilterSticky ? "md:sticky md:top-20" : ""
-            }`}>
-                      <Filter priceRange={priceRange} setPriceRange={setPriceRange} />
+                          }`}>
+
+
+          <Filter priceRange={priceRange} setPriceRange={setPriceRange} />
           </div>
+
           <div className="md:w-3/4">
-            <ProductGrid products={products} />
+            <ProductGrid products={filteredProducts} />
           </div>
         </div>
 

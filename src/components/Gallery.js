@@ -9,7 +9,7 @@ const GalleryImage = ({ src, alt, className }) => (
             backgroundPosition: 'center',
         }}
     >
-        <div className="absolute inset-0 bg-black bg-opacity-0 hover:bg-opacity-50 transition-opacity duration-300 flex items-center justify-center">
+        <div className="absolute inset-0 bg-black bg-opacity-0 transition-opacity duration-300 flex items-center justify-center">
             <p className="text-white text-lg opacity-0 hover:opacity-100 transition-opacity duration-300">{alt}</p>
         </div>
     </div>

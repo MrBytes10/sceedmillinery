@@ -3,8 +3,8 @@
 import React, { useState } from "react";
 import { ChevronDown } from "lucide-react";
 
-const Filter = () => {
-  const [priceRange, setPriceRange] = useState(1600);
+const Filter = ({priceRange, setPriceRange }) => {
+  //const [priceRange, setPriceRange] = useState(1600);
 
   const handlePriceChange = (e) => {
     setPriceRange(parseInt(e.target.value));
@@ -73,7 +73,7 @@ const Filter = () => {
         <input
           type="range"
           min="0"
-          max="5000"
+          max="10000"
           value={priceRange}
           onChange={handlePriceChange}
           className="w-full h-[7px] bg-[#D9D9D9] rounded-full appearance-none outline-none mb-3 sm:mb-4"
