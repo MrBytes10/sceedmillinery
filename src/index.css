@@ -1,13 +1,27 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
 body {
   margin: 0;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
-    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
-    sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
 
-code {
-  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
-    monospace;
+/* bannerTwo.css */
+
+h2 {
+  font-family: "Poppins", sans-serif;
+  font-weight: 600; /* Use font-weight: 600 as per Figma */
+  font-size: 24px; /* Change to 32px for larger screens */
+  line-height: 37px; /* Line height */
+}
+
+p {
+  font-family: "Poppins", sans-serif;
+  font-weight: 400; /* Use font-weight: 400 as per Figma */
+  font-size: 14px; /* Change to 14px */
+}
+.flex-container {
+  height: 100%; /* or a specific height, e.g., 100vh or 400px */
 }
