@@ -26,7 +26,7 @@ const ProductGrid = ({ products }) => {
 
           {products.length === 0 ? (
               <p className="text-2xl sm:text-3xl md:text-4xl font-semibold text-gray-600 text-center">
-                  No products found.
+                  No products found within that Price Range.
               </p>
           ) : (
               products.map((product) => (
