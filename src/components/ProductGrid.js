@@ -1,4 +1,4 @@
-//sceed_front_two/src/components/ProductGrid.js
+//sceed_frontend/src/components/ProductGrid.js
 
 import React from "react";
 import { Link } from "react-router-dom";

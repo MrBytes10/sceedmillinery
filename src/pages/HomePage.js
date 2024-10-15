@@ -1,11 +1,11 @@
 import React, { useRef, useState, useEffect } from "react";
-import Header from "./Header";
-import Filter from "./Filter";
-import ProductGrid from "./ProductGrid";
-import BannerOne from "./bannerOne";
-import BannerTwo from "./bannerTwo";
-import Gallery from "./Gallery";
-import Footer from "./Footer";
+import Header from "../components/Header";
+import Filter from "../components/Filter";
+import ProductGrid from "../components/ProductGrid";
+import BannerOne from "../components/bannerOne";
+import BannerTwo from "../components/bannerTwo";
+import Gallery from "../components/Gallery";
+import Footer from "../components/Footer";
 
 // Importing gallery images (assuming these imports are correct)
 import gallery1 from "../images/gallery1.jpg";
