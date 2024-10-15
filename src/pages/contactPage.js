@@ -1,4 +1,4 @@
-//sceed_frontend/src/components/ContactPage.js
+//sceed_frontend/src/pages/ContactPage.js
 
 import React, { useState } from "react";
 import Header from "../components/Header";
