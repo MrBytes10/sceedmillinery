@@ -1,4 +1,4 @@
-//sceed_front_two/src/components/defaultLayout.js
+//sceed_frontend/src/components/defaultLayout.js
 
 import React from "react";
 import Header from "./Header";

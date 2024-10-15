@@ -52,7 +52,7 @@ const AboutPage = () => {
         </section>
 
         <section className="bg-white p-8 rounded-lg shadow-md mb-16">
-          <h2 className="text-3xl font-semibold text-center mb-8">
+          <h2 className="text-3xl font-Poppins text-center mb-8">
             How we do Business
           </h2>
           <div className="flex flex-col items-center mb-8">
