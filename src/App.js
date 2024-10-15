@@ -5,20 +5,18 @@ import HomePage from "./pages/HomePage";
 import AboutPage from "./pages/AboutPage";
 import ContactPage from "./pages/ContactPage";
 import SearchResults from "./components/SearchResults";
-import { SearchProvider } from './components/SearchContext';
+import { SearchProvider } from "./components/SearchContext";
 
 function App() {
-    return (
+  return (
     <SearchProvider>
-            <Router>
-            
-      <Routes>
-        <Route path="/" element={<HomePage />} />
-        <Route path="/about" element={<AboutPage />} />
-        <Route path="/contact" element={<ContactPage />} />
-        <Route path="/search-results" element={<SearchResults />} />
-                   
-      </Routes>
+      <Router>
+        <Routes>
+          <Route path="/" element={<HomePage />} />
+          <Route path="/about" element={<AboutPage />} />
+          <Route path="/contact" element={<ContactPage />} />
+          <Route path="/search-results" element={<SearchResults />} />
+        </Routes>
       </Router>
     </SearchProvider>
   );
