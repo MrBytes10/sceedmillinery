@@ -1,9 +1,9 @@
 //sceed_frontend/src/components/App.js
 
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
-import HomePage from "./pages/HomePage.js";
+import HomePage from "./pages/homePage.js";
 import AboutPage from "./pages/aboutPage";
-import ContactPage from "./pages/ContactPage.js";
+import ContactPage from "./pages/contactPage.js";
 import SearchResults from "./components/SearchResults";
 import { SearchProvider } from "./components/SearchContext";
 
