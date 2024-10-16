@@ -3,9 +3,8 @@
     "",
     "\\src",
     "\\src\\assets",
-    "\\src\\assets\\icons",
-    "\\src\\components",
     "\\src\\pages"
   ],
+  "SelectedNode": "\\.gitattributes",
   "PreviewInSolutionExplorer": false
 }

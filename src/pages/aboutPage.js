@@ -155,11 +155,11 @@ const AboutPage = () => {
               {/* Icon placeholder */}
               <OurCoreActivities className="w-12 h-12 mb-4 bg-gray-100" />
 
-              <h2 className="text-3xl font-semibold text-center mb-8">
+              <h2 className="text-3xl font-bold text-center mb-8">
                 Our Core Activities
               </h2>
 
-              <p className="text-center text-sm">
+              <p className="text-center text-sm font-bold">
                 At Sceed Millinery, every step of our process is thoughtfully
                 designed to deliver exceptional products and experiences to our
                 customers. Our key activities reflect our dedication to quality,
@@ -219,7 +219,7 @@ const AboutPage = () => {
               </li>
               {/* Add more list items as needed */}
             </ul>
-            <p className="text-center text-sm">
+            <p className="text-center text-sm font-bold">
               These activities are the foundation of Sceed Millinery, enabling
               us to consistently deliver high-quality, bespoke fascinators that
               our clients love.
@@ -227,7 +227,7 @@ const AboutPage = () => {
           </section>
 
           <section
-            className="p-8 rounded-lg shadow-md mb-0"
+            className="p-8 rounded-lg shadow-md mb-0 font-bold"
             style={{
               backgroundColor: "rgba(255, 255, 255, 0.8)", // White background with 80% opacity
             }}>
@@ -237,7 +237,7 @@ const AboutPage = () => {
               <h2 className="text-3xl font-semibold text-center mb-8">
                 Value Propositions
               </h2>
-              <p className="text-center text-sm">
+              <p className="text-center text-sm font-bold">
                 we offer a unique blend of luxury, quality, and exclusivity that
                 sets our fascinators apart. Our value propositions reflect our
                 commitment to delivering exceptional products and experiences to
@@ -301,7 +301,6 @@ const AboutPage = () => {
               meticulously designed and handcrafted using only the finest
               materials, ensuring durability and comfort.
             </p>{" "}
-            <br />
             <p>
               Our fascinators are more than just accessories; they are
               transformative additions to any outfit. Whether you're dressing
@@ -314,6 +313,7 @@ const AboutPage = () => {
           </div>
         </section>
       </main>
+
       <Footer />
     </div>
   );
