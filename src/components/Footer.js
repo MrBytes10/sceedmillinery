@@ -33,7 +33,7 @@ function Footer() {
 
           {/* Socials*/}
           <div>
-            <h3 className="font-semibold mb-2">Socials</h3>
+            <h3 className="font-semibold font-poppins mb-2">Socials</h3>
 
             <div className="flex space-x-2">
               <a
@@ -63,7 +63,7 @@ function Footer() {
           </div>
 
           <div>
-            <h3 className="font-semibold mb-2">Store Policy</h3>
+            <h3 className="font-semibold font-poppins mb-2">Store Policy</h3>
             <ul>
               <li>
                 <a
@@ -86,7 +86,7 @@ function Footer() {
             </ul>
           </div>
           <div>
-            <h3 className="font-semibold mb-2">Company</h3>
+            <h3 className="font-semibold font-poppins mb-2">Company</h3>
             <ul>
               <li>
                 <a
