@@ -165,21 +165,24 @@ const ContactPage = () => {
                 />
               </div>
 
-              <div className="mb-6">
+              <div className="mb-6 ">
                 <label
                   htmlFor="message"
-                  className="block text-sm font-medium mb-2">
+                  className="block text-sm font-medium mb-2 ">
                   Message
                 </label>
-                <textarea
-                  id="message"
-                  name="message"
-                  value={formData.message}
-                  onChange={handleChange}
-                  rows="4"
-                  className="w-full px-4 py-2 border-1 border-black rounded-md focus:outline-none focus:ring-2 focus:ring-black"
-                  placeholder="What is your Message"
-                  required></textarea>
+
+                <div className="border-2 border-black rounded-md focus:outline-double focus:ring-4 focus:ring-black">
+                  <textarea
+                    id="message"
+                    name="message"
+                    value={formData.message}
+                    onChange={handleChange}
+                    rows="4"
+                    className="w-full px-4 py-2 rounded-md focus:outline-none"
+                    placeholder="What is your Message"
+                    required></textarea>
+                </div>
               </div>
 
               <button
