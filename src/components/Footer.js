@@ -5,6 +5,8 @@ import { ReactComponent as KenyaFlag } from "../assets/icons/kenya-flag.svg"; //
 import { ReactComponent as YoutubeIcon } from "../assets/icons/youtubeIcon.svg";
 import { ReactComponent as FacebookIcon } from "../assets/icons/facebookIcon.svg";
 import { ReactComponent as InstagramIcon } from "../assets/icons/instagramIcon.svg";
+import { ReactComponent as WhatsAppIcon } from "../assets/icons/WhatsAppIcon.svg";
+import { ReactComponent as JeanSignature } from "../assets/icons/jeanGmailSignature.svg";
 
 function Footer() {
   return (
@@ -136,40 +138,50 @@ function Footer() {
 
           <div className="flex items-center">
             <div
-              className="flex items-center justify-center bg-white"
-              style={{
-                width: "99px",
-                height: "35px",
-                padding: "0px",
-                borderRadius: "5px",
-              }}>
+              className="flex items-center justify-center bg-white w-20 h-9 p-0 rounded-md"
+              // style={{
+              //   width: "80px",
+              //   height: "35px",
+              //   padding: "0px",
+              //   borderRadius: "5px",
+              // }}
+            >
               <KenyaFlag
-                width="44"
-                height="35"
-                className="h-4 mr-2"
+                className="h-full mr-1 ml-1" // Set height to fill the container and reduce right margin
                 aria-hidden="true"
               />
               <span
-                style={{
-                  fontSize: "14px",
-                  fontFamily: "Poppins",
-                  fontWeight: "400",
-                  color: "black",
-                  lineHeight: "21px",
-                }}>
+                className="text-sm font-normal text-black leading-5" // Tailwind classes for styling
+              >
                 KES
               </span>
+            </div>
+
+            <div className="ml-2">
+              {" "}
+              {/* Add margin to separate the icon from the box */}
+              <JeanSignature />
             </div>
           </div>
 
           <p>&copy; SceedMillinery 2024</p>
-          <a
-            href="https://wa.me/+254742125032"
-            className="bg-green-500 text-white px-4 py-2 rounded"
-            target="_blank"
-            rel="noreferrer">
-            WhatsApp
-          </a>
+          <div className="flex items-center">
+            {" "}
+            {/* Outer div for border */}
+            <a
+              href="https://wa.me/+254742125032"
+              target="_blank"
+              rel="noreferrer"
+              className="flex items-center border border-green-500 p-1 rounded-2xl h-10 w-40" // Make the whole container clickable
+            >
+              <WhatsAppIcon className="mr-2" /> {/* Add margin to the icon */}
+              <span className=" flex bg-green-500 text-white px-4 py-2 rounded-r-2xl rounded-l-md h-8 items-center text-center justify-center">
+                {" "}
+                {/* Use span for styling */}
+                WhatsApp
+              </span>
+            </a>
+          </div>
         </div>
       </div>
     </footer>
