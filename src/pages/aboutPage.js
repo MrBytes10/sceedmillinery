@@ -84,7 +84,8 @@ const AboutPage = () => {
           <section
             className="p-8 rounded-lg shadow-md mb-0 font-bold"
             style={{
-              backgroundColor: "rgba(255, 255, 255, 0.8)", // White background with 80% opacity
+              //backgroundColor: "rgba(255, 255, 255, 0.8)", // White background with 80% opacity
+              backgroundColor: "rgba(241,241,241,0.9)", // grey-ish background with 90% opacity
             }}>
             <h2 className="text-3xl font-Poppins font-bold text-center mb-8">
               How we do Business
@@ -153,7 +154,7 @@ const AboutPage = () => {
             }}>
             <div className="flex flex-col items-center mb-8">
               {/* Icon placeholder */}
-              <OurCoreActivities className="w-12 h-12 mb-4 bg-gray-100" />
+              <OurCoreActivities className="w-12 h-12 mb-4 bg-gray-10" />
 
               <h2 className="text-3xl font-bold text-center mb-8">
                 Our Core Activities

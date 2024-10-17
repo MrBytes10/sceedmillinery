@@ -99,18 +99,18 @@ function Footer() {
               </li>
               <li>
                 <a
-                  href="#"
+                  href="/contact"
                   className="hover:text-gray-300"
-                  target="_blank"
+                  //target="_blank"
                   rel="noreferrer">
                   Contact
                 </a>
               </li>
               <li>
                 <a
-                  href="#"
+                  href="/about"
                   className="hover:text-gray-300"
-                  target="_blank"
+                  //target="_blank"
                   rel="noreferrer">
                   About
                 </a>
@@ -127,6 +127,7 @@ function Footer() {
             </ul>
           </div>
         </div>
+        {/* Kenyan Flag Div */}
         <div className="mt-8 flex justify-between items-center">
           {/* <div className="flex items-center">
             <img src="/kenya-flag.png" alt="Kenya Flag" className="h-4 mr-2" />
@@ -139,12 +140,12 @@ function Footer() {
               style={{
                 width: "99px",
                 height: "35px",
-                padding: "5px",
+                padding: "0px",
                 borderRadius: "5px",
               }}>
               <KenyaFlag
                 width="44"
-                height="39"
+                height="35"
                 className="h-4 mr-2"
                 aria-hidden="true"
               />
