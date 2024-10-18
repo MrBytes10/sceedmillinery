@@ -68,7 +68,7 @@ const Header = () => {
             className="w-32 h-auto sm:w-[180px] sm:h-[72px] mb-2 sm:mb-0"
           />
           <p className="text-center text-base sm:text-lg lg:text-xl font-medium font-poppins sm:absolute sm:left-1/2 sm:transform sm:-translate-x-1/2 sm:top-1/2 sm:-translate-y-1/2">
-            Sign Up
+            Login
           </p>
         </div>
       </div>

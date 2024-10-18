@@ -7,6 +7,8 @@ import ContactPage from "./pages/contactPage";
 import SearchResults from "./components/SearchResults";
 import { SearchProvider } from "./components/SearchContext";
 import SignUpPage from "./pages/signUpPage"; // Import the SignUpPage component
+import LoginPage from "./pages/LoginPage";
+import RegistrationSuccess from "./pages/RegistrationSuccessPage";
 
 function App() {
   return (
@@ -19,6 +21,12 @@ function App() {
           <Route path="/search-results" element={<SearchResults />} />
           <Route path="/sign-up" element={<SignUpPage />} />{" "}
           {/* A route for the SignUpPage component */}
+          <Route path="/login" element={<LoginPage />} />
+          <Route
+            path="/registration-success"
+            element={<RegistrationSuccess />}
+          />
+          <Route path="*" element={<h1>Not Found</h1>} />
         </Routes>
       </Router>
     </SearchProvider>
