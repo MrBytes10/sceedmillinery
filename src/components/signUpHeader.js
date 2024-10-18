@@ -1,9 +1,8 @@
 import React, { useState } from "react";
 import { Link, useNavigate, useLocation } from "react-router-dom";
-import { Heart, ShoppingCart, User, Menu, X } from "lucide-react";
+import { Menu, X } from "lucide-react";
 import logoImage from "../images/sceedWhiteLogo.png";
-import SearchBar from "./SearchBar";
-import { useSearch } from "./SearchContext";
+// import { useSearch } from "./SearchContext";
 
 // Assume this is your product data. In a real app, this would likely come from an API or database.
 // const products = [
@@ -24,21 +23,21 @@ import { useSearch } from "./SearchContext";
 
 const Header = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
-  const { updateSearchResults } = useSearch();
+  // const { updateSearchResults } = useSearch();
   const navigate = useNavigate();
   const location = useLocation(); // Get the current location (route)
 
-  const calculateRelevance = (product, searchTerm) => {
-    const searchLower = searchTerm.toLowerCase();
-    const nameLower = product.name.toLowerCase();
-    const descLower = product.description.toLowerCase();
+  // const calculateRelevance = (product, searchTerm) => {
+  //   const searchLower = searchTerm.toLowerCase();
+  //   const nameLower = product.name.toLowerCase();
+  //   const descLower = product.description.toLowerCase();
 
-    let score = 0;
-    if (nameLower.includes(searchLower)) score += 2;
-    if (descLower.includes(searchLower)) score += 1;
+  //   let score = 0;
+  //   if (nameLower.includes(searchLower)) score += 2;
+  //   if (descLower.includes(searchLower)) score += 1;
 
-    return score;
-  };
+  //   return score;
+  // };
 
   //   // handleSearch
   //   const handleSearch = (searchTerm) => {
@@ -65,7 +64,7 @@ const Header = () => {
           <img
             src={logoImage}
             alt="Sceed Millinery Logo"
-            className="w-32 h-auto sm:w-[180px] sm:h-[72px] mb-2 sm:mb-0"
+            className="w-32 h-auto sm:w-[180px] sm:h-[72px] mb-0 sm:mb-0"
           />
           <p className="text-center text-base sm:text-lg lg:text-xl font-medium font-poppins sm:absolute sm:left-1/2 sm:transform sm:-translate-x-1/2 sm:top-1/2 sm:-translate-y-1/2">
             Sign Up
@@ -74,9 +73,9 @@ const Header = () => {
       </div>
 
       {/* navbar */}
-      <div className="bg-white py-2 px-4 sm:px-6 lg:px-8">
+      <div className="bg-white py-0 px-4 sm:px-6 lg:px-8">
         <div className="container mx-auto flex flex-col sm:flex-row justify-between items-center">
-          <div className="flex justify-between w-full sm:w-auto mb-2 sm:mb-0">
+          <div className="flex justify-between w-full sm:w-auto mb-0 sm:mb-0">
             <div className="flex space-x-4">
               {/* <Link to="/sign-up" className="text-black hover:text-gray-600">
                 <User size={20} />

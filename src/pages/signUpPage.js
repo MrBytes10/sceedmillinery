@@ -151,7 +151,7 @@ const SignUpPage = () => {
       const data = await response.json();
 
       // Redirect to login or dashboard based on nopCommerce's response
-      window.location.href = "/login";
+      window.location.href = "/registration-success";
     } catch (error) {
       console.error("Error:", error); // Log error to console
       setApiError(

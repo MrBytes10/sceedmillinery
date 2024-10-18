@@ -174,12 +174,14 @@ const LoginPage = () => {
             </div>
 
             {/* Login Button */}
-            <button
-              type="submit"
-              disabled={isSubmitting}
-              className="w-full py-2 px-4 bg-[#7B7B7B] text-white rounded-md hover:bg-gray-800 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-black">
-              {isSubmitting ? "Logging in..." : "Login"}
-            </button>
+            <div className="flex items-center justify-center">
+              <button
+                type="submit"
+                disabled={isSubmitting}
+                className="w-1/3 md-1/4 py-2 px-4  bg-[#7B7B7B] text-white rounded-md hover:bg-gray-800 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-black">
+                {isSubmitting ? "Logging in..." : "Login"}
+              </button>
+            </div>
 
             {/* Server Message */}
             {serverMessage && (
