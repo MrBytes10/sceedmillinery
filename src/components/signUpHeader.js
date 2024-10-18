@@ -6,21 +6,21 @@ import SearchBar from "./SearchBar";
 import { useSearch } from "./SearchContext";
 
 // Assume this is your product data. In a real app, this would likely come from an API or database.
-const products = [
-  {
-    id: 1,
-    name: "Feathered Veil Pearl Fascinator",
-    price: 1300,
-    description: "Elegant red feathered fascinator with pearls",
-  },
-  {
-    id: 2,
-    name: "Nested Feather Fascinator",
-    price: 1700,
-    description: "Beautiful blue nested feather fascinator",
-  },
-  // ... add more products
-];
+// const products = [
+//   {
+//     id: 1,
+//     name: "Feathered Veil Pearl Fascinator",
+//     price: 1300,
+//     description: "Elegant red feathered fascinator with pearls",
+//   },
+//   {
+//     id: 2,
+//     name: "Nested Feather Fascinator",
+//     price: 1700,
+//     description: "Beautiful blue nested feather fascinator",
+//   },
+//   // ... add more products
+// ];
 
 const Header = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -40,19 +40,19 @@ const Header = () => {
     return score;
   };
 
-  // handleSearch
-  const handleSearch = (searchTerm) => {
-    const results = products
-      .map((product) => ({
-        ...product,
-        relevance: calculateRelevance(product, searchTerm),
-      }))
-      .filter((product) => product.relevance > 0)
-      .sort((a, b) => b.relevance - a.relevance);
+  //   // handleSearch
+  //   const handleSearch = (searchTerm) => {
+  //     const results = products
+  //       .map((product) => ({
+  //         ...product,
+  //         relevance: calculateRelevance(product, searchTerm),
+  //       }))
+  //       .filter((product) => product.relevance > 0)
+  //       .sort((a, b) => b.relevance - a.relevance);
 
-    updateSearchResults(results, searchTerm);
-    navigate("/search-results");
-  };
+  //     updateSearchResults(results, searchTerm);
+  //     navigate("/search-results");
+  //   };
 
   // Determine if a link is active by comparing current URL
   const isActive = (path) => location.pathname === path;
@@ -68,7 +68,7 @@ const Header = () => {
             className="w-32 h-auto sm:w-[180px] sm:h-[72px] mb-2 sm:mb-0"
           />
           <p className="text-center text-base sm:text-lg lg:text-xl font-medium font-poppins sm:absolute sm:left-1/2 sm:transform sm:-translate-x-1/2 sm:top-1/2 sm:-translate-y-1/2">
-            Contemporary. Bespoke. Elegance
+            Sign Up
           </p>
         </div>
       </div>
@@ -78,7 +78,7 @@ const Header = () => {
         <div className="container mx-auto flex flex-col sm:flex-row justify-between items-center">
           <div className="flex justify-between w-full sm:w-auto mb-2 sm:mb-0">
             <div className="flex space-x-4">
-              <Link to="/sign-up" className="text-black hover:text-gray-600">
+              {/* <Link to="/sign-up" className="text-black hover:text-gray-600">
                 <User size={20} />
               </Link>
               <Link to="/cart" className="text-black hover:text-gray-600">
@@ -87,7 +87,7 @@ const Header = () => {
               <Link to="/favorites" className="text-black hover:text-gray-600">
                 <Heart size={20} />
               </Link>
-              <SearchBar onSearch={handleSearch} /> {/*search icon/component*/}
+              <SearchBar onSearch={handleSearch} /> search icon/component */}
             </div>
             <button
               onClick={() => setIsMenuOpen(!isMenuOpen)}

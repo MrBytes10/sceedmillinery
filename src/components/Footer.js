@@ -7,6 +7,7 @@ import { ReactComponent as FacebookIcon } from "../assets/icons/facebookIcon.svg
 import { ReactComponent as InstagramIcon } from "../assets/icons/instagramIcon.svg";
 import { ReactComponent as WhatsAppIcon } from "../assets/icons/WhatsAppIcon.svg";
 import { ReactComponent as JeanSignature } from "../assets/icons/jeanGmailSignature.svg";
+// import "./Footer.css"; // Import the CSS file for responsiveness
 
 function Footer() {
   return (

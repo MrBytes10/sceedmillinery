@@ -6,6 +6,7 @@ import AboutPage from "./pages/aboutPage";
 import ContactPage from "./pages/contactPage";
 import SearchResults from "./components/SearchResults";
 import { SearchProvider } from "./components/SearchContext";
+import SignUpPage from "./pages/signUpPage"; // Import the SignUpPage component
 
 function App() {
   return (
@@ -16,6 +17,8 @@ function App() {
           <Route path="/about" element={<AboutPage />} />
           <Route path="/contact" element={<ContactPage />} />
           <Route path="/search-results" element={<SearchResults />} />
+          <Route path="/sign-up" element={<SignUpPage />} />{" "}
+          {/* A route for the SignUpPage component */}
         </Routes>
       </Router>
     </SearchProvider>
