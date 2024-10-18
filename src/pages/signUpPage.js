@@ -3,6 +3,7 @@ import Footer from "../components/Footer";
 import SecondHeader from "../components/signUpHeader";
 import logoImage from "../images/sceedBlackLogo.png";
 import { ReactComponent as KenyaFlag } from "../assets/icons/kenya-flag.svg"; // Adjust the path as necessary
+import { ChevronDown } from "lucide-react";
 import phoneUtils from "../utils/phoneUtils"; // Import phoneUtils
 
 const SignUpPage = () => {
@@ -73,6 +74,20 @@ const SignUpPage = () => {
     return Object.keys(newErrors).length === 0;
   };
 
+  // State for showing/hiding passwords
+  const [showPassword, setShowPassword] = useState(false);
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
+
+  // Toggle password visibility
+  const togglePasswordVisibility = () => {
+    setShowPassword((prev) => !prev);
+  };
+
+  // Toggle confirm password visibility
+  const toggleConfirmPasswordVisibility = () => {
+    setShowConfirmPassword((prev) => !prev);
+  };
+
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData((prev) => ({
@@ -114,6 +129,8 @@ const SignUpPage = () => {
         },
         Password: formData.password,
       };
+      // we Log the registrationData object to the console
+      console.log("Registration Data:", registrationData);
 
       // Replace with your nopCommerce API endpoint
       const response = await fetch("/api/customer/register", {
@@ -135,6 +152,7 @@ const SignUpPage = () => {
       // Redirect to login or dashboard based on nopCommerce's response
       window.location.href = "/customer/login";
     } catch (error) {
+      console.error("Error:", error); // Log error to console
       setApiError(
         error.message ||
           "An error occurred during registration. Please try again."
@@ -148,6 +166,8 @@ const SignUpPage = () => {
   const ErrorMessage = ({ error }) =>
     error ? <p className="text-red-500 text-sm mt-1">{error}</p> : null;
 
+  //function to handle the phone number dropdown
+  const [dropdownOpen, setDropdownOpen] = useState(false);
   return (
     <div className="flex flex-col min-h-screen">
       <SecondHeader />
@@ -197,7 +217,6 @@ const SignUpPage = () => {
                   />
                   <ErrorMessage error={errors.fullName} />
                 </div>
-
                 {/* Email */}
                 <div>
                   <label className="block text-sm font-medium text-gray-700 mb-1">
@@ -214,7 +233,6 @@ const SignUpPage = () => {
                   />
                   <ErrorMessage error={errors.email} />
                 </div>
-
                 {/* Physical Address */}
                 <div>
                   <label className="block text-sm font-medium text-gray-700 mb-1">
@@ -240,25 +258,6 @@ const SignUpPage = () => {
                     Phone Number
                   </label>
                   <div className="flex">
-                    {/* Phone number prefix */}
-                    <div className="relative">
-                      <select
-                        value={inputFormat}
-                        onChange={(e) => setInputFormat(e.target.value)}
-                        className="h-full px-3 py-0 border border-gray-300 rounded-l-md focus:ring-black focus:border-black appearance-none pr-8">
-                        <option value="national">0</option>
-                        <option value="international">+254</option>
-                      </select>
-                      {/* Kenya flag icon */}
-                      <div className="absolute right-1 top-0 bottom-0 flex items-center">
-                        <KenyaFlag
-                          alt="KE"
-                          className=" w-9 h-full mr-1 ml-1" // Set height to fill the container and reduce right margin
-                          aria-hidden="true"
-                        />
-                      </div>
-                    </div>
-
                     {/* Phone number input */}
                     <input
                       type="tel"
@@ -270,18 +269,57 @@ const SignUpPage = () => {
                           ? "712 345 678 or 112 345 678"
                           : "712 345 678 or 112 345 678"
                       }
-                      className={`w-full px-4 py-2 border-t border-r border-b border-gray-300 rounded-r-md focus:ring-black focus:border-black ${
+                      className={`w-full px-4 py-2 border-l border-t border-r border-b border-gray-300 rounded-r-md focus:ring-black focus:border-black ${
                         errors.phoneNumber
                           ? "border-red-500"
                           : "border-gray-300"
                       }`}
                     />
+                    {/* Phone number prefix */}
+                    <div className="relative">
+                      {/* Trigger for dropdown */}
+                      <div
+                        className="flex items-center h-full cursor-pointer border border-gray-300 rounded-l-md px-2"
+                        onClick={() => setDropdownOpen(!dropdownOpen)}>
+                        <KenyaFlag
+                          alt="KE"
+                          className=" w-9 h-full mr-1 ml-1" // Set height to fill the container and reduce right margin
+                          aria-hidden="true"
+                        />
+                        <ChevronDown className="w-4 h-4 text-gray-600 mr-2" />
+                      </div>
+
+                      {/* Dropdown options */}
+                      {dropdownOpen && (
+                        <div className="absolute mt-1 bg-white border border-gray-300 rounded-md shadow-lg z-10 w-full">
+                          <div
+                            className={`cursor-pointer px-4 py-2 hover:bg-gray-100 ${
+                              inputFormat === "national" ? "font-bold" : ""
+                            }`}
+                            onClick={() => {
+                              setInputFormat("national");
+                              setDropdownOpen(false);
+                            }}>
+                            0
+                          </div>
+                          <div
+                            className={`cursor-pointer px-4 py-2 hover:bg-gray-100 ${
+                              inputFormat === "international" ? "font-bold" : ""
+                            }`}
+                            onClick={() => {
+                              setInputFormat("international");
+                              setDropdownOpen(false);
+                            }}>
+                            +254
+                          </div>
+                        </div>
+                      )}
+                    </div>
                   </div>
                   <ErrorMessage error={errors.phoneNumber} />
                 </div>
-
                 {/* Password */}
-                <div>
+                {/* <div>
                   <label className="block text-sm font-medium text-gray-700 mb-1">
                     Enter Your Password
                   </label>
@@ -295,36 +333,74 @@ const SignUpPage = () => {
                     }`}
                   />
                   <ErrorMessage error={errors.password} />
+                </div> */}
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-1">
+                    Enter Your Password
+                  </label>
+                  <div className="relative">
+                    <input
+                      type={showPassword ? "text" : "password"}
+                      name="password"
+                      value={formData.password}
+                      onChange={handleChange}
+                      className={`w-full px-4 py-2 border rounded-md focus:ring-black focus:border-black ${
+                        errors.password ? "border-red-500" : "border-gray-300"
+                      }`}
+                    />
+                    <button
+                      type="button"
+                      onClick={togglePasswordVisibility}
+                      className="absolute right-2 top-2 text-gray-600">
+                      {showPassword ? "Hide" : "Show"}
+                    </button>
+                  </div>
+                  <ErrorMessage error={errors.password} />
                 </div>
-
                 {/* Confirm Password */}
                 <div>
                   <label className="block text-sm font-medium text-gray-700 mb-1">
                     Confirm Password
                   </label>
-                  <input
-                    type="password"
-                    name="confirmPassword"
-                    value={formData.confirmPassword}
-                    onChange={handleChange}
-                    className={`w-full px-4 py-2 border rounded-md focus:ring-black focus:border-black ${
-                      errors.confirmPassword
-                        ? "border-red-500"
-                        : "border-gray-300"
-                    }`}
-                  />
+                  <div className="relative">
+                    <input
+                      type={showConfirmPassword ? "text" : "password"}
+                      name="confirmPassword"
+                      value={formData.confirmPassword}
+                      onChange={handleChange}
+                      className={`w-full px-4 py-2 border rounded-md focus:ring-black focus:border-black ${
+                        errors.confirmPassword
+                          ? "border-red-500"
+                          : "border-gray-300"
+                      }`}
+                    />
+                    <button
+                      type="button"
+                      onClick={toggleConfirmPasswordVisibility}
+                      className="absolute right-2 top-2 text-gray-600">
+                      {showConfirmPassword ? "Hide" : "Show"}
+                    </button>
+                  </div>
                   <ErrorMessage error={errors.confirmPassword} />
                 </div>
               </div>
 
-              <div>
+              <div className="flex justify-center">
                 <button
                   type="submit"
                   disabled={isSubmitting}
-                  className="w-full py-2 px-4 bg-black text-white rounded-md hover:bg-gray-800 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-black">
+                  className="w-1/5 py-2 px-4 bg-[#7B7B7B] text-white rounded-md hover:bg-gray-800 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-black">
                   {isSubmitting ? "Submitting..." : "Sign Up"}
                 </button>
               </div>
+              <section className="flex items-center justify-center">
+                <p className="mr-2">Already have an account with us?</p>
+                <a
+                  href="/login"
+                  className="text-[#3771C8] hover:underline font-bold">
+                  Login
+                </a>
+              </section>
             </form>
           </div>
         </div>
