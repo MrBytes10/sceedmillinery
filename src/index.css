@@ -25,3 +25,12 @@ p {
 .flex-container {
   height: 100%; /* or a specific height, e.g., 100vh or 400px */
 }
+.error-message {
+  background-color: #ffe6e6; /* Light red background */
+  color: #d8000c; /* Dark red text color */
+  font-size: 14px;
+  margin-top: 5px;
+  padding: 8px;
+  border: 1px solid #d8000c; /* Border to make it stand out */
+  border-radius: 4px; /* Rounded corners */
+}

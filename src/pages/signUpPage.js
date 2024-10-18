@@ -165,7 +165,11 @@ const SignUpPage = () => {
 
   // Error message component
   const ErrorMessage = ({ error }) =>
-    error ? <p className="text-red-500 text-sm mt-1">{error}</p> : null;
+    error ? (
+      <p className="text-red-700 bg-customGray rounded-2xl text-sm mt-1">
+        {error}
+      </p>
+    ) : null;
 
   //function to handle the phone number dropdown
   const [dropdownOpen, setDropdownOpen] = useState(false);
@@ -200,7 +204,7 @@ const SignUpPage = () => {
 
               {/* API Error Alert */}
               {apiError && (
-                <div className="mb-6 p-4 bg-red-100 border border-red-400 text-red-700 rounded">
+                <div className="mb-2 p-2 bg-red-100 border border-red-400 text-red-700 rounded">
                   {apiError}
                 </div>
               )}
@@ -397,7 +401,7 @@ const SignUpPage = () => {
                   <button
                     type="submit"
                     disabled={isSubmitting}
-                    className="w-1/5 py-2 px-4 bg-[#7B7B7B] text-white rounded-md hover:bg-gray-800 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-black">
+                    className="w-1/5 md:w-1/3 py-2 px-4 bg-[#7B7B7B] text-white rounded-md hover:bg-gray-800 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-black">
                     {isSubmitting ? "Submitting..." : "Sign Up"}
                   </button>
                 </div>

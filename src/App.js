@@ -7,7 +7,7 @@ import ContactPage from "./pages/contactPage";
 import SearchResults from "./components/SearchResults";
 import { SearchProvider } from "./components/SearchContext";
 import SignUpPage from "./pages/signUpPage"; // Import the SignUpPage component
-import LoginPage from "./pages/LoginPage";
+import LoginPage from "./pages/loginPage";
 import RegistrationSuccess from "./pages/RegistrationSuccessPage";
 
 function App() {
