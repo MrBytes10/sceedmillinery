@@ -1,7 +1,7 @@
 // src/config/api.js
 
 const API_BASE_URL =
-  process.env.REACT_APP_API_BASE_URL || "https://localhost:7295/api";
+  process.env.REACT_APP_API_BASE_URL || "http://localhost:5284/api";
 
 export const API_ENDPOINTS = {
   products: `${API_BASE_URL}/products`,
