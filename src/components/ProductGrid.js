@@ -1,18 +1,55 @@
-//sceed_frontend/src/components/ProductGrid.js
-
 import React from "react";
 import { Link, useNavigate } from "react-router-dom";
+import { Heart } from "lucide-react"; // Import Heart icon from lucide-react
+import { useFavorites } from "../contexts/FavoritesContext";
 
 const ProductCard = ({ product }) => {
   const navigate = useNavigate();
+  const { addToFavorites, removeFromFavorites, isInFavorites } = useFavorites();
+
+  // Helper function to handle adding/removing from favorites
+  // const handleFavoriteClick = async (e) => {
+  //   e.stopPropagation(); // Prevent navigation when clicking the heart icon
+  //   try {
+  //     const response = await fetch("/api/favorites", {
+  //       method: "POST",
+  //       headers: {
+  //         "Content-Type": "application/json",
+  //       },
+  //       body: JSON.stringify({
+  //         productId: product.id,
+  //       }),
+  //     });
+
+  //     if (response.ok) {
+  //       // You might want to update some global state here to reflect the change
+  //       // For example, using Redux or Context to update the favorites count
+  //       console.log("Added to favorites successfully");
+  //     }
+  //   } catch (error) {
+  //     console.error("Error adding to favorites:", error);
+  //   }
+  // };
+
+  // Handle adding/removing products from favorites
+  const handleFavoriteClick = async (e) => {
+    e.stopPropagation();
+    const isFavorited = isInFavorites(product.id);
+
+    if (isFavorited) {
+      await removeFromFavorites(product.id);
+    } else {
+      await addToFavorites(product);
+    }
+  };
 
   // Ensure images object exists and has values
   const firstImageUrl =
     product.images && Object.values(product.images)[0]
       ? Object.values(product.images)[0]
-      : "https://via.placeholder.com/150"; // Fallback to a default image if the correct one from backend isn't found
+      : "https://via.placeholder.com/150";
 
-  // Ensure originalPrice is greater than 0 to avoid division by zero
+  // Calculate discount percentage
   const discountPercentage =
     product.originalPrice && product.originalPrice > 0
       ? Math.round(
@@ -22,7 +59,40 @@ const ProductCard = ({ product }) => {
       : null;
 
   return (
-    <div className="bg-white rounded shadow p-4 border-2 border-transparent hover:border-gray-500 transition-all duration-300">
+    <div className="bg-white rounded shadow p-4 border-2 border-transparent hover:border-gray-500 transition-all duration-300 relative">
+      {/* Sale Badge - only show if there's a discount */}
+      {discountPercentage && (
+        <div
+          onClick={() => navigate(`/product/${product.id}`)}
+          className="absolute top-2 left-2 z-10 bg-red-500 text-white px-3 py-1 rounded-full cursor-pointer hover:bg-red-600 transition-colors">
+          Sale
+        </div>
+      )}
+
+      {/* Favorites Heart Icon */}
+      {/* <button
+        onClick={handleFavoriteClick}
+        className="absolute top-2 right-2 z-10 p-2 rounded-full bg-white/10 hover:bg-white transition-colors"
+        aria-label="Add to favorites">
+        <Heart className="w-5 h-5 text-gray-600 hover:text-red-500 transition-colors" />
+      </button> */}
+      <button
+        onClick={handleFavoriteClick}
+        className="absolute top-2 right-2 z-10 p-2 rounded-full bg-white/10 hover:bg-white transition-colors"
+        aria-label={
+          isInFavorites(product.id)
+            ? "Remove from favorites"
+            : "Add to favorites"
+        }>
+        <Heart
+          className={`w-5 h-5 transition-colors ${
+            isInFavorites(product.id)
+              ? "text-red-500 fill-current"
+              : "text-gray-600 hover:text-red-500"
+          }`}
+        />
+      </button>
+
       <img
         src={firstImageUrl}
         alt={product.name}

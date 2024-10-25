@@ -4,9 +4,10 @@ const API_BASE_URL =
   process.env.REACT_APP_API_BASE_URL || "http://localhost:5284/api";
 
 export const API_ENDPOINTS = {
-  products: `${API_BASE_URL}/products`,
-  product: (id) => `${API_BASE_URL}/products/${id}`,
-  relatedProducts: (id) => `${API_BASE_URL}/products/related/${id}`,
+  products: `${API_BASE_URL}/products`, //api endpoint for all products
+  product: (id) => `${API_BASE_URL}/products/${id}`, //api  endpoint for a single product
+
+  relatedProducts: (id) => `${API_BASE_URL}/products/related/${id}`, // api endpoint for related products
 };
 
 export default API_BASE_URL;

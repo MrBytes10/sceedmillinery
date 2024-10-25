@@ -8,6 +8,7 @@ import BannerOne from "../components/bannerOne";
 import BannerTwo from "../components/bannerTwo";
 import Gallery from "../components/Gallery";
 import Footer from "../components/Footer";
+import { API_ENDPOINTS } from "../config/api"; //for API endpoints
 
 // Importing gallery images (assuming these imports are correct)
 import gallery1 from "../images/gallery1.jpg";

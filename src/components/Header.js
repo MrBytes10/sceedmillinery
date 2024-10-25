@@ -6,6 +6,7 @@ import { Heart, ShoppingCart, User, Menu, X } from "lucide-react";
 import logoImage from "../images/sceedWhiteLogo.png";
 import SearchBar from "./SearchBar";
 import { useSearch } from "./SearchContext";
+import { useFavorites } from "../contexts/FavoritesContext";
 
 // Assume this is your product data. In a real app, this would likely come from an API or database.
 const products = [
@@ -25,6 +26,7 @@ const products = [
 ];
 
 const Header = () => {
+  const { favoritesCount } = useFavorites();
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const { updateSearchResults } = useSearch();
   const navigate = useNavigate();
@@ -86,8 +88,17 @@ const Header = () => {
               <Link to="/cart" className="text-black hover:text-gray-600">
                 <ShoppingCart size={20} />
               </Link>
-              <Link to="/favorites" className="text-black hover:text-gray-600">
+              {/* <Link to="/favorites" className="text-black hover:text-gray-600">
                 <Heart size={20} />
+              </Link> */}
+              {/* The favorites icon with counter */}
+              <Link to="/favorites" className="relative">
+                <Heart className="w-6 h-6" />
+                {favoritesCount > 0 && (
+                  <span className="absolute -top-2 -right-2 bg-red-500 text-white rounded-full w-5 h-5 flex items-center justify-center text-xs">
+                    {favoritesCount}
+                  </span>
+                )}
               </Link>
               <SearchBar onSearch={handleSearch} /> {/*search icon/component*/}
             </div>
