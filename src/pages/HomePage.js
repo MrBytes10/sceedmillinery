@@ -1,3 +1,5 @@
+//sceed_frontend/src/pages/HomePage.js
+
 import React, { useRef, useState, useEffect } from "react";
 import Header from "../components/Header";
 import Filter from "../components/Filter";
@@ -58,7 +60,7 @@ const HomePage = () => {
     {
       id: 1,
       name: "Red Fascinator",
-      price: "KES 1,500",
+      price: "1700",
       image: "https://via.placeholder.com/150",
     },
     {

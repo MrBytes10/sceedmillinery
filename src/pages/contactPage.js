@@ -1,3 +1,5 @@
+//sceed_frontend/src/pages/contactPage.js
+
 import React, { useState } from "react";
 import Header from "../components/Header";
 import Footer from "../components/Footer";
@@ -55,7 +57,7 @@ const ContactPage = () => {
 
             <div className="mb-8">
               <h2 className="mb-4 font-normal">How to Reach Us:</h2>
-              <p className="mb-2 font-bold">Phone: [0787315801]</p>
+              <p className="mb-2 font-bold">Phone: [+256 787 315801]</p>
               <p className="font-bold">Email: [faitham.faith50@gmail.com]</p>
             </div>
 

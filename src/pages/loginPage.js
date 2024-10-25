@@ -1,3 +1,6 @@
+//sceed_frontend/src/pages/loginPage.js
+
+
 import React, { useState } from "react";
 import Footer from "../components/Footer";
 import SecondHeader from "../components/LoginHeader";

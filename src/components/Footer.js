@@ -1,7 +1,8 @@
 //sceed_frontend/src/components/Footer.js
 
 import React from "react";
-import { ReactComponent as KenyaFlag } from "../assets/icons/kenya-flag.svg"; // Adjust the path as necessary
+//import { ReactComponent as KenyaFlag } from "../assets/icons/kenya-flag.svg"; // Adjust the path as necessary
+import { ReactComponent as UgandanFlag } from "../assets/icons/UgandanFlag.svg"; // Adjust the path as necessary
 import { ReactComponent as YoutubeIcon } from "../assets/icons/youtubeIcon.svg";
 import { ReactComponent as FacebookIcon } from "../assets/icons/facebookIcon.svg";
 import { ReactComponent as InstagramIcon } from "../assets/icons/instagramIcon.svg";
@@ -132,11 +133,6 @@ function Footer() {
         </div>
         {/* Kenyan Flag Div */}
         <div className="mt-8 flex justify-between items-center">
-          {/* <div className="flex items-center">
-            <img src="/kenya-flag.png" alt="Kenya Flag" className="h-4 mr-2" />
-            <span>KES</span>
-          </div> */}
-
           <div className="flex items-center">
             <div
               className="flex items-center justify-center bg-white w-20 h-9 p-0 rounded-md"
@@ -147,14 +143,14 @@ function Footer() {
               //   borderRadius: "5px",
               // }}
             >
-              <KenyaFlag
+              <UgandanFlag
                 className="h-full mr-1 ml-1" // Set height to fill the container and reduce right margin
                 aria-hidden="true"
               />
               <span
                 className="text-sm font-normal text-black leading-5" // Tailwind classes for styling
               >
-                KES
+                UGX
               </span>
             </div>
 

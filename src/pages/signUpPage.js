@@ -1,8 +1,10 @@
+//sceed_frontend/src/pages/signUpPage.js
+
 import React, { useState } from "react";
 import Footer from "../components/Footer";
 import SecondHeader from "../components/signUpHeader";
 import logoImage from "../images/sceedBlackLogo.png";
-import { ReactComponent as KenyaFlag } from "../assets/icons/kenya-flag.svg"; // Adjust the path as necessary
+import { ReactComponent as UgandanFlag } from "../assets/icons/UgandanFlag.svg"; // Adjust the path as necessary
 import { ChevronDown } from "lucide-react";
 import phoneUtils from "../utils/phoneUtils"; // Import phoneUtils
 import backgroundImage from "../images/woman-portrait-female-african-american.jpg";
@@ -291,7 +293,7 @@ const SignUpPage = () => {
                         <div
                           className="flex items-center h-full cursor-pointer border border-gray-300 rounded-l-md px-2"
                           onClick={() => setDropdownOpen(!dropdownOpen)}>
-                          <KenyaFlag
+                          <UgandanFlag
                             alt="KE"
                             className=" w-9 h-full mr-1 ml-1" // Set height to fill the container and reduce right margin
                             aria-hidden="true"

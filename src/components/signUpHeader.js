@@ -10,13 +10,13 @@ import logoImage from "../images/sceedWhiteLogo.png";
 //     id: 1,
 //     name: "Feathered Veil Pearl Fascinator",
 //     price: 1300,
-//     description: "Elegant red feathered fascinator with pearls",
+//    productFeatures : "Elegant red feathered fascinator with pearls",
 //   },
 //   {
 //     id: 2,
 //     name: "Nested Feather Fascinator",
 //     price: 1700,
-//     description: "Beautiful blue nested feather fascinator",
+//     productFeatures: "Beautiful blue nested feather fascinator",
 //   },
 //   // ... add more products
 // ];
@@ -30,7 +30,7 @@ const Header = () => {
   // const calculateRelevance = (product, searchTerm) => {
   //   const searchLower = searchTerm.toLowerCase();
   //   const nameLower = product.name.toLowerCase();
-  //   const descLower = product.description.toLowerCase();
+  //   const descLower = product.productFeatures.toLowerCase();
 
   //   let score = 0;
   //   if (nameLower.includes(searchLower)) score += 2;

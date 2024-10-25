@@ -1,6 +1,6 @@
 import { ChevronDown } from "lucide-react";
 import { useState } from "react";
-import { ReactComponent as KenyaFlag } from "../assets/icons/kenya-flag.svg"; // Update this path as needed
+import { ReactComponent as UgandanFlag } from "../assets/icons/UgandanFlag.svg"; // Update this path as needed
 
 const PhoneNumberInput = ({
   inputFormat,
@@ -32,7 +32,7 @@ const PhoneNumberInput = ({
             className="flex items-center h-full cursor-pointer border border-gray-300 rounded-l-md px-2"
             onClick={toggleDropdown}>
             <ChevronDown className="w-4 h-4 text-gray-600 mr-2" />
-            <KenyaFlag
+            <UgandanFlag
               alt="KE"
               className="h-full object-contain m-[1px]" // Full height of container with a minimal margin
               aria-hidden="true"
