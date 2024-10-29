@@ -8,6 +8,7 @@ import { ReactComponent as UgandanFlag } from "../assets/icons/UgandanFlag.svg";
 import { ChevronDown } from "lucide-react";
 import phoneUtils from "../utils/phoneUtils"; // Import phoneUtils
 import backgroundImage from "../images/woman-portrait-female-african-american.jpg";
+import { API_ENDPOINTS } from "../config/api";
 
 const SignUpPage = () => {
   const [formData, setFormData] = useState({
@@ -117,26 +118,18 @@ const SignUpPage = () => {
     setIsSubmitting(true);
 
     try {
-      // Format the data according to nopCommerce's requirements
       const registrationData = {
-        Customer: {
-          FirstName: formData.fullName.split(" ")[0],
-          LastName: formData.fullName.split(" ").slice(1).join(" "),
-          Email: formData.email,
-          Username: formData.email, // Using email as username
-          PhoneNumber: phoneUtils.formatToInternational(formData.phoneNumber),
-          Address: {
-            Address1: formData.physicalAddress,
-            CountryId: 115, // Kenya's ID in nopCommerce
-          },
-        },
-        Password: formData.password,
+        fullName: formData.fullName,
+        email: formData.email,
+        phoneNumber: phoneUtils.formatToInternational(formData.phoneNumber),
+        physicalAddress: formData.physicalAddress,
+        password: formData.password,
       };
       // we Log the registrationData object to the console
-      console.log("Registration Data:", registrationData);
+      console.log("The Registration Data is:", registrationData);
 
       // Replace with your nopCommerce API endpoint
-      const response = await fetch("/api/customer/register", {
+      const response = await fetch(API_ENDPOINTS.registerUser, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -144,18 +137,23 @@ const SignUpPage = () => {
         body: JSON.stringify(registrationData),
       });
 
-      if (!response.ok) {
-        const errorData = await response.json();
-        throw new Error(errorData.message || "Registration failed");
-      }
-
-      // Handle successful registration
       const data = await response.json();
 
-      // Redirect to login or dashboard based on nopCommerce's response
+      if (!response.ok) {
+        throw new Error(data.message || "Registration failed");
+      }
+
+      // Store the token if your API returns one
+      if (data.token) {
+        localStorage.setItem("authToken", data.token);
+      }
+      // Handle successful registration
+      //const data = await response.json();
+
+      // Redirect to login or homepage based on the API's response
       window.location.href = "/registration-success";
     } catch (error) {
-      console.error("Error:", error); // Log error to console
+      console.error("Registration error:", error);
       setApiError(
         error.message ||
           "An error occurred during registration. Please try again."

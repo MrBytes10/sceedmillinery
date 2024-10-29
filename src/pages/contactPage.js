@@ -58,7 +58,7 @@ const ContactPage = () => {
             <div className="mb-8">
               <h2 className="mb-4 font-normal">How to Reach Us:</h2>
               <p className="mb-2 font-bold">Phone: [+256 787 315801]</p>
-              <p className="font-bold">Email: [faitham.faith50@gmail.com]</p>
+              <p className="font-bold">Email: [glamandpoppy@gmail.com]</p>
             </div>
 
             <div className="mb-8">

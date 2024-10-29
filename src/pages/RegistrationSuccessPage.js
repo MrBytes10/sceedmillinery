@@ -1,11 +1,44 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import Footer from "../components/Footer";
 import Header from "../components/Header";
-import logoImage from "../images/sceedBlackLogo.png";
 import backgroundImage from "../images/woman-portrait-female-african-american.jpg";
 import RegistrationSuccessImg from "../images/registration-success.png";
+import API_ENDPOINTS from "../config/api";
 
 const RegistrationSuccessPage = () => {
+  // State to track if the user has opted into the mailing list subscription
+  const [isSubscribed, setIsSubscribed] = useState(false);
+
+  // useEffect hook to handle mailing list subscription when `isSubscribed` changes to true
+  useEffect(() => {
+    // Function to handle subscription API call
+    const handleSubscription = async () => {
+      try {
+        const response = await fetch(API_ENDPOINTS.subscribeUser, {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${localStorage.getItem("authToken")}`, // Auth token for secure access
+          },
+          body: JSON.stringify({ subscribed: true }), // Request body indicating subscription status
+        });
+
+        if (!response.ok) {
+          throw new Error("Subscription failed"); // Handle any errors during the request
+        }
+
+        console.log("Successfully subscribed to mailing list"); // Log success message to console
+      } catch (error) {
+        console.error("Subscription error:", error); // Log error message to console
+      }
+    };
+
+    // Trigger subscription only if `isSubscribed` is true
+    if (isSubscribed) {
+      handleSubscription();
+    }
+  }, [isSubscribed]);
+
   return (
     <div
       className="flex flex-col min-h-screen"
@@ -26,7 +59,7 @@ const RegistrationSuccessPage = () => {
             <div className="relative w-full max-w-[600px] h-[300px]">
               <img
                 src={RegistrationSuccessImg}
-                alt="Registration Success Image"
+                alt="Registration Success"
                 className="w-full h-full object-cover"
               />
             </div>
@@ -47,11 +80,13 @@ const RegistrationSuccessPage = () => {
               perfect piece to elevate your style!
             </p>
 
-            {/* Mailing List Subscription */}
+            {/* Mailing List Subscription ---// Update the checkbox*/}
             <div className="mt-4">
               <label className="inline-flex items-center space-x-1">
                 <input
                   type="checkbox"
+                  checked={isSubscribed}
+                  onChange={(e) => setIsSubscribed(e.target.checked)}
                   className="form-checkbox h-4 w-4 text-gray-600 rounded"
                 />
                 <span className="text-sm text-[#212121]">

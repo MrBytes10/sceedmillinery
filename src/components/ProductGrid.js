@@ -1,3 +1,5 @@
+//sceed_frontend/src/components/ProductGrid.js
+
 import React from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { Heart } from "lucide-react"; // Import Heart icon from lucide-react
@@ -6,30 +8,6 @@ import { useFavorites } from "../contexts/FavoritesContext";
 const ProductCard = ({ product }) => {
   const navigate = useNavigate();
   const { addToFavorites, removeFromFavorites, isInFavorites } = useFavorites();
-
-  // Helper function to handle adding/removing from favorites
-  // const handleFavoriteClick = async (e) => {
-  //   e.stopPropagation(); // Prevent navigation when clicking the heart icon
-  //   try {
-  //     const response = await fetch("/api/favorites", {
-  //       method: "POST",
-  //       headers: {
-  //         "Content-Type": "application/json",
-  //       },
-  //       body: JSON.stringify({
-  //         productId: product.id,
-  //       }),
-  //     });
-
-  //     if (response.ok) {
-  //       // You might want to update some global state here to reflect the change
-  //       // For example, using Redux or Context to update the favorites count
-  //       console.log("Added to favorites successfully");
-  //     }
-  //   } catch (error) {
-  //     console.error("Error adding to favorites:", error);
-  //   }
-  // };
 
   // Handle adding/removing products from favorites
   const handleFavoriteClick = async (e) => {
@@ -43,11 +21,9 @@ const ProductCard = ({ product }) => {
     }
   };
 
-  // Ensure images object exists and has values
-  const firstImageUrl =
-    product.images && Object.values(product.images)[0]
-      ? Object.values(product.images)[0]
-      : "https://via.placeholder.com/150";
+  // Use the product's display image or a placeholder image
+  const productImage =
+    product.displayImage || "https://via.placeholder.com/150";
 
   // Calculate discount percentage
   const discountPercentage =
@@ -94,7 +70,7 @@ const ProductCard = ({ product }) => {
       </button>
 
       <img
-        src={firstImageUrl}
+        src={productImage}
         alt={product.name}
         className="w-full h-48 object-cover mb-4"
       />
@@ -117,7 +93,7 @@ const ProductCard = ({ product }) => {
         )}
       </div>
 
-      <div className="flex gap-1 mb-2">
+      {/* <div className="flex gap-1 mb-2">
         {product.availableColors && product.availableColors.length > 0 ? (
           product.availableColors.map((color) => (
             <div
@@ -130,7 +106,7 @@ const ProductCard = ({ product }) => {
         ) : (
           <p className="text-sm text-gray-500">No colors available</p>
         )}
-      </div>
+      </div> */}
 
       <button
         onClick={() => navigate(`/product/${product.id}`)}

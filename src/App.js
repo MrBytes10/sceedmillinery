@@ -14,7 +14,17 @@ import ApiErrorBoundary from "./components/apiErrorBoundary";
 import AdminProductPanel from "./pages/admin/adminProductPanel";
 import FavoritesPage from "./pages/favoritesPage";
 import { FavoritesProvider } from "./contexts/FavoritesContext";
-
+//AdminTests
+import AddProductForm from "./pages/admin/addProductForm";
+//test2
+import AdminLogin from "./pages/admin/adminLogin";
+import {
+  AdminLayout,
+  DashboardOverview,
+  ProductsManagement,
+  OrdersManagement,
+  UsersManagement,
+} from "./pages/admin/adminDashboard";
 function App() {
   return (
     <SearchProvider>
@@ -36,8 +46,19 @@ function App() {
               />
               <Route path="/favorites" element={<FavoritesPage />} />
               {/* // Admin Routes */}
-              <Route path="/admin/products" element={<AdminProductPanel />} />
+              <Route path="/admin/add-product" element={<AddProductForm />} />
+              <Route path="/admin/products1" element={<AdminProductPanel />} />
               <Route path="*" element={<h1>Not Found</h1>} />
+              {/* Admin Dashboard Routes */}
+              <Route path="/admin/login" element={<AdminLogin />} />
+              {/* Admin routes */}
+              <Route path="/admin" element={<AdminLayout />}>
+                <Route index element={<DashboardOverview />} />
+                <Route path="products" element={<ProductsManagement />} />
+                <Route path="products/add" element={<AddProductForm />} />
+                <Route path="orders" element={<OrdersManagement />} />
+                <Route path="users" element={<UsersManagement />} />
+              </Route>
             </Routes>
           </FavoritesProvider>
         </ApiErrorBoundary>

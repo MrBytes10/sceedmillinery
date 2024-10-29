@@ -17,7 +17,7 @@ const ProductDetailsPage = () => {
 
   const fetchProductDetails = useCallback(async () => {
     try {
-      const response = await fetch(API_ENDPOINTS.product(id));
+      const response = await fetch(API_ENDPOINTS.getProduct(id));
       if (!response.ok) {
         throw new Error(`HTTP error! status: ${response.status}`);
       }
@@ -35,7 +35,7 @@ const ProductDetailsPage = () => {
 
   const fetchRelatedProducts = useCallback(async () => {
     try {
-      const response = await fetch(API_ENDPOINTS.relatedProducts(id));
+      const response = await fetch(API_ENDPOINTS.getRelatedProducts(id));
       if (!response.ok) {
         throw new Error(`HTTP error! status: ${response.status}`);
       }

@@ -1,7 +1,10 @@
+// sceed_frontend/src/pages/admin/ adminProductsPanel.js
+
 import React, { useState, useEffect } from "react";
 import { PlusCircle, Pencil, Trash2, Save, X } from "lucide-react";
 //import { Alert, AlertDescription } from "@/components/ui/alert";
 import { Alert } from "antd";
+import { API_ENDPOINTS } from "../../config/api";
 
 const AdminProductPanel = () => {
   const [products, setProducts] = useState([]);
@@ -27,12 +30,13 @@ const AdminProductPanel = () => {
 
   const fetchProducts = async () => {
     try {
-      const response = await fetch("/api/products");
+      const response = await fetch(API_ENDPOINTS.getProducts);
+      if (!response.ok) throw new Error("Failed to fetch products");
       const data = await response.json();
       setProducts(data);
       setLoading(false);
     } catch (err) {
-      setError("Failed to load products");
+      setError("Failed to load products: " + err.message);
       setLoading(false);
     }
   };
@@ -42,23 +46,35 @@ const AdminProductPanel = () => {
     try {
       const method = editingProduct ? "PUT" : "POST";
       const url = editingProduct
-        ? `/api/products/${editingProduct.id}`
-        : "/api/products";
+        ? API_ENDPOINTS.getProduct(editingProduct.id)
+        : `${API_ENDPOINTS.getProducts}/CreateProduct`; // Updated to match backend endpoint
 
       const response = await fetch(url, {
         method,
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(formData),
+        body: JSON.stringify({
+          ...formData,
+          price: parseFloat(formData.price),
+          originalPrice: formData.originalPrice
+            ? parseFloat(formData.originalPrice)
+            : null,
+          availableColors: formData.availableColors.map((color) => ({
+            code: color.code,
+            name: color.name,
+          })),
+        }),
       });
 
-      if (response.ok) {
-        fetchProducts();
-        resetForm();
-      } else {
-        setError("Failed to save product");
+      if (!response.ok) {
+        const errorData = await response.text();
+        throw new Error(errorData);
       }
+
+      await fetchProducts();
+      resetForm();
+      setError(null);
     } catch (err) {
-      setError("An error occurred while saving");
+      setError("Failed to save product: " + err.message);
     }
   };
 
@@ -67,17 +83,16 @@ const AdminProductPanel = () => {
       return;
 
     try {
-      const response = await fetch(`/api/products/${id}`, {
+      const response = await fetch(API_ENDPOINTS.getProduct(id), {
         method: "DELETE",
       });
 
-      if (response.ok) {
-        fetchProducts();
-      } else {
-        setError("Failed to delete product");
-      }
+      if (!response.ok) throw new Error("Failed to delete product");
+
+      await fetchProducts();
+      setError(null);
     } catch (err) {
-      setError("An error occurred while deleting");
+      setError("Failed to delete product: " + err.message);
     }
   };
 
@@ -89,8 +104,8 @@ const AdminProductPanel = () => {
       price: product.price,
       productFeatures: product.productFeatures,
       material: product.material,
-      images: product.images,
-      availableColors: product.availableColors,
+      images: product.images || {},
+      availableColors: product.availableColors || [],
     });
     setShowForm(true);
   };
@@ -108,6 +123,7 @@ const AdminProductPanel = () => {
     });
     setShowForm(false);
   };
+  // //////////////////////////////////////////////////////////... rest of the code remains the same
 
   const addImage = () => {
     const key = prompt("Enter image label (e.g., main, thumbnail):");

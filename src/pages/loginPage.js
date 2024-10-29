@@ -1,11 +1,11 @@
 //sceed_frontend/src/pages/loginPage.js
 
-
 import React, { useState } from "react";
 import Footer from "../components/Footer";
 import SecondHeader from "../components/LoginHeader";
 import logoImage from "../images/sceedBlackLogo.png";
 import backgroundImage from "../images/woman-portrait-female-african-american.jpg";
+import { API_ENDPOINTS } from "../config/api";
 
 const LoginPage = () => {
   const [formData, setFormData] = useState({
@@ -68,40 +68,57 @@ const LoginPage = () => {
     setServerMessage(""); // Clear previous messages
 
     try {
-      // Mock API request for login (replace with actual API call)
-      const response = await mockLoginApi(formData);
+      // API request for login (replaced with actual API call)
+      const response = await fetch(API_ENDPOINTS.loginUser, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          email: formData.email,
+          password: formData.password,
+        }),
+      });
+      const data = await response.json();
 
-      if (response.success) {
-        setServerMessage("Login successful!");
-        console.log("Login successful:", response.message);
-      } else {
-        setServerMessage(response.message);
-        console.error("Login error:", response.message);
+      //on successful  login, redirect to dashboard
+
+      if (!response.ok) {
+        throw new Error(data.message || "Login failed");
       }
+
+      // Store the authentication token
+      if (data.token) {
+        localStorage.setItem("authToken", data.token);
+      }
+
+      setServerMessage("Login successful!");
+      setTimeout(() => {
+        window.location.href = "/"; // or wherever you want to redirect after login
+      }, 1000);
     } catch (error) {
-      setServerMessage("An error occurred. Please try again.");
-      console.error("Request error:", error);
+      console.error("Login error:", error);
+      setServerMessage(error.message || "Invalid email or password.");
     } finally {
       setIsSubmitting(false);
     }
-  };
 
-  const mockLoginApi = (credentials) => {
+    //const mockLoginApi = (credentials) => {
     // Simulate a fake API request with a delay
-    return new Promise((resolve) => {
-      setTimeout(() => {
-        if (
-          credentials.email === "solomonjeann@gmail.com" &&
-          credentials.password === "correctpassword"
-        ) {
-          resolve({ success: true, message: "Login successful!" });
-        } else {
-          resolve({ success: false, message: "Invalid email or password." });
-        }
-      }, 1000);
-    });
+    //   return new Promise((resolve) => {
+    //     setTimeout(() => {
+    //       if (
+    //         credentials.email === "solomonjeann@gmail.com" &&
+    //         credentials.password === "correctpassword"
+    //       ) {
+    //         resolve({ success: true, message: "Login successful!" });
+    //       } else {
+    //         resolve({ success: false, message: "Invalid email or password." });
+    //       }
+    //     }, 1000);
+    //   });
+    // Redirect to dashboard or home page
   };
-
   return (
     <div className="flex flex-col min-h-screen">
       <SecondHeader />

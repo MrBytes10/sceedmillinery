@@ -23,13 +23,14 @@ const Filter = ({ priceRange, setPriceRange }) => {
           />
           <span className="text-xs text-[#212121]">In stock</span>
         </label>
-        <label className="flex items-center">
+        {/* The Out of Stock CheckBox*/}
+        {/* <label className="flex items-center">
           <input
             type="checkbox"
             className="w-3 h-3 border border-[#646464] rounded-sm mr-2"
           />
           <span className="text-xs text-[#212121]">Out of stock</span>
-        </label>
+        </label> */}
       </div>
 
       {/* Discount Percentage Section */}

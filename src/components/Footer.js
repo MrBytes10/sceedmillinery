@@ -121,7 +121,7 @@ function Footer() {
               </li>
               <li>
                 <a
-                  href="#"
+                  href="/login"
                   className="hover:text-gray-300"
                   target="_blank"
                   rel="noreferrer">
@@ -166,7 +166,7 @@ function Footer() {
             {" "}
             {/* Outer div for border */}
             <a
-              href="https://wa.me/+254742125032"
+              href="https://wa.me/+256787315801"
               target="_blank"
               rel="noreferrer"
               className="flex items-center border border-green-500 p-1 rounded-2xl h-10 w-40" // Make the whole container clickable
