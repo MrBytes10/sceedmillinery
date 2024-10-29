@@ -14,6 +14,8 @@ import ApiErrorBoundary from "./components/apiErrorBoundary";
 import AdminProductPanel from "./pages/admin/adminProductPanel";
 import FavoritesPage from "./pages/favoritesPage";
 import { FavoritesProvider } from "./contexts/FavoritesContext";
+import UserProfile from "./pages/userProfilePage";
+//import { AuthProvider } from "./contexts/AuthContext";
 //AdminTests
 import AddProductForm from "./pages/admin/addProductForm";
 //test2
@@ -44,6 +46,7 @@ function App() {
                 path="/registration-success"
                 element={<RegistrationSuccess />}
               />
+              <Route path="/my-profile" element={<UserProfile />} />
               <Route path="/favorites" element={<FavoritesPage />} />
               {/* // Admin Routes */}
               <Route path="/admin/add-product" element={<AddProductForm />} />

@@ -52,9 +52,9 @@ const SignUpPage = () => {
     // Phone Number validation using phoneUtils
     if (!formData.phoneNumber) {
       newErrors.phoneNumber = "Phone number is required";
-    } else if (!phoneUtils.validateKenyanPhone(formData.phoneNumber)) {
+    } else if (!phoneUtils.validatePhoneNumber(formData.phoneNumber)) {
       newErrors.phoneNumber =
-        "Please enter a valid Kenyan phone number (07XX XXX XXX, 01XX XXX XXX, or +254 XXX XXX XXX)";
+        "Please enter a valid Kenyan, Ugandan, or Tanzanian phone number)";
     }
 
     // Password validation
@@ -125,10 +125,8 @@ const SignUpPage = () => {
         physicalAddress: formData.physicalAddress,
         password: formData.password,
       };
-      // we Log the registrationData object to the console
       console.log("The Registration Data is:", registrationData);
 
-      // Replace with your nopCommerce API endpoint
       const response = await fetch(API_ENDPOINTS.registerUser, {
         method: "POST",
         headers: {
@@ -140,24 +138,17 @@ const SignUpPage = () => {
       const data = await response.json();
 
       if (!response.ok) {
-        throw new Error(data.message || "Registration failed");
+        throw new Error(data.error || "Registration failed");
       }
 
-      // Store the token if your API returns one
       if (data.token) {
         localStorage.setItem("authToken", data.token);
       }
-      // Handle successful registration
-      //const data = await response.json();
 
-      // Redirect to login or homepage based on the API's response
       window.location.href = "/registration-success";
     } catch (error) {
       console.error("Registration error:", error);
-      setApiError(
-        error.message ||
-          "An error occurred during registration. Please try again."
-      );
+      setApiError(error.message);
     } finally {
       setIsSubmitting(false);
     }

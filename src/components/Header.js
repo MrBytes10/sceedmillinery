@@ -7,6 +7,7 @@ import logoImage from "../images/sceedWhiteLogo.png";
 import SearchBar from "./SearchBar";
 import { useSearch } from "./SearchContext";
 import { useFavorites } from "../contexts/FavoritesContext";
+import { useAuth } from "../contexts/AuthContext"; // Import auth context
 
 // Assume this is your product data. In a real app, this would likely come from an API or database.
 const products = [
@@ -29,9 +30,12 @@ const Header = () => {
   const { favoritesCount } = useFavorites();
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const { updateSearchResults } = useSearch();
+  const [showUserMenu, setShowUserMenu] = useState(false); // Added this line
+  const { isAuthenticated, logout } = useAuth(); // Destructure auth state and logout function
   const navigate = useNavigate();
   const location = useLocation(); // Get the current location (route)
 
+  // calculateRelevance function to determine search result relevance
   const calculateRelevance = (product, searchTerm) => {
     const searchLower = searchTerm.toLowerCase();
     const nameLower = product.name.toLowerCase();
@@ -43,6 +47,27 @@ const Header = () => {
 
     return score;
   };
+  const handleUserIconClick = () => {
+    if (isAuthenticated) {
+      // Toggle dropdown for user profile and logout
+      setShowUserMenu((prev) => !prev);
+    } else {
+      navigate("/sign-up"); // Redirect to sign-up if not logged in
+    }
+  };
+  // Add a click outside handler to close the user menu
+  React.useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (showUserMenu && !event.target.closest(".user-menu-container")) {
+        setShowUserMenu(false);
+      }
+    };
+
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, [showUserMenu]);
 
   // handleSearch
   const handleSearch = (searchTerm) => {
@@ -82,9 +107,36 @@ const Header = () => {
         <div className="container mx-auto flex flex-col sm:flex-row justify-between items-center">
           <div className="flex justify-between w-full sm:w-auto mb-2 sm:mb-0">
             <div className="flex space-x-4">
-              <Link to="/sign-up" className="text-black hover:text-gray-600">
-                <User size={20} />
-              </Link>
+              {/* User Icon */}
+              {/* User Icon */}
+              <div className="relative user-menu-container">
+                <User
+                  size={20}
+                  onClick={handleUserIconClick}
+                  className="cursor-pointer"
+                />
+                {isAuthenticated && showUserMenu && (
+                  <div className="absolute mt-2 right-0 bg-white border border-gray-300 rounded-md shadow-lg z-10 w-32">
+                    <button
+                      onClick={() => {
+                        navigate("/my-profile");
+                        setShowUserMenu(false);
+                      }}
+                      className="block w-full text-left px-4 py-2 hover:bg-gray-100">
+                      Profile
+                    </button>
+                    <button
+                      onClick={() => {
+                        logout();
+                        setShowUserMenu(false);
+                      }}
+                      className="block w-full text-left px-4 py-2 hover:bg-gray-100">
+                      Logout
+                    </button>
+                  </div>
+                )}
+              </div>
+              {/* Other Icons */}
               <Link to="/cart" className="text-black hover:text-gray-600">
                 <ShoppingCart size={20} />
               </Link>
