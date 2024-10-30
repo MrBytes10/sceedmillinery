@@ -36,17 +36,17 @@ const ProductCard = ({ product }) => {
     <div className="bg-white rounded shadow border-2 border-transparent hover:border-gray-500 transition-all duration-300 relative flex flex-col h-90">
       <div className="relative h-40 flex-shrink-0">
         {/* Stock badge */}
-        {!product.isInStock && (
+        {/* {!product.isInStock && (
           <div className="absolute top-12 left-2 z-10 bg-gray-800 text-white px-3 py-1 rounded-full">
             Out of Stock
           </div>
-        )}
+        )} */}
 
         {/* Sale badge - only shown when there's a valid discount (original price > current price) */}
         {discountPercentage && (
           <div
             onClick={() => navigate(`/product/${product.id}`)}
-            className="absolute top-2 left-2 z-10 bg-red-500 text-white px-3 py-1 rounded-full cursor-pointer hover:bg-red-600 transition-colors">
+            className="absolute top-2 left-2 z-10 bg-[#8F8F8F] text-white px-3 py-1 rounded-full cursor-pointer hover:bg-red-600 transition-colors">
             Sale
           </div>
         )}
