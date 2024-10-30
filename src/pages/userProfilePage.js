@@ -140,7 +140,7 @@ const UserProfilePage = () => {
           <div className="flex justify-between items-center mb-8">
             <h1 className="text-3xl font-bold text-[#212121] flex items-center gap-2">
               <User className="w-8 h-8" />
-              User Profile
+              My Profile
             </h1>
             {!isEditing && (
               <button

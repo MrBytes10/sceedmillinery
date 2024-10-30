@@ -1,61 +1,108 @@
-//sceed_frontend/src/components/Header.js
-
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Link, useNavigate, useLocation } from "react-router-dom";
 import { Heart, ShoppingCart, User, Menu, X } from "lucide-react";
 import logoImage from "../images/sceedWhiteLogo.png";
 import SearchBar from "./SearchBar";
 import { useSearch } from "./SearchContext";
 import { useFavorites } from "../contexts/FavoritesContext";
-import { useAuth } from "../contexts/AuthContext"; // Import auth context
-
-// Assume this is your product data. In a real app, this would likely come from an API or database.
-const products = [
-  {
-    id: 1,
-    name: "Feathered Veil Pearl Fascinator",
-    price: 1300,
-    productFeatures: "Elegant red feathered fascinator with pearls",
-  },
-  {
-    id: 2,
-    name: "Nested Feather Fascinator",
-    price: 1700,
-    productFeatures: "Beautiful blue nested feather fascinator",
-  },
-  // ... add more products
-];
+import { useAuth } from "../contexts/AuthContext";
+import { API_ENDPOINTS } from "../config/api";
+import ProductGrid from "./ProductGrid"; // Import ProductGrid component
 
 const Header = () => {
   const { favoritesCount } = useFavorites();
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const { updateSearchResults } = useSearch();
-  const [showUserMenu, setShowUserMenu] = useState(false); // Added this line
-  const { isAuthenticated, logout } = useAuth(); // Destructure auth state and logout function
+  const [showUserMenu, setShowUserMenu] = useState(false);
+  const { isAuthenticated, logout } = useAuth();
   const navigate = useNavigate();
-  const location = useLocation(); // Get the current location (route)
+  const location = useLocation();
+  const [products, setProducts] = useState([]);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState(null);
+  const [showResults, setShowResults] = useState(false);
+  const [searchResults, setSearchResults] = useState([]);
 
-  // calculateRelevance function to determine search result relevance
+  // Fetch products from API
+  useEffect(() => {
+    const fetchProducts = async () => {
+      try {
+        setLoading(true);
+        const response = await fetch(API_ENDPOINTS.getProducts);
+        if (!response.ok) {
+          throw new Error("Failed to fetch products");
+        }
+        const data = await response.json();
+        setProducts(data);
+      } catch (err) {
+        setError(err.message);
+        console.error("Error fetching products:", err);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchProducts();
+  }, []);
+
+  // Calculate relevance for search results
   const calculateRelevance = (product, searchTerm) => {
     const searchLower = searchTerm.toLowerCase();
     const nameLower = product.name.toLowerCase();
-    const descLower = product.productFeatures.toLowerCase();
+    const descLower = (product.productFeatures || "").toLowerCase();
+    const categoryLower = (product.category || "").toLowerCase();
 
     let score = 0;
-    if (nameLower.includes(searchLower)) score += 2;
-    if (descLower.includes(searchLower)) score += 1;
+    if (nameLower.includes(searchLower)) score += 3;
+    if (descLower.includes(searchLower)) score += 2;
+    if (categoryLower.includes(searchLower)) score += 1;
 
     return score;
   };
-  const handleUserIconClick = () => {
-    if (isAuthenticated) {
-      // Toggle dropdown for user profile and logout
-      setShowUserMenu((prev) => !prev);
+
+  // Handle search with API data
+  const handleSearch = (searchTerm) => {
+    if (loading) return;
+
+    const results = products
+      .map((product) => ({
+        ...product,
+        relevance: calculateRelevance(product, searchTerm),
+      }))
+      .filter((product) => product.relevance > 0)
+      .sort((a, b) => b.relevance - a.relevance);
+
+    setSearchResults(results);
+    setShowResults(true);
+
+    // If no results found, show message
+    if (results.length === 0) {
+      navigate("/search-results", {
+        state: {
+          message: "No products found matching your search.",
+          searchTerm,
+        },
+      });
     } else {
-      navigate("/sign-up"); // Redirect to sign-up if not logged in
+      // Navigate to search results page with the results
+      navigate("/search-results", {
+        state: {
+          results,
+          searchTerm,
+        },
+      });
     }
   };
-  // Add a click outside handler to close the user menu
+
+  const handleUserIconClick = () => {
+    if (isAuthenticated) {
+      setShowUserMenu((prev) => !prev);
+    } else {
+      navigate("/sign-up");
+    }
+  };
+
+  // Click outside handler for user menu
   React.useEffect(() => {
     const handleClickOutside = (event) => {
       if (showUserMenu && !event.target.closest(".user-menu-container")) {
@@ -69,26 +116,11 @@ const Header = () => {
     };
   }, [showUserMenu]);
 
-  // handleSearch
-  const handleSearch = (searchTerm) => {
-    const results = products
-      .map((product) => ({
-        ...product,
-        relevance: calculateRelevance(product, searchTerm),
-      }))
-      .filter((product) => product.relevance > 0)
-      .sort((a, b) => b.relevance - a.relevance);
-
-    updateSearchResults(results, searchTerm);
-    navigate("/search-results");
-  };
-
-  // Determine if a link is active by comparing current URL
   const isActive = (path) => location.pathname === path;
 
   return (
     <header className="relative w-full">
-      {/* logo and top text */}
+      {/* Logo and top text */}
       <div className="bg-black text-white rounded-b-[10px]">
         <div className="container mx-auto flex flex-col sm:flex-row justify-between items-center py-0 px-4 sm:px-6 lg:px-8">
           <img
@@ -102,48 +134,58 @@ const Header = () => {
         </div>
       </div>
 
-      {/* navbar */}
+      {/* Navbar */}
       <div className="bg-white py-2 px-4 sm:px-6 lg:px-8">
         <div className="container mx-auto flex flex-col sm:flex-row justify-between items-center">
           <div className="flex justify-between w-full sm:w-auto mb-2 sm:mb-0">
             <div className="flex space-x-4">
-              {/* User Icon */}
-              {/* User Icon */}
+              {/* User Icon and Menu */}
+              {/* User Icon and Menu */}
               <div className="relative user-menu-container">
                 <User
                   size={20}
                   onClick={handleUserIconClick}
                   className="cursor-pointer"
                 />
-                {isAuthenticated && showUserMenu && (
-                  <div className="absolute mt-2 right-0 bg-white border border-gray-300 rounded-md shadow-lg z-10 w-32">
-                    <button
-                      onClick={() => {
-                        navigate("/my-profile");
-                        setShowUserMenu(false);
-                      }}
-                      className="block w-full text-left px-4 py-2 hover:bg-gray-100">
-                      Profile
-                    </button>
-                    <button
-                      onClick={() => {
-                        logout();
-                        setShowUserMenu(false);
-                      }}
-                      className="block w-full text-left px-4 py-2 hover:bg-gray-100">
-                      Logout
-                    </button>
-                  </div>
-                )}
+                <div
+                  className={`${
+                    showUserMenu
+                      ? "visible opacity-100 scale-100"
+                      : "invisible opacity-0 scale-95"
+                  } 
+                   transition-all duration-200 ease-out`}>
+                  {isAuthenticated && (
+                    <div
+                      className="absolute mt-2 right-15 bg-[#212121] border border-[#CECDC8] rounded-md shadow-lg z-10 w-37 
+                    origin-top-right transform scale-100 opacity-100 transition-all duration-200 
+                    animate-in fade-in-0 zoom-in-95">
+                      <button
+                        onClick={() => {
+                          navigate("/my-profile");
+                          setShowUserMenu(false);
+                        }}
+                        className="block w-full text-left px-4 py-3 text-white hover:bg-[#CECDC8] hover:text-[#212121] transition-colors duration-200">
+                        Profile
+                      </button>
+                      <button
+                        onClick={() => {
+                          logout();
+                          setShowUserMenu(false);
+                        }}
+                        className="block w-full text-left px-4 py-3 text-white hover:bg-[#CECDC8] hover:text-[#212121] transition-colors duration-200">
+                        Logout
+                      </button>
+                    </div>
+                  )}
+                </div>
               </div>
-              {/* Other Icons */}
+
+              {/* Cart Icon */}
               <Link to="/cart" className="text-black hover:text-gray-600">
                 <ShoppingCart size={20} />
               </Link>
-              {/* <Link to="/favorites" className="text-black hover:text-gray-600">
-                <Heart size={20} />
-              </Link> */}
-              {/* The favorites icon with counter */}
+
+              {/* Favorites Icon with Counter */}
               <Link to="/favorites" className="relative">
                 <Heart className="w-6 h-6" />
                 {favoritesCount > 0 && (
@@ -152,14 +194,24 @@ const Header = () => {
                   </span>
                 )}
               </Link>
-              <SearchBar onSearch={handleSearch} /> {/*search icon/component*/}
+
+              {/* Search Bar */}
+              <SearchBar
+                onSearch={handleSearch}
+                disabled={loading}
+                placeholder={loading ? "Loading..." : "Search products..."}
+              />
             </div>
+
+            {/* Mobile Menu Button */}
             <button
               onClick={() => setIsMenuOpen(!isMenuOpen)}
               className="sm:hidden text-black hover:text-gray-600">
               {isMenuOpen ? <X size={20} /> : <Menu size={20} />}
             </button>
           </div>
+
+          {/* Navigation Links */}
           <nav className={`${isMenuOpen ? "block" : "hidden"} sm:block`}>
             <ul className="flex flex-col sm:flex-row space-y-2 sm:space-y-0 sm:space-x-6">
               <li>

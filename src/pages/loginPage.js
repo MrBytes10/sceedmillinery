@@ -58,17 +58,14 @@ const LoginPage = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    // Validate form data before submitting
     if (!validateForm()) {
-      console.log("Validation errors:", errors);
       return;
     }
 
     setIsSubmitting(true);
-    setServerMessage(""); // Clear previous messages
+    setServerMessage("");
 
     try {
-      // API request for login (replaced with actual API call)
       const response = await fetch(API_ENDPOINTS.loginUser, {
         method: "POST",
         headers: {
@@ -79,12 +76,21 @@ const LoginPage = () => {
           password: formData.password,
         }),
       });
-      const data = await response.json();
 
-      //on successful  login, redirect to dashboard
+      // Parse the response text
+      const text = await response.text();
+      let data;
+      try {
+        // Try to parse as JSON if possible
+        data = JSON.parse(text);
+      } catch (e) {
+        // If parsing fails, use the text directly
+        data = { error: text };
+      }
 
       if (!response.ok) {
-        throw new Error(data.message || "Login failed");
+        // Handle both object with error property and direct string error
+        throw new Error(data.error || data);
       }
 
       // Store the authentication token
@@ -102,22 +108,6 @@ const LoginPage = () => {
     } finally {
       setIsSubmitting(false);
     }
-
-    //const mockLoginApi = (credentials) => {
-    // Simulate a fake API request with a delay
-    //   return new Promise((resolve) => {
-    //     setTimeout(() => {
-    //       if (
-    //         credentials.email === "solomonjeann@gmail.com" &&
-    //         credentials.password === "correctpassword"
-    //       ) {
-    //         resolve({ success: true, message: "Login successful!" });
-    //       } else {
-    //         resolve({ success: false, message: "Invalid email or password." });
-    //       }
-    //     }, 1000);
-    //   });
-    // Redirect to dashboard or home page
   };
   return (
     <div className="flex flex-col min-h-screen">
