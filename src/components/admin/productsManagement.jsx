@@ -100,12 +100,52 @@ const ProductsManagement = () => {
     }
   };
 
+  // Add stock update handler
+  const handleStockUpdate = async (productId, quantity) => {
+    try {
+      await axios.patch(
+        `${API_ENDPOINTS.updateProduct(productId)}/stock`,
+        quantity
+      );
+      notification.success({ message: "Stock updated successfully" });
+      fetchProducts();
+    } catch (error) {
+      notification.error({ message: "Failed to update stock" });
+    }
+  };
+
   // Table columns
   const columns = [
     { title: "ID", dataIndex: "id", key: "id" },
     { title: "Name", dataIndex: "name", key: "name" },
     { title: "Price", dataIndex: "price", key: "price" },
     { title: "Material", dataIndex: "material", key: "material" },
+    {
+      title: "Stock-Available",
+      key: "stock",
+      render: (_, record) => (
+        <Space>
+          <Input
+            type="number"
+            defaultValue={record.stockQuantity}
+            style={{ width: 80 }}
+            min={0}
+            onBlur={(e) =>
+              handleStockUpdate(record.id, parseInt(e.target.value))
+            }
+          />
+          <span
+            className={`px-2 py-1 rounded ${
+              record.stockQuantity > 0
+                ? "bg-green-100 text-green-800"
+                : "bg-red-100 text-red-800"
+            }`}>
+            {record.stockQuantity > 0 ? "In Stock" : "Out of Stock"}
+          </span>
+        </Space>
+      ),
+    },
+
     {
       title: "Actions",
       key: "actions",
@@ -180,6 +220,15 @@ const ProductsManagement = () => {
           </Form.Item>
           <Form.Item name="productFeatures" label="Product Features">
             <Input.TextArea placeholder="Enter product features" rows={3} />
+          </Form.Item>
+          {/*inStock and out of Stock*/}
+          <Form.Item
+            name="stockQuantity"
+            label="Stock Quantity"
+            rules={[
+              { required: true, message: "Please enter stock quantity" },
+            ]}>
+            <Input type="number" min={0} placeholder="Enter stock quantity" />
           </Form.Item>
 
           {/* Dynamic fields for images */}

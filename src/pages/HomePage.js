@@ -32,9 +32,18 @@ const HomePage = () => {
   const filterRef = useRef(null);
   const productGridRef = useRef(null);
   const productsSectionRef = useRef(null);
+  // State for discount filters
+  const [discountFilters, setDiscountFilters] = useState({
+    any: false,
+    30: false,
+    20: false,
+    10: false,
+  });
+  // Add this with your other state declarations at the top of HomePage
+  const [inStock, setInStock] = useState(false);
 
   // Fetch products from the backend
-  // In HomePage.js, update the fetchProducts function:
+  // the fetchProducts function:
 
   useEffect(() => {
     const fetchProducts = async () => {
@@ -81,7 +90,7 @@ const HomePage = () => {
     };
 
     fetchProducts();
-  }, [priceRange]); // Added priceRange as dependency since we're using it in the logging
+  }, []); // Can add priceRange as dependency since we're using it in the logging
 
   useEffect(() => {
     const handleScroll = () => {
@@ -113,9 +122,40 @@ const HomePage = () => {
     { src: gallery9, alt: " " },
   ];
 
+  //filtering products by discount
   // Filter products based on price range
+  // const filteredProducts = products.filter((product) => {
+  //   return product.price <= priceRange;
+  // });
+  // Update the filtering logic in HomePage:
+  // Filter products based on price range and discount
   const filteredProducts = products.filter((product) => {
-    return product.price <= priceRange;
+    const meetsPrice = product.price <= priceRange;
+
+    // Calculate discount percentage if there's an original price
+    const discountPercentage =
+      product.originalPrice && product.originalPrice > product.price
+        ? Math.round(
+            ((product.originalPrice - product.price) / product.originalPrice) *
+              100
+          )
+        : 0;
+
+    // Check if any discount filter is selected
+    const meetsDiscount =
+      (discountFilters.any && discountPercentage > 0) ||
+      (discountFilters[30] && discountPercentage >= 30) ||
+      (discountFilters[20] && discountPercentage >= 20) ||
+      (discountFilters[10] && discountPercentage >= 10);
+
+    // inStock filter condition
+    const meetsInStock = inStock ? product.isInStock : true;
+
+    return (
+      meetsPrice &&
+      meetsInStock &&
+      (Object.values(discountFilters).some(Boolean) ? meetsDiscount : true)
+    );
   });
 
   if (loading) {
@@ -131,7 +171,7 @@ const HomePage = () => {
       </div>
     );
   }
-
+  // what to return incase of product loading errors
   if (error) {
     return (
       <div className="flex flex-col min-h-screen">
@@ -140,8 +180,23 @@ const HomePage = () => {
           ref={filterRef}
           className={`md:w-1/4 ${filterSticky ? "md:sticky md:top-20" : ""}`}
           style={{ height: "fit-content" }}>
-          <Filter priceRange={priceRange} setPriceRange={setPriceRange} />
+          {/* <Filter priceRange={priceRange} setPriceRange={setPriceRange} /> */}
+          // In HomePage.js, update the Filter component usage:
+          <Filter
+            priceRange={priceRange}
+            setPriceRange={setPriceRange}
+            discountFilters={discountFilters}
+            setDiscountFilters={setDiscountFilters}
+            inStock={inStock}
+            setInStock={setInStock}
+            onApplyFilters={() => {
+              // This will trigger a re-render of the ProductGrid
+              // You can also add any additional filter logic here
+            }}
+          />
         </div>
+        {/*filtered products*/}
+
         <div className="flex-grow container mx-auto px-4 mt-[-20vw]">
           <div className="flex justify-center items-center h-64">
             <div className="text-xl text-red-600">{error}</div>
@@ -179,7 +234,18 @@ const HomePage = () => {
             ref={filterRef}
             className={`md:w-1/4 ${filterSticky ? "md:sticky md:top-20" : ""}`}
             style={{ height: "fit-content" }}>
-            <Filter priceRange={priceRange} setPriceRange={setPriceRange} />
+            <Filter
+              priceRange={priceRange}
+              setPriceRange={setPriceRange}
+              discountFilters={discountFilters}
+              setDiscountFilters={setDiscountFilters}
+              inStock={inStock}
+              setInStock={setInStock}
+              onApplyFilters={() => {
+                // This will trigger a re-render of the ProductGrid
+                // You can also add any additional filter logic here
+              }}
+            />
           </div>
 
           <div ref={productGridRef} className="md:w-3/4">

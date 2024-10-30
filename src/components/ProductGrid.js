@@ -35,6 +35,13 @@ const ProductCard = ({ product }) => {
   return (
     <div className="bg-white rounded shadow border-2 border-transparent hover:border-gray-500 transition-all duration-300 relative flex flex-col h-90">
       <div className="relative h-40 flex-shrink-0">
+        {/* Stock badge */}
+        {!product.isInStock && (
+          <div className="absolute top-12 left-2 z-10 bg-gray-800 text-white px-3 py-1 rounded-full">
+            Out of Stock
+          </div>
+        )}
+
         {/* Sale badge - only shown when there's a valid discount (original price > current price) */}
         {discountPercentage && (
           <div
@@ -93,10 +100,16 @@ const ProductCard = ({ product }) => {
           )}
         </div>
 
+        {/* either show view details button, or out  of stock message */}
         <button
           onClick={() => navigate(`/product/${product.id}`)}
-          className="mt-auto bg-black text-white px-4 py-2 rounded w-full hover:bg-gray-800 transition-colors duration-200">
-          View Details
+          className={`mt-auto px-4 py-2 rounded w-full transition-colors duration-200 ${
+            product.isInStock
+              ? "bg-black text-white hover:bg-gray-800"
+              : "bg-gray-300 text-gray-600 cursor-not-allowed"
+          }`}
+          disabled={!product.isInStock}>
+          {product.isInStock ? "View Details" : "Out of Stock"}
         </button>
       </div>
     </div>
