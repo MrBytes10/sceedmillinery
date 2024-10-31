@@ -9,6 +9,7 @@ import BannerTwo from "../components/bannerTwo";
 import Gallery from "../components/Gallery";
 import Footer from "../components/Footer";
 import { API_ENDPOINTS } from "../config/api";
+import Pagination from "../components/pagination";
 
 // Import gallery images
 import gallery1 from "../images/gallery1.jpg";
@@ -41,6 +42,9 @@ const HomePage = () => {
   });
   // Add this with your other state declarations at the top of HomePage
   const [inStock, setInStock] = useState(false);
+
+  const [currentPage, setCurrentPage] = useState(1);
+  const productsPerPage = 12; // Number of products to show per page
 
   // Fetch products from the backend
   // the fetchProducts function:
@@ -157,6 +161,25 @@ const HomePage = () => {
       (Object.values(discountFilters).some(Boolean) ? meetsDiscount : true)
     );
   });
+  //pagination
+  // Calculate pagination
+  const indexOfLastProduct = currentPage * productsPerPage;
+  const indexOfFirstProduct = indexOfLastProduct - productsPerPage;
+  const currentProducts = filteredProducts.slice(
+    indexOfFirstProduct,
+    indexOfLastProduct
+  );
+
+  const totalPages = Math.ceil(filteredProducts.length / productsPerPage);
+
+  // Handle page change
+  const handlePageChange = (pageNumber) => {
+    setCurrentPage(pageNumber);
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  };
+  useEffect(() => {
+    setCurrentPage(1); // Reset to first page when filters change
+  }, [priceRange, discountFilters, inStock]);
 
   if (loading) {
     return (
@@ -181,7 +204,6 @@ const HomePage = () => {
           className={`md:w-1/4 ${filterSticky ? "md:sticky md:top-20" : ""}`}
           style={{ height: "fit-content" }}>
           {/* <Filter priceRange={priceRange} setPriceRange={setPriceRange} /> */}
-          // In HomePage.js, update the Filter component usage:
           <Filter
             priceRange={priceRange}
             setPriceRange={setPriceRange}
@@ -249,7 +271,13 @@ const HomePage = () => {
           </div>
 
           <div ref={productGridRef} className="md:w-3/4">
-            <ProductGrid products={filteredProducts} />
+            {/* <ProductGrid products={filteredProducts} /> */}
+            <ProductGrid products={currentProducts} />
+            <Pagination
+              currentPage={currentPage}
+              totalPages={totalPages}
+              onPageChange={handlePageChange}
+            />
           </div>
         </div>
 

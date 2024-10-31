@@ -41,15 +41,53 @@ const ProductsManagement = () => {
   }, []);
 
   // Open modal for creating or editing a product
+  // const openModal = (product = null) => {
+  //   setEditingProduct(product);
+  //   setIsEditing(!!product);
+  //   setIsModalOpen(true);
+  //   form.setFieldsValue({
+  //     ...product,
+  //     images: product?.images || [{ colorCode: "", url: "" }],
+  //     availableColors: product?.availableColors || [{ code: "", name: "" }],
+  //   });
+  // };
   const openModal = (product = null) => {
+    console.log("Product data:", product); // Keep this for debugging
     setEditingProduct(product);
     setIsEditing(!!product);
     setIsModalOpen(true);
-    form.setFieldsValue({
-      ...product,
-      images: product?.images || [{ colorCode: "", url: "" }],
-      availableColors: product?.availableColors || [{ code: "", name: "" }],
-    });
+
+    if (product) {
+      // Handle both new Images array and existing single image
+      let transformedImages = [{ colorCode: "", url: "" }];
+
+      if (product.images && product.images.length > 0) {
+        // Use new image format if available
+        transformedImages = product.images.map((img) => ({
+          colorCode: img.color,
+          url: img.image,
+        }));
+      } else if (product.displayImage) {
+        // Fall back to single image if that's what we have
+        transformedImages = [
+          {
+            colorCode: "", // or get from availableColors[0] if needed
+            url: product.displayImage,
+          },
+        ];
+      }
+
+      form.setFieldsValue({
+        ...product,
+        images: transformedImages,
+        availableColors: product.availableColors || [{ code: "", name: "" }],
+      });
+    } else {
+      form.setFieldsValue({
+        images: [{ colorCode: "", url: "" }],
+        availableColors: [{ code: "", name: "" }],
+      });
+    }
   };
 
   // Close the modal
@@ -60,11 +98,15 @@ const ProductsManagement = () => {
 
   // Handle form submission for create/edit
   const handleFormSubmit = async (values) => {
+    // Transform the images array back to the format expected by the backend
+    const imagesPayload = {};
+    values.images.forEach(({ colorCode, url }) => {
+      imagesPayload[colorCode] = url;
+    });
+
     const payload = {
       ...values,
-      images: Object.fromEntries(
-        values.images.map(({ colorCode, url }) => [colorCode, url])
-      ),
+      images: imagesPayload,
       availableColors: values.availableColors.map(({ code, name }) => ({
         code,
         name,
@@ -103,10 +145,9 @@ const ProductsManagement = () => {
   // Add stock update handler
   const handleStockUpdate = async (productId, quantity) => {
     try {
-      await axios.patch(
-        `${API_ENDPOINTS.updateProduct(productId)}/stock`,
-        quantity
-      );
+      await axios.patch(`${API_ENDPOINTS.updateStock(productId)}`, {
+        quantity,
+      });
       notification.success({ message: "Stock updated successfully" });
       fetchProducts();
     } catch (error) {
@@ -190,7 +231,7 @@ const ProductsManagement = () => {
       {/* Modal for create/edit product */}
       <Modal
         title={isEditing ? "Edit Product" : "Add Product"}
-        visible={isModalOpen}
+        open={isModalOpen}
         onCancel={closeModal}
         footer={null}>
         <Form
@@ -280,16 +321,17 @@ const ProductsManagement = () => {
                     align="baseline">
                     <Form.Item
                       {...restField}
-                      name={[name, "code"]}
-                      rules={[{ required: true, message: "Enter color code" }]}>
-                      <Input placeholder="Color Code" />
-                    </Form.Item>
-                    <Form.Item
-                      {...restField}
                       name={[name, "name"]}
                       rules={[{ required: true, message: "Enter color name" }]}>
                       <Input placeholder="Color Name" />
                     </Form.Item>
+                    <Form.Item
+                      {...restField}
+                      name={[name, "code"]}
+                      rules={[{ required: true, message: "Enter color code" }]}>
+                      <Input placeholder="Color Code" />
+                    </Form.Item>
+
                     <Button onClick={() => remove(name)}>Remove</Button>
                   </Space>
                 ))}
