@@ -99,18 +99,21 @@ const ProductDetailsPage = () => {
       <Header />
 
       <main className="flex-grow">
-        <div className="container mx-auto px-4 py-8">
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+        <div className="container mx-auto px-8 py-8 h-90">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-2">
             {/* Product Images */}
-            <div className="space-y-4">
-              <div className="aspect-w-1 aspect-h-1">
+            <div className="flex space-x-4 items-start pr-0">
+              {/* Selected Color Image */}
+              <div className="w-2/3 h-[96%">
                 <img
                   src={getImageForColor(selectedColor.name)}
                   alt={`${product.name} in ${selectedColor.name}`}
-                  className="w-full h-full object-cover rounded-lg"
+                  className="h-full w-full object-cover rounded-lg"
                 />
               </div>
-              <div className="grid grid-cols-4 gap-2">
+
+              {/* Color Options */}
+              <div className="grid grid-cols-1 gap-2 w-1/6">
                 {product.availableColors.map((color) => (
                   <button
                     key={color.id}
@@ -120,18 +123,20 @@ const ProductDetailsPage = () => {
                         ? "border-black"
                         : "border-gray-200"
                     }`}>
-                    <img
-                      src={getImageForColor(color.name)}
-                      alt={`${product.name} in ${color.name}`}
-                      className="w-full h-full object-cover"
-                    />
+                    <div className="w-full h-[60px]">
+                      <img
+                        src={getImageForColor(color.name)}
+                        alt={`${product.name} in ${color.name}`}
+                        className="h-full w-full object-cover rounded-lg"
+                      />
+                    </div>
                   </button>
                 ))}
               </div>
             </div>
 
             {/* Product Info */}
-            <div className="space-y-6">
+            <div className="space-y-6 pl-0">
               <h1 className="text-3xl font-bold">{product.name}</h1>
               <div className="flex items-center space-x-4">
                 <span className="text-2xl font-semibold">

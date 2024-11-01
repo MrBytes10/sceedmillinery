@@ -2,6 +2,7 @@
 
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 import HomePage from "./pages/HomePage";
+import ShopPage from "./pages/shopPage";
 import AboutPage from "./pages/aboutPage";
 import ContactPage from "./pages/contactPage";
 import SearchResults from "./components/SearchResults";
@@ -35,6 +36,7 @@ function App() {
           <FavoritesProvider>
             <Routes>
               <Route path="/" element={<HomePage />} />
+              <Route path="/shop" element={<ShopPage />} />
               <Route path="/about" element={<AboutPage />} />
               <Route path="/contact" element={<ContactPage />} />
               <Route path="/search-results" element={<SearchResults />} />

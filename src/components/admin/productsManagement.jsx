@@ -145,13 +145,37 @@ const ProductsManagement = () => {
   // Add stock update handler
   const handleStockUpdate = async (productId, quantity) => {
     try {
-      await axios.patch(`${API_ENDPOINTS.updateStock(productId)}`, {
-        quantity,
+      const stockQuantity = parseInt(quantity);
+      if (isNaN(stockQuantity) || stockQuantity < 0) {
+        notification.error({
+          message: "Error",
+          description: "Please enter a valid quantity",
+        });
+        return;
+      }
+
+      await axios.patch(
+        API_ENDPOINTS.updateStock(productId),
+        stockQuantity, // Send the number directly, no need for JSON.stringify
+        {
+          headers: {
+            "Content-Type": "application/json",
+          },
+        }
+      );
+
+      notification.success({
+        message: "Success",
+        description: "Stock updated successfully",
       });
-      notification.success({ message: "Stock updated successfully" });
-      fetchProducts();
+
+      await fetchProducts(); // Make sure to await this
     } catch (error) {
-      notification.error({ message: "Failed to update stock" });
+      console.error("Stock update error:", error);
+      notification.error({
+        message: "Error",
+        description: error.response?.data || "Failed to update stock",
+      });
     }
   };
 
@@ -171,9 +195,12 @@ const ProductsManagement = () => {
             defaultValue={record.stockQuantity}
             style={{ width: 80 }}
             min={0}
-            onBlur={(e) =>
-              handleStockUpdate(record.id, parseInt(e.target.value))
-            }
+            onBlur={(e) => {
+              const newValue = e.target.value;
+              if (newValue !== String(record.stockQuantity)) {
+                handleStockUpdate(record.id, newValue);
+              }
+            }}
           />
           <span
             className={`px-2 py-1 rounded ${

@@ -17,9 +17,8 @@ export const API_ENDPOINTS = {
 
   updateProduct: (id) => `${API_BASE_URL}/products/${id}`, // Update an existing product by ID
   // Stock APIs
-  getStock: (id) => `${API_BASE_URL}/products/${id}/stock`, // Get stock quantity for a product by ID
-  updateStock: (id, quantity) => `${API_BASE_URL}/products/${id}/stock`, // Update stock quantity for a product by ID
-
+  getStock: (id) => `${API_BASE_URL}/products/${id}/stock`,
+  updateStock: (id) => `${API_BASE_URL}/products/${id}/stock`, // Update stock quantity for a product by ID
   // User APIs
   registerUser: `${API_BASE_URL}/users/register`, // Register a new user
   loginUser: `${API_BASE_URL}/users/login`, // Log in an existing user
