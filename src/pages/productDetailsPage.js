@@ -1,3 +1,4 @@
+// sceed_frontend/src/pages/productDetailsPage.js
 import React, { useState, useEffect, useCallback } from "react";
 import { useParams } from "react-router-dom";
 import Header from "../components/Header";
@@ -6,6 +7,8 @@ import BannerOne from "../components/bannerOne";
 import BannerTwo from "../components/bannerTwo";
 import RelatedProducts from "../components/relatedProducts";
 import { API_ENDPOINTS } from "../config/api";
+import { Select } from "antd";
+import { Heart } from "lucide-react";
 
 const ProductDetailsPage = () => {
   const { id } = useParams();
@@ -14,6 +17,7 @@ const ProductDetailsPage = () => {
   const [quantity, setQuantity] = useState(1);
   const [loading, setLoading] = useState(true);
   const [relatedProducts, setRelatedProducts] = useState([]);
+  const [isFavorite, setIsFavorite] = useState(false);
 
   const fetchProductDetails = useCallback(async () => {
     try {
@@ -136,72 +140,119 @@ const ProductDetailsPage = () => {
             </div>
 
             {/* Product Info */}
-            <div className="space-y-6 pl-0">
-              <h1 className="text-3xl font-bold">{product.name}</h1>
-              <div className="flex items-center space-x-4">
-                <span className="text-2xl font-semibold">
-                  KES {product.price}
+            {/* Updated Product Info Section */}
+            <div className="space-y-8 max-w-xl">
+              {/* Product Name */}
+              <h1 className="text-2xl font-semibold text-gray-900">
+                {product.name}
+              </h1>
+
+              {/* Price */}
+              <div className="flex items-center">
+                <span className="text-xl font-medium text-gray-900">
+                  $ {product.price?.toLocaleString()}
                 </span>
-                {product.originalPrice && (
-                  <span className="text-lg text-gray-500 line-through">
-                    KES {product.originalPrice}
-                  </span>
-                )}
               </div>
 
-              {/* Color Selection */}
-              <div>
-                <h3 className="text-lg font-semibold mb-2">
-                  Available Colours:
-                </h3>
-                <div className="flex space-x-2">
-                  {product.availableColors.map((color) => (
+              {/* Quantity and Add to Cart Row */}
+              <div className="flex space-x-4">
+                {/* <div className="flex-1">
+                  <Select
+                    defaultValue="1"
+                    className="w-full"
+                    onChange={(value) => setQuantity(parseInt(value))}
+                    options={[
+                      { value: "1", label: "1" },
+                      { value: "2", label: "2" },
+                      { value: "3", label: "3" },
+                      { value: "4", label: "4" },
+                      { value: "5", label: "5" },
+                    ]}
+                  />
+                </div> */}
+                <div>
+                  <h3 className=" flex-1 text-lg font-semibold mb-2">
+                    Quantity:
+                  </h3>
+                  <div className="w-full flex items-center space-x-4 border-2 rounded-2xl ">
+                    {" "}
+                    {/* Added a border to the quantity selector, alt  bg-black text-white */}
                     <button
-                      key={color.id}
-                      onClick={() => setSelectedColor(color)}
-                      className={`w-8 h-8 rounded-full border-2 ${
-                        selectedColor.id === color.id
-                          ? "border-black"
-                          : "border-gray-200"
-                      }`}
-                      style={{ backgroundColor: color.code }}
-                      title={color.name}
-                    />
-                  ))}
+                      onClick={() => setQuantity(Math.max(1, quantity - 1))}
+                      className="w-8 h-8 border rounded-full">
+                      -
+                    </button>
+                    <span>{quantity}</span>
+                    <button
+                      onClick={() => setQuantity(quantity + 1)}
+                      className="w-14 h-8 border rounded-full">
+                      +
+                    </button>
+                  </div>
                 </div>
+
+                <button
+                  onClick={handleAddToCart}
+                  className="flex-1 bg-gray-900 text-white py-2 px-4 rounded hover:bg-gray-800 transition-colors w-auto ">
+                  Add to Cart
+                </button>
               </div>
 
-              {/* Quantity Selection */}
-              <div>
-                <h3 className="text-lg font-semibold mb-2">Quantity:</h3>
-                <div className="flex items-center space-x-4">
-                  <button
-                    onClick={() => setQuantity(Math.max(1, quantity - 1))}
-                    className="w-8 h-8 border rounded-full">
-                    -
-                  </button>
-                  <span>{quantity}</span>
-                  <button
-                    onClick={() => setQuantity(quantity + 1)}
-                    className="w-8 h-8 border rounded-full">
-                    +
-                  </button>
-                </div>
+              {/* Buy Now and Favorite Row */}
+              <div className="flex space-x-4">
+                <button className="flex-1 bg-gray-400 text-white py-2 px-4 rounded hover:bg-gray-500 transition-colors">
+                  BUY NOW
+                </button>
+                <button
+                  onClick={() => setIsFavorite(!isFavorite)}
+                  className="w-12 h-10 flex items-center justify-center border border-gray-300 rounded hover:bg-gray-50 transition-colors">
+                  <Heart
+                    className={`${
+                      isFavorite ? "fill-current text-red-500" : "text-gray-400"
+                    }`}
+                    size={20}
+                  />
+                </button>
               </div>
 
-              {/* Add to Cart Button */}
-              <button
-                onClick={handleAddToCart}
-                className="w-full bg-black text-white py-3 rounded-md hover:bg-gray-800">
-                Add to Cart
-              </button>
+              {/* Material and Colors Table */}
+              <div className="grid grid-cols-2 gap-8">
+                <div>
+                  <h3 className="text-sm font-medium text-gray-500 mb-2">
+                    Material:
+                  </h3>
+                  <p className="text-base text-gray-900">{product.material}</p>
+                </div>
+                <div>
+                  <h3 className="text-sm font-medium text-gray-500 mb-2">
+                    Available Colours:
+                  </h3>
+                  <div className="flex space-x-2">
+                    {product.availableColors.map((color) => (
+                      <button
+                        key={color.id}
+                        onClick={() => setSelectedColor(color)}
+                        className={`w-6 h-6 rounded-full border-2 ${
+                          selectedColor?.id === color.id
+                            ? "ring-2 ring-offset-2 ring-gray-500"
+                            : ""
+                        }`}
+                        style={{ backgroundColor: color.code }}
+                        title={color.name}
+                      />
+                    ))}
+                  </div>
+                </div>
+              </div>
 
               {/* Product Features */}
-              <div>
-                <h3 className="text-lg font-semibold mb-2">
-                  Product Features:
+              <div className="border-t pt-6">
+                <h3 className="text-sm font-medium text-gray-500 mb-2">
+                  Product features:
                 </h3>
-                <p className="text-gray-600">{product.productFeatures}</p>
+                <p className="text-base text-gray-600">
+                  {product.productFeatures}
+                </p>
               </div>
             </div>
           </div>

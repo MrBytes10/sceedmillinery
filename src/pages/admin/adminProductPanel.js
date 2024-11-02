@@ -387,12 +387,10 @@ const AdminProductPanel = () => {
                   </div>
                 </td>
                 <td className="px-6 py-4 whitespace-nowrap">
-                  <div className="text-sm text-gray-900">
-                    KES {product.price}
-                  </div>
+                  <div className="text-sm text-gray-900">$ {product.price}</div>
                   {product.originalPrice && (
                     <div className="text-sm text-gray-500">
-                      Original: KES {product.originalPrice}
+                      Original: $ {product.originalPrice}
                     </div>
                   )}
                 </td>

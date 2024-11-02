@@ -44,11 +44,11 @@ const RelatedProducts = ({ products }) => {
               <div>
                 {product.originalPrice && (
                   <span className="text-sm text-gray-500 line-through mr-2">
-                    KES {product.originalPrice.toLocaleString()}
+                    $ {product.originalPrice.toLocaleString()}
                   </span>
                 )}
                 <span className="text-sm font-medium text-gray-900">
-                  KES {product.price.toLocaleString()}
+                  $ {product.price.toLocaleString()}
                 </span>
               </div>
 

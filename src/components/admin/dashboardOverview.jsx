@@ -6,7 +6,7 @@ const DashboardOverview = () => {
     { label: "Total Products", value: "124" },
     { label: "Active Orders", value: "8" },
     { label: "Total Users", value: "1,205" },
-    { label: "Revenue (MTD)", value: "KES 452,000" },
+    { label: "Revenue (MTD)", value: "$ 452,000" },
   ];
 
   return (

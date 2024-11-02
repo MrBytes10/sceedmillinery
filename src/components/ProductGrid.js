@@ -85,11 +85,11 @@ const ProductCard = ({ product }) => {
             {/* Only show original price if it exists AND is higher than current price */}
             {discountPercentage && (
               <span className="text-gray-500 line-through text-sm">
-                KES {product.originalPrice.toLocaleString()}
+                $ {product.originalPrice.toLocaleString()}
               </span>
             )}
             <span className="font-poppins text-xs">
-              KES {product.price.toLocaleString()}
+              $ {product.price.toLocaleString()}
             </span>
           </div>
           {/* Discount badge only shown when there's a valid discount */}

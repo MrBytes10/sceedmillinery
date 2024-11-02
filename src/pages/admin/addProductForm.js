@@ -100,7 +100,7 @@ const AddProductForm = () => {
             <div className="grid grid-cols-2 gap-4">
               <div>
                 <label className="block text-sm font-medium mb-1">
-                  Original Price (KES)
+                  Original Price ($)
                 </label>
                 <input
                   type="number"
@@ -116,7 +116,7 @@ const AddProductForm = () => {
               </div>
               <div>
                 <label className="block text-sm font-medium mb-1">
-                  Sale Price (KES)
+                  Sale Price ($)
                 </label>
                 <input
                   type="number"
