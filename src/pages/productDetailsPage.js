@@ -7,7 +7,6 @@ import BannerOne from "../components/bannerOne";
 import BannerTwo from "../components/bannerTwo";
 import RelatedProducts from "../components/relatedProducts";
 import { API_ENDPOINTS } from "../config/api";
-import { Select } from "antd";
 import { Heart } from "lucide-react";
 
 const ProductDetailsPage = () => {
@@ -156,20 +155,6 @@ const ProductDetailsPage = () => {
 
               {/* Quantity and Add to Cart Row */}
               <div className="flex space-x-4">
-                {/* <div className="flex-1">
-                  <Select
-                    defaultValue="1"
-                    className="w-full"
-                    onChange={(value) => setQuantity(parseInt(value))}
-                    options={[
-                      { value: "1", label: "1" },
-                      { value: "2", label: "2" },
-                      { value: "3", label: "3" },
-                      { value: "4", label: "4" },
-                      { value: "5", label: "5" },
-                    ]}
-                  />
-                </div> */}
                 <div>
                   <h3 className=" flex-1 text-lg font-semibold mb-2">
                     Quantity:

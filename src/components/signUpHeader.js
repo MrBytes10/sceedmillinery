@@ -2,56 +2,12 @@ import React, { useState } from "react";
 import { Link, useNavigate, useLocation } from "react-router-dom";
 import { Menu, X } from "lucide-react";
 import logoImage from "../images/sceedWhiteLogo.png";
-// import { useSearch } from "./SearchContext";
-
-// Assume this is your product data. In a real app, this would likely come from an API or database.
-// const products = [
-//   {
-//     id: 1,
-//     name: "Feathered Veil Pearl Fascinator",
-//     price: 1300,
-//    productFeatures : "Elegant red feathered fascinator with pearls",
-//   },
-//   {
-//     id: 2,
-//     name: "Nested Feather Fascinator",
-//     price: 1700,
-//     productFeatures: "Beautiful blue nested feather fascinator",
-//   },
-//   // ... add more products
-// ];
 
 const Header = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   // const { updateSearchResults } = useSearch();
   const navigate = useNavigate();
   const location = useLocation(); // Get the current location (route)
-
-  // const calculateRelevance = (product, searchTerm) => {
-  //   const searchLower = searchTerm.toLowerCase();
-  //   const nameLower = product.name.toLowerCase();
-  //   const descLower = product.productFeatures.toLowerCase();
-
-  //   let score = 0;
-  //   if (nameLower.includes(searchLower)) score += 2;
-  //   if (descLower.includes(searchLower)) score += 1;
-
-  //   return score;
-  // };
-
-  //   // handleSearch
-  //   const handleSearch = (searchTerm) => {
-  //     const results = products
-  //       .map((product) => ({
-  //         ...product,
-  //         relevance: calculateRelevance(product, searchTerm),
-  //       }))
-  //       .filter((product) => product.relevance > 0)
-  //       .sort((a, b) => b.relevance - a.relevance);
-
-  //     updateSearchResults(results, searchTerm);
-  //     navigate("/search-results");
-  //   };
 
   // Determine if a link is active by comparing current URL
   const isActive = (path) => location.pathname === path;
@@ -76,18 +32,7 @@ const Header = () => {
       <div className="bg-white py-0 px-4 sm:px-6 lg:px-8">
         <div className="container mx-auto flex flex-col sm:flex-row justify-between items-center">
           <div className="flex justify-between w-full sm:w-auto mb-0 sm:mb-0">
-            <div className="flex space-x-4">
-              {/* <Link to="/sign-up" className="text-black hover:text-gray-600">
-                <User size={20} />
-              </Link>
-              <Link to="/cart" className="text-black hover:text-gray-600">
-                <ShoppingCart size={20} />
-              </Link>
-              <Link to="/favorites" className="text-black hover:text-gray-600">
-                <Heart size={20} />
-              </Link>
-              <SearchBar onSearch={handleSearch} /> search icon/component */}
-            </div>
+            <div className="flex space-x-4"></div>
             <button
               onClick={() => setIsMenuOpen(!isMenuOpen)}
               className="sm:hidden text-black hover:text-gray-600">

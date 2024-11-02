@@ -47,7 +47,7 @@ const ProductCard = ({ product }) => {
           <div
             onClick={() => navigate(`/product/${product.id}`)}
             className="absolute top-2 left-2 z-10 bg-[#8F8F8F] text-white px-3 py-1 rounded-full cursor-pointer hover:bg-red-600 transition-colors">
-            Sale
+            Buy
           </div>
         )}
 

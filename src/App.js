@@ -12,13 +12,13 @@ import LoginPage from "./pages/loginPage";
 import RegistrationSuccess from "./pages/RegistrationSuccessPage";
 import ProductDetailsPage from "./pages/productDetailsPage";
 import ApiErrorBoundary from "./components/apiErrorBoundary";
-import AdminProductPanel from "./pages/admin/adminProductPanel";
 import FavoritesPage from "./pages/favoritesPage";
 import { FavoritesProvider } from "./contexts/FavoritesContext";
 import UserProfile from "./pages/userProfilePage";
+import CartPage from "./pages/cartPage";
+import CheckoutPage from "./pages/paymentPage";
 //import { AuthProvider } from "./contexts/AuthContext";
 //AdminTests
-import AddProductForm from "./pages/admin/addProductForm";
 //test2
 import AdminLogin from "./pages/admin/adminLogin";
 import {
@@ -50,9 +50,9 @@ function App() {
               />
               <Route path="/my-profile" element={<UserProfile />} />
               <Route path="/favorites" element={<FavoritesPage />} />
+              <Route path="/cart" element={<CartPage />} />
+              <Route path="/checkout" element={<CheckoutPage />} />
               {/* // Admin Routes */}
-              <Route path="/admin/add-product" element={<AddProductForm />} />
-              <Route path="/admin/products1" element={<AdminProductPanel />} />
               <Route path="*" element={<h1>Not Found</h1>} />
               {/* Admin Dashboard Routes */}
               <Route path="/admin/login" element={<AdminLogin />} />
@@ -60,7 +60,6 @@ function App() {
               <Route path="/admin" element={<AdminLayout />}>
                 <Route index element={<DashboardOverview />} />
                 <Route path="products" element={<ProductsManagement />} />
-                <Route path="products/add" element={<AddProductForm />} />
                 <Route path="orders" element={<OrdersManagement />} />
                 <Route path="users" element={<UsersManagement />} />
               </Route>
