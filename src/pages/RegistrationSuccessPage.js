@@ -95,7 +95,7 @@ const RegistrationSuccessPage = () => {
               </label>
             </div>
 
-            {/* Navigation Buttons
+            {/* Navigation Buttons */}
             <div className="flex justify-center space-x-4 mt-8">
               <button
                 onClick={() => (window.location.href = "/shop")}
@@ -103,11 +103,11 @@ const RegistrationSuccessPage = () => {
                 Start Shopping
               </button>
               <button
-                onClick={() => (window.location.href = "/account")}
+                onClick={() => (window.location.href = "/my-profile")}
                 className="bg-[#7B7B7B] text-white px-6 py-2 rounded-md hover:bg-gray-800 transition-colors">
                 View Account
               </button>
-            </div> */}
+            </div>
           </div>
         </main>
         <Footer />

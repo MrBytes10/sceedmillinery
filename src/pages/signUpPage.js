@@ -1,14 +1,13 @@
-//sceed_frontend/src/pages/signUpPage.js
-
+// sceed_frontend/src/pages/signUpPage.js
 import React, { useState } from "react";
 import Footer from "../components/Footer";
 import SecondHeader from "../components/signUpHeader";
 import logoImage from "../images/sceedBlackLogo.png";
-import { ReactComponent as UgandanFlag } from "../assets/icons/UgandanFlag.svg"; // Adjust the path as necessary
-import { ChevronDown } from "lucide-react";
-import phoneUtils from "../utils/phoneUtils"; // Import phoneUtils
 import backgroundImage from "../images/woman-portrait-female-african-american.jpg";
 import { API_ENDPOINTS } from "../config/api";
+import PhoneInput from "react-phone-input-2";
+import "react-phone-input-2/lib/style.css";
+import phoneUtils from "../utils/phoneUtils";
 
 const SignUpPage = () => {
   const [formData, setFormData] = useState({
@@ -23,7 +22,8 @@ const SignUpPage = () => {
   const [errors, setErrors] = useState({});
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [apiError, setApiError] = useState(null);
-  const [inputFormat, setInputFormat] = useState("national");
+  const [showPassword, setShowPassword] = useState(false);
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
 
   // Validation rules
   const validateForm = () => {
@@ -52,9 +52,8 @@ const SignUpPage = () => {
     // Phone Number validation using phoneUtils
     if (!formData.phoneNumber) {
       newErrors.phoneNumber = "Phone number is required";
-    } else if (!phoneUtils.validatePhoneNumber(formData.phoneNumber)) {
-      newErrors.phoneNumber =
-        "Please enter a valid Kenyan, Ugandan, or Tanzanian phone number)";
+    } else if (!phoneUtils.isValidMobile("+" + formData.phoneNumber)) {
+      newErrors.phoneNumber = "Please enter a valid phone number";
     }
 
     // Password validation
@@ -78,31 +77,32 @@ const SignUpPage = () => {
     return Object.keys(newErrors).length === 0;
   };
 
-  // State for showing/hiding passwords
-  const [showPassword, setShowPassword] = useState(false);
-  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
-
-  // Toggle password visibility
-  const togglePasswordVisibility = () => {
-    setShowPassword((prev) => !prev);
-  };
-
-  // Toggle confirm password visibility
-  const toggleConfirmPasswordVisibility = () => {
-    setShowConfirmPassword((prev) => !prev);
-  };
-
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData((prev) => ({
       ...prev,
       [name]: value,
     }));
-    // Clear error when user starts typing
     if (errors[name]) {
       setErrors((prev) => ({
         ...prev,
         [name]: null,
+      }));
+    }
+  };
+
+  // Handle phone number change from react-phone-input-2
+  const handlePhoneChange = (value, country) => {
+    // value comes without +, but with country code
+    setFormData((prev) => ({
+      ...prev,
+      phoneNumber: value, // react-phone-input-2 handles formatting
+    }));
+
+    if (errors.phoneNumber) {
+      setErrors((prev) => ({
+        ...prev,
+        phoneNumber: null,
       }));
     }
   };
@@ -121,11 +121,10 @@ const SignUpPage = () => {
       const registrationData = {
         fullName: formData.fullName,
         email: formData.email,
-        phoneNumber: phoneUtils.formatToInternational(formData.phoneNumber),
+        phoneNumber: "+" + formData.phoneNumber, // Add + prefix for international format
         physicalAddress: formData.physicalAddress,
         password: formData.password,
       };
-      console.log("The Registration Data is:", registrationData);
 
       const response = await fetch(API_ENDPOINTS.registerUser, {
         method: "POST",
@@ -162,8 +161,6 @@ const SignUpPage = () => {
       </p>
     ) : null;
 
-  //function to handle the phone number dropdown
-  const [dropdownOpen, setDropdownOpen] = useState(false);
   return (
     <div
       className="flex flex-col min-h-screen"
@@ -171,17 +168,15 @@ const SignUpPage = () => {
         backgroundImage: `url(${backgroundImage})`,
         backgroundSize: "cover",
         backgroundPosition: "center",
-        brightness: "0.9",
       }}>
       <SecondHeader />
       <section
         className="mb-0"
         style={{
-          //backgroundColor: "rgba(255, 255, 255, 0.8)", // White background with 80% opacity
-          backgroundColor: "rgba(206, 205, 200, 0.8)", // grey-ish background with 90% opacity
+          backgroundColor: "rgba(206, 205, 200, 0.8)",
         }}>
-        <main className="flex-grow ">
-          <div className="relative ">
+        <main className="flex-grow">
+          <div className="relative">
             <div className="relative z-10 container mx-auto px-4 py-2 max-w-4xl min-h-[calc(100vh-120px)]">
               {/* Logo */}
               <div className="flex justify-center mb-0">
@@ -189,7 +184,6 @@ const SignUpPage = () => {
                   src={logoImage}
                   alt="SCEED Millinery"
                   className="w-[304px] h-[123px] md:w-1/3"
-                  background="cover"
                 />
               </div>
 
@@ -218,6 +212,7 @@ const SignUpPage = () => {
                     />
                     <ErrorMessage error={errors.fullName} />
                   </div>
+
                   {/* Email */}
                   <div>
                     <label className="block text-sm font-medium text-gray-700 mb-1">
@@ -234,6 +229,7 @@ const SignUpPage = () => {
                     />
                     <ErrorMessage error={errors.email} />
                   </div>
+
                   {/* Physical Address */}
                   <div>
                     <label className="block text-sm font-medium text-gray-700 mb-1">
@@ -253,90 +249,33 @@ const SignUpPage = () => {
                     <ErrorMessage error={errors.physicalAddress} />
                   </div>
 
-                  {/* Phone Number */}
+                  {/* Phone Number - Using react-phone-input-2 */}
                   <div>
                     <label className="block text-sm font-medium text-gray-700 mb-1">
                       Phone Number
                     </label>
-                    <div className="flex">
-                      {/* Phone number input */}
-                      <input
-                        type="tel"
-                        name="phoneNumber"
-                        value={formData.phoneNumber}
-                        onChange={handleChange}
-                        placeholder={
-                          inputFormat === "national"
-                            ? "0712 345 678 or 0112 345 678"
-                            : "0712 345 678 or 0112 345 678"
-                        }
-                        className={`w-full px-4 py-2 border-l border-t border-r border-b border-gray-300 rounded-r-md focus:ring-black focus:border-black ${
-                          errors.phoneNumber
-                            ? "border-red-500"
-                            : "border-gray-300"
-                        }`}
-                      />
-                      {/* Phone number prefix */}
-                      <div className="relative">
-                        {/* Trigger for dropdown */}
-                        <div
-                          className="flex items-center h-full cursor-pointer border border-gray-300 rounded-l-md px-2"
-                          onClick={() => setDropdownOpen(!dropdownOpen)}>
-                          <UgandanFlag
-                            alt="KE"
-                            className=" w-9 h-full mr-1 ml-1" // Set height to fill the container and reduce right margin
-                            aria-hidden="true"
-                          />
-                          <ChevronDown className="w-4 h-4 text-gray-600 mr-2" />
-                        </div>
-
-                        {/* Dropdown options */}
-                        {dropdownOpen && (
-                          <div className="absolute mt-1 bg-white border border-gray-300 rounded-md shadow-lg z-10 w-full">
-                            <div
-                              className={`cursor-pointer px-4 py-2 hover:bg-gray-100 ${
-                                inputFormat === "national" ? "font-bold" : ""
-                              }`}
-                              onClick={() => {
-                                setInputFormat("national");
-                                setDropdownOpen(false);
-                              }}>
-                              0
-                            </div>
-                            <div
-                              className={`cursor-pointer px-4 py-2 hover:bg-gray-100 ${
-                                inputFormat === "international"
-                                  ? "font-bold"
-                                  : ""
-                              }`}
-                              onClick={() => {
-                                setInputFormat("international");
-                                setDropdownOpen(false);
-                              }}>
-                              +254
-                            </div>
-                          </div>
-                        )}
-                      </div>
-                    </div>
+                    <PhoneInput
+                      country={"ug"} // Default country (Uganda)
+                      value={formData.phoneNumber}
+                      onChange={handlePhoneChange}
+                      inputClass={`w-full px-4 py-2 border rounded-md focus:ring-black focus:border-black ${
+                        errors.phoneNumber
+                          ? "border-red-500"
+                          : "border-gray-300"
+                      }`}
+                      containerClass="phone-input"
+                      enableSearch={true}
+                      searchClass="search-class"
+                      inputProps={{
+                        name: "phoneNumber",
+                        required: true,
+                        autoFocus: false,
+                      }}
+                    />
                     <ErrorMessage error={errors.phoneNumber} />
                   </div>
+
                   {/* Password */}
-                  {/* <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-1">
-                    Enter Your Password
-                  </label>
-                  <input
-                    type="password"
-                    name="password"
-                    value={formData.password}
-                    onChange={handleChange}
-                    className={`w-full px-4 py-2 border rounded-md focus:ring-black focus:border-black ${
-                      errors.password ? "border-red-500" : "border-gray-300"
-                    }`}
-                  />
-                  <ErrorMessage error={errors.password} />
-                </div> */}
                   <div>
                     <label className="block text-sm font-medium text-gray-700 mb-1">
                       Enter Your Password
@@ -353,13 +292,14 @@ const SignUpPage = () => {
                       />
                       <button
                         type="button"
-                        onClick={togglePasswordVisibility}
+                        onClick={() => setShowPassword(!showPassword)}
                         className="absolute right-2 top-2 text-gray-600">
                         {showPassword ? "Hide" : "Show"}
                       </button>
                     </div>
                     <ErrorMessage error={errors.password} />
                   </div>
+
                   {/* Confirm Password */}
                   <div>
                     <label className="block text-sm font-medium text-gray-700 mb-1">
@@ -379,7 +319,9 @@ const SignUpPage = () => {
                       />
                       <button
                         type="button"
-                        onClick={toggleConfirmPasswordVisibility}
+                        onClick={() =>
+                          setShowConfirmPassword(!showConfirmPassword)
+                        }
                         className="absolute right-2 top-2 text-gray-600">
                         {showConfirmPassword ? "Hide" : "Show"}
                       </button>
@@ -396,6 +338,7 @@ const SignUpPage = () => {
                     {isSubmitting ? "Submitting..." : "Sign Up"}
                   </button>
                 </div>
+
                 <section className="flex items-center justify-center">
                   <p className="mr-2">Already have an account with us?</p>
                   <a

@@ -232,6 +232,16 @@ const Header = () => {
                   About
                 </Link>
               </li>
+              {/* shop page */}
+              <li>
+                <Link
+                  to="/shop"
+                  className={`text-black hover:text-gray-600 font-medium font-poppins text-sm sm:text-base ${
+                    isActive("/shop") ? "opacity-50" : ""
+                  }`}>
+                  Shop
+                </Link>
+              </li>
               <li>
                 <Link
                   to="/contact"

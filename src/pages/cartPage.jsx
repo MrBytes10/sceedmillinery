@@ -7,6 +7,7 @@ import Footer from "../components/Footer";
 import BannerOne from "../components/bannerOne";
 import BannerTwo from "../components/bannerTwo";
 import { Heart } from "lucide-react";
+import { ShoppingCart } from "lucide-react";
 
 const CartPage = () => {
   const navigate = useNavigate();
@@ -37,10 +38,18 @@ const CartPage = () => {
   return (
     <div className="flex flex-col min-h-screen">
       <Header />
+      {/* Empty row to separate header */}
+      <div
+        style={{ backgroundColor: "#CECDC8" }}
+        className="h-10 w-full border font-bold text-black justify justify-center flex">
+        <h1 style={{ display: "flex", alignItems: "center" }}>
+          Cart <ShoppingCart />
+        </h1>
+      </div>
 
       <main className="flex-grow">
-        <div className="container mx-auto px-4 py-8">
-          <h1 className="text-2xl font-medium mb-8">
+        <div className="container mx-auto px-4 py-4">
+          <h1 className="text-2xl font-medium mb-8 text-black justify justify-center flex opacity-50">
             Products you added to the Cart will appear here
           </h1>
 

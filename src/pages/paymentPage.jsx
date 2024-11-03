@@ -32,14 +32,18 @@ const PaymentPage = () => {
       <Header />
 
       <main className="flex-grow bg-gray-50">
-        <div className="container mx-auto px-4 py-8">
-          <h1 className="text-2xl font-medium mb-8">Place your Order</h1>
+        <div className="container mx-auto px-4 py-4 pb-0">
+          <h1 className=" justify justify-center text-center text-2xl font-medium mb-2">
+            Place your Order
+          </h1>
 
           <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
             {/* Delivery Form */}
             <div className="lg:col-span-2">
-              <div className="bg-white rounded-lg p-6 shadow-sm">
-                <h2 className="text-xl font-medium mb-6">Delivery Address</h2>
+              <div className="bg-white rounded-lg p-2 shadow-sm">
+                <h2 className="text-xl font-medium mb-6 border-2 ">
+                  Delivery Address
+                </h2>
 
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-4">
                   <div className="col-span-1">
@@ -241,10 +245,12 @@ const PaymentPage = () => {
 
             {/* Order Summary */}
             <div className="lg:col-span-1">
-              <div className="bg-white rounded-lg p-6 shadow-sm">
-                <h2 className="text-xl font-medium mb-4">Order Summary</h2>
+              <div className="bg-white rounded-lg p-2 shadow-sm">
+                <h2 className="text-xl font-medium mb-4 border-2">
+                  Order Summary
+                </h2>
 
-                <div className="flex items-center space-x-4 mb-4">
+                <div className="flex items-center space-x-4 mb-2">
                   <div className="w-16 h-16 bg-gray-100 rounded-md">
                     <img
                       src="/path-to-product-image"
@@ -291,7 +297,7 @@ const PaymentPage = () => {
                     </div>
                   </div>
 
-                  <div className="border-t pt-4">
+                  <div className="border-t pt-2">
                     <div className="flex justify-between mb-2">
                       <span className="font-medium">Total</span>
                       <div className="text-right">
@@ -306,7 +312,7 @@ const PaymentPage = () => {
               </div>
 
               <button
-                className="mt-4 w-full bg-black text-white py-3 rounded-md hover:bg-gray-800 transition-colors"
+                className="mt-2 w-full bg-black text-white py-3 rounded-md hover:bg-gray-800 transition-colors"
                 onClick={() => {
                   // Handle payment submission
                 }}>
@@ -314,7 +320,7 @@ const PaymentPage = () => {
               </button>
 
               <button
-                className="mt-4 w-full text-gray-600 flex items-center justify-center space-x-2 hover:text-gray-800"
+                className="mt-2 w-full text-gray-600 flex items-center justify-center space-x-2 hover:text-gray-800"
                 onClick={() => navigate(-1)}>
                 <span>←</span>
                 <span>Go Back & Continue Shopping</span>

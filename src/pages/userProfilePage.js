@@ -14,6 +14,8 @@ import {
   X,
   Loader,
 } from "lucide-react";
+import Header from "../components/Header";
+import Footer from "../components/Footer";
 
 const UserProfilePage = () => {
   const { isAuthenticated } = useAuth();
@@ -134,129 +136,133 @@ const UserProfilePage = () => {
   }
 
   return (
-    <div className="min-h-screen bg-[#CECDC8] py-12 px-4 sm:px-6 lg:px-8">
-      <div className="max-w-2xl mx-auto">
-        <div className="bg-white shadow-xl rounded-xl p-8">
-          <div className="flex justify-between items-center mb-8">
-            <h1 className="text-3xl font-bold text-[#212121] flex items-center gap-2">
-              <User className="w-8 h-8" />
-              My Profile
-            </h1>
-            {!isEditing && (
-              <button
-                onClick={() => setIsEditing(true)}
-                className="flex items-center gap-2 bg-[#212121] text-white px-4 py-2 rounded-lg hover:bg-opacity-90 transition-colors duration-200">
-                <Edit2 size={18} />
-                Edit Profile
-              </button>
+    <div>
+      <Header />
+      <div className="min-h-screen bg-[#CECDC8] py-4 px-4 sm:px-6 lg:px-8">
+        <div className="max-w-2xl mx-auto">
+          <div className="bg-white shadow-xl rounded-xl p-8">
+            <div className="flex justify-between items-center mb-8">
+              <h1 className="text-3xl font-bold text-[#212121] flex items-center gap-2">
+                <User className="w-8 h-8" />
+                My Profile
+              </h1>
+              {!isEditing && (
+                <button
+                  onClick={() => setIsEditing(true)}
+                  className="flex items-center gap-2 bg-[#212121] text-white px-4 py-2 rounded-lg hover:bg-opacity-90 transition-colors duration-200">
+                  <Edit2 size={18} />
+                  Edit Profile
+                </button>
+              )}
+            </div>
+
+            {updateSuccess && (
+              <div className="mb-6 p-4 bg-green-100 text-green-700 rounded-lg flex items-center gap-2">
+                <Save size={18} />
+                Profile updated successfully!
+              </div>
             )}
+
+            {error && (
+              <div className="mb-6 p-4 bg-red-100 text-red-700 rounded-lg flex items-center gap-2">
+                <X size={18} />
+                {error}
+              </div>
+            )}
+
+            <form onSubmit={handleUpdateProfile} className="space-y-6">
+              <div className="space-y-4">
+                <div>
+                  <label className="flex items-center gap-2 text-sm font-medium text-[#212121] mb-2">
+                    <User size={18} />
+                    Full Name
+                  </label>
+                  <input
+                    type="text"
+                    name="fullName"
+                    value={profile?.fullName || ""}
+                    onChange={handleInputChange}
+                    disabled={!isEditing}
+                    className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#212121] focus:border-transparent disabled:bg-gray-100 disabled:cursor-not-allowed transition-colors duration-200"
+                  />
+                </div>
+
+                <div>
+                  <label className="flex items-center gap-2 text-sm font-medium text-[#212121] mb-2">
+                    <Mail size={18} />
+                    Email
+                  </label>
+                  <input
+                    type="email"
+                    name="email"
+                    value={profile?.email || ""}
+                    onChange={handleInputChange}
+                    disabled={!isEditing}
+                    className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#212121] focus:border-transparent disabled:bg-gray-100 disabled:cursor-not-allowed transition-colors duration-200"
+                  />
+                </div>
+
+                <div>
+                  <label className="flex items-center gap-2 text-sm font-medium text-[#212121] mb-2">
+                    <Phone size={18} />
+                    Phone Number
+                  </label>
+                  <input
+                    type="tel"
+                    name="phoneNumber"
+                    value={profile?.phoneNumber || ""}
+                    onChange={handleInputChange}
+                    disabled={!isEditing}
+                    className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#212121] focus:border-transparent disabled:bg-gray-100 disabled:cursor-not-allowed transition-colors duration-200"
+                  />
+                </div>
+
+                <div>
+                  <label className="flex items-center gap-2 text-sm font-medium text-[#212121] mb-2">
+                    <MapPin size={18} />
+                    Physical Address
+                  </label>
+                  <textarea
+                    name="physicalAddress"
+                    value={profile?.physicalAddress || ""}
+                    onChange={handleInputChange}
+                    disabled={!isEditing}
+                    rows={3}
+                    className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#212121] focus:border-transparent disabled:bg-gray-100 disabled:cursor-not-allowed transition-colors duration-200"
+                  />
+                </div>
+              </div>
+
+              {isEditing && (
+                <div className="flex gap-4 pt-4">
+                  <button
+                    type="submit"
+                    disabled={loading}
+                    className="flex-1 flex items-center justify-center gap-2 bg-green-600 text-white px-6 py-2 rounded-lg hover:bg-green-700 disabled:bg-green-400 disabled:cursor-not-allowed transition-colors duration-200">
+                    {loading ? (
+                      <Loader className="animate-spin" size={18} />
+                    ) : (
+                      <Save size={18} />
+                    )}
+                    {loading ? "Saving..." : "Save Changes"}
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => {
+                      setIsEditing(false);
+                      fetchProfile(); // Reset to original data
+                    }}
+                    className="flex-1 flex items-center justify-center gap-2 bg-gray-500 text-white px-6 py-2 rounded-lg hover:bg-gray-600 transition-colors duration-200">
+                    <X size={18} />
+                    Cancel
+                  </button>
+                </div>
+              )}
+            </form>
           </div>
-
-          {updateSuccess && (
-            <div className="mb-6 p-4 bg-green-100 text-green-700 rounded-lg flex items-center gap-2">
-              <Save size={18} />
-              Profile updated successfully!
-            </div>
-          )}
-
-          {error && (
-            <div className="mb-6 p-4 bg-red-100 text-red-700 rounded-lg flex items-center gap-2">
-              <X size={18} />
-              {error}
-            </div>
-          )}
-
-          <form onSubmit={handleUpdateProfile} className="space-y-6">
-            <div className="space-y-4">
-              <div>
-                <label className="flex items-center gap-2 text-sm font-medium text-[#212121] mb-2">
-                  <User size={18} />
-                  Full Name
-                </label>
-                <input
-                  type="text"
-                  name="fullName"
-                  value={profile?.fullName || ""}
-                  onChange={handleInputChange}
-                  disabled={!isEditing}
-                  className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#212121] focus:border-transparent disabled:bg-gray-100 disabled:cursor-not-allowed transition-colors duration-200"
-                />
-              </div>
-
-              <div>
-                <label className="flex items-center gap-2 text-sm font-medium text-[#212121] mb-2">
-                  <Mail size={18} />
-                  Email
-                </label>
-                <input
-                  type="email"
-                  name="email"
-                  value={profile?.email || ""}
-                  onChange={handleInputChange}
-                  disabled={!isEditing}
-                  className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#212121] focus:border-transparent disabled:bg-gray-100 disabled:cursor-not-allowed transition-colors duration-200"
-                />
-              </div>
-
-              <div>
-                <label className="flex items-center gap-2 text-sm font-medium text-[#212121] mb-2">
-                  <Phone size={18} />
-                  Phone Number
-                </label>
-                <input
-                  type="tel"
-                  name="phoneNumber"
-                  value={profile?.phoneNumber || ""}
-                  onChange={handleInputChange}
-                  disabled={!isEditing}
-                  className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#212121] focus:border-transparent disabled:bg-gray-100 disabled:cursor-not-allowed transition-colors duration-200"
-                />
-              </div>
-
-              <div>
-                <label className="flex items-center gap-2 text-sm font-medium text-[#212121] mb-2">
-                  <MapPin size={18} />
-                  Physical Address
-                </label>
-                <textarea
-                  name="physicalAddress"
-                  value={profile?.physicalAddress || ""}
-                  onChange={handleInputChange}
-                  disabled={!isEditing}
-                  rows={3}
-                  className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#212121] focus:border-transparent disabled:bg-gray-100 disabled:cursor-not-allowed transition-colors duration-200"
-                />
-              </div>
-            </div>
-
-            {isEditing && (
-              <div className="flex gap-4 pt-4">
-                <button
-                  type="submit"
-                  disabled={loading}
-                  className="flex-1 flex items-center justify-center gap-2 bg-green-600 text-white px-6 py-2 rounded-lg hover:bg-green-700 disabled:bg-green-400 disabled:cursor-not-allowed transition-colors duration-200">
-                  {loading ? (
-                    <Loader className="animate-spin" size={18} />
-                  ) : (
-                    <Save size={18} />
-                  )}
-                  {loading ? "Saving..." : "Save Changes"}
-                </button>
-                <button
-                  type="button"
-                  onClick={() => {
-                    setIsEditing(false);
-                    fetchProfile(); // Reset to original data
-                  }}
-                  className="flex-1 flex items-center justify-center gap-2 bg-gray-500 text-white px-6 py-2 rounded-lg hover:bg-gray-600 transition-colors duration-200">
-                  <X size={18} />
-                  Cancel
-                </button>
-              </div>
-            )}
-          </form>
         </div>
       </div>
+      <Footer />
     </div>
   );
 };
