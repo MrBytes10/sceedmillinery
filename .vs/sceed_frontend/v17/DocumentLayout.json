@@ -3,16 +3,32 @@
   "WorkspaceRootPath": "B:\\pensoft\\sceedmillinery_Frontend\\sceed_frontend\\",
   "Documents": [
     {
-      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|B:\\pensoft\\sceedmillinery_Frontend\\sceed_frontend\\src\\pages\\productDetailsPage.js||{14D17961-FE51-464D-9111-C4AF11D7D99A}",
-      "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:src\\pages\\productDetailsPage.js||{14D17961-FE51-464D-9111-C4AF11D7D99A}"
-    },
-    {
       "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|B:\\pensoft\\sceedmillinery_Frontend\\sceed_frontend\\src\\App.js||{14D17961-FE51-464D-9111-C4AF11D7D99A}",
       "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:src\\App.js||{14D17961-FE51-464D-9111-C4AF11D7D99A}"
     },
     {
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|B:\\pensoft\\sceedmillinery_Frontend\\sceed_frontend\\src\\config\\api.js||{14D17961-FE51-464D-9111-C4AF11D7D99A}",
+      "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:src\\config\\api.js||{14D17961-FE51-464D-9111-C4AF11D7D99A}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|B:\\pensoft\\sceedmillinery_Frontend\\sceed_frontend\\src\\contexts\\CartContext.js||{14D17961-FE51-464D-9111-C4AF11D7D99A}",
+      "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:src\\contexts\\CartContext.js||{14D17961-FE51-464D-9111-C4AF11D7D99A}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|B:\\pensoft\\sceedmillinery_Frontend\\sceed_frontend\\src\\pages\\cartPage.jsx||{14D17961-FE51-464D-9111-C4AF11D7D99A}",
+      "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:src\\pages\\cartPage.jsx||{14D17961-FE51-464D-9111-C4AF11D7D99A}"
+    },
+    {
       "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|B:\\pensoft\\sceedmillinery_Frontend\\sceed_frontend\\src\\pages\\loginPage.js||{14D17961-FE51-464D-9111-C4AF11D7D99A}",
       "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:src\\pages\\loginPage.js||{14D17961-FE51-464D-9111-C4AF11D7D99A}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|B:\\pensoft\\sceedmillinery_Frontend\\sceed_frontend\\src\\pages\\productDetailsPage.js||{14D17961-FE51-464D-9111-C4AF11D7D99A}",
+      "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:src\\pages\\productDetailsPage.js||{14D17961-FE51-464D-9111-C4AF11D7D99A}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|B:\\pensoft\\sceedmillinery_Frontend\\sceed_frontend\\src\\components\\Header.js||{14D17961-FE51-464D-9111-C4AF11D7D99A}",
+      "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:src\\components\\Header.js||{14D17961-FE51-464D-9111-C4AF11D7D99A}"
     },
     {
       "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|B:\\pensoft\\sceedmillinery_Frontend\\sceed_frontend\\src\\pages\\signUpPage.js||{14D17961-FE51-464D-9111-C4AF11D7D99A}",
@@ -21,10 +37,6 @@
     {
       "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|B:\\pensoft\\sceedmillinery_Frontend\\sceed_frontend\\src\\components\\relatedProducts.js||{14D17961-FE51-464D-9111-C4AF11D7D99A}",
       "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:src\\components\\relatedProducts.js||{14D17961-FE51-464D-9111-C4AF11D7D99A}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|B:\\pensoft\\sceedmillinery_Frontend\\sceed_frontend\\src\\components\\Header.js||{14D17961-FE51-464D-9111-C4AF11D7D99A}",
-      "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:src\\components\\Header.js||{14D17961-FE51-464D-9111-C4AF11D7D99A}"
     },
     {
       "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|B:\\pensoft\\sceedmillinery_Frontend\\sceed_frontend\\src\\components\\ProductGrid.js||{14D17961-FE51-464D-9111-C4AF11D7D99A}",
@@ -82,24 +94,15 @@
       "DocumentGroups": [
         {
           "DockedWidth": 200,
-          "SelectedChildIndex": 4,
+          "SelectedChildIndex": 6,
           "Children": [
             {
               "$type": "Bookmark",
               "Name": "ST:128:0:{75188d03-9892-4ae2-abf1-207126247ce5}"
             },
             {
-              "$type": "Document",
-              "DocumentIndex": 2,
-              "Title": "loginPage.js",
-              "DocumentMoniker": "B:\\pensoft\\sceedmillinery_Frontend\\sceed_frontend\\src\\pages\\loginPage.js",
-              "RelativeDocumentMoniker": "src\\pages\\loginPage.js",
-              "ToolTip": "B:\\pensoft\\sceedmillinery_Frontend\\sceed_frontend\\src\\pages\\loginPage.js",
-              "RelativeToolTip": "src\\pages\\loginPage.js",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001646|",
-              "WhenOpened": "2024-10-22T09:01:21.167Z",
-              "EditorCaption": ""
+              "$type": "Bookmark",
+              "Name": "ST:1:0:{d212f56b-c48a-434c-a121-1c5d80b59b9f}"
             },
             {
               "$type": "Bookmark",
@@ -107,33 +110,86 @@
             },
             {
               "$type": "Document",
+              "DocumentIndex": 2,
+              "Title": "CartContext.js",
+              "DocumentMoniker": "B:\\pensoft\\sceedmillinery_Frontend\\sceed_frontend\\src\\contexts\\CartContext.js",
+              "RelativeDocumentMoniker": "src\\contexts\\CartContext.js",
+              "ToolTip": "B:\\pensoft\\sceedmillinery_Frontend\\sceed_frontend\\src\\contexts\\CartContext.js",
+              "RelativeToolTip": "src\\contexts\\CartContext.js",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAABIAAAAOAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001646|",
+              "WhenOpened": "2024-11-04T10:32:51.336Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
               "DocumentIndex": 1,
+              "Title": "api.js",
+              "DocumentMoniker": "B:\\pensoft\\sceedmillinery_Frontend\\sceed_frontend\\src\\config\\api.js",
+              "RelativeDocumentMoniker": "src\\config\\api.js",
+              "ToolTip": "B:\\pensoft\\sceedmillinery_Frontend\\sceed_frontend\\src\\config\\api.js",
+              "RelativeToolTip": "src\\config\\api.js",
+              "ViewState": "AgIAAA8AAAAAAAAAAAAAAB8AAAAWAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001646|",
+              "WhenOpened": "2024-11-04T09:45:49.777Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Bookmark",
+              "Name": "ST:0:0:{aa2115a1-9712-457b-9047-dbb71ca2cdd2}"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 0,
               "Title": "App.js",
               "DocumentMoniker": "B:\\pensoft\\sceedmillinery_Frontend\\sceed_frontend\\src\\App.js",
               "RelativeDocumentMoniker": "src\\App.js",
               "ToolTip": "B:\\pensoft\\sceedmillinery_Frontend\\sceed_frontend\\src\\App.js",
               "RelativeToolTip": "src\\App.js",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAABwAAAArAAAAAAAAAA==",
+              "ViewState": "AgIAACYAAAAAAAAAAAAAwCkAAAA9AAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001646|",
               "WhenOpened": "2024-10-14T07:10:46.352Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 0,
+              "DocumentIndex": 3,
+              "Title": "cartPage.jsx",
+              "DocumentMoniker": "B:\\pensoft\\sceedmillinery_Frontend\\sceed_frontend\\src\\pages\\cartPage.jsx",
+              "RelativeDocumentMoniker": "src\\pages\\cartPage.jsx",
+              "ToolTip": "B:\\pensoft\\sceedmillinery_Frontend\\sceed_frontend\\src\\pages\\cartPage.jsx",
+              "RelativeToolTip": "src\\pages\\cartPage.jsx",
+              "ViewState": "AgIAAA0AAAAAAAAAAAAqwKIAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003663|",
+              "WhenOpened": "2024-11-04T09:10:28.058Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 4,
+              "Title": "loginPage.js",
+              "DocumentMoniker": "B:\\pensoft\\sceedmillinery_Frontend\\sceed_frontend\\src\\pages\\loginPage.js",
+              "RelativeDocumentMoniker": "src\\pages\\loginPage.js",
+              "ToolTip": "B:\\pensoft\\sceedmillinery_Frontend\\sceed_frontend\\src\\pages\\loginPage.js",
+              "RelativeToolTip": "src\\pages\\loginPage.js",
+              "ViewState": "AgIAAHsAAAAAAAAAAAAAAIgAAAAzAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001646|",
+              "WhenOpened": "2024-10-22T09:01:21.167Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 5,
               "Title": "productDetailsPage.js",
               "DocumentMoniker": "B:\\pensoft\\sceedmillinery_Frontend\\sceed_frontend\\src\\pages\\productDetailsPage.js",
               "RelativeDocumentMoniker": "src\\pages\\productDetailsPage.js",
               "ToolTip": "B:\\pensoft\\sceedmillinery_Frontend\\sceed_frontend\\src\\pages\\productDetailsPage.js",
               "RelativeToolTip": "src\\pages\\productDetailsPage.js",
-              "ViewState": "AgIAAHsAAAAAAAAAAAAMwIUAAABnAAAAAAAAAA==",
+              "ViewState": "AgIAAN4AAAAAAAAAAAAqwAcBAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001646|",
-              "WhenOpened": "2024-10-22T07:18:42.676Z",
-              "EditorCaption": ""
+              "WhenOpened": "2024-10-22T07:18:42.676Z"
             },
             {
               "$type": "Document",
-              "DocumentIndex": 3,
+              "DocumentIndex": 7,
               "Title": "signUpPage.js",
               "DocumentMoniker": "B:\\pensoft\\sceedmillinery_Frontend\\sceed_frontend\\src\\pages\\signUpPage.js",
               "RelativeDocumentMoniker": "src\\pages\\signUpPage.js",
@@ -141,12 +197,11 @@
               "RelativeToolTip": "src\\pages\\signUpPage.js",
               "ViewState": "AgIAADYBAAAAAAAAAAAcwKwBAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001646|",
-              "WhenOpened": "2024-10-22T09:00:09.657Z",
-              "EditorCaption": ""
+              "WhenOpened": "2024-10-22T09:00:09.657Z"
             },
             {
               "$type": "Document",
-              "DocumentIndex": 4,
+              "DocumentIndex": 8,
               "Title": "relatedProducts.js",
               "DocumentMoniker": "B:\\pensoft\\sceedmillinery_Frontend\\sceed_frontend\\src\\components\\relatedProducts.js",
               "RelativeDocumentMoniker": "src\\components\\relatedProducts.js",
@@ -154,12 +209,23 @@
               "RelativeToolTip": "src\\components\\relatedProducts.js",
               "ViewState": "AgIAAAAAAAAAAAAAAAAAAFAAAAAfAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001646|",
-              "WhenOpened": "2024-10-22T07:25:16.385Z",
-              "EditorCaption": ""
+              "WhenOpened": "2024-10-22T07:25:16.385Z"
             },
             {
               "$type": "Document",
               "DocumentIndex": 6,
+              "Title": "Header.js",
+              "DocumentMoniker": "B:\\pensoft\\sceedmillinery_Frontend\\sceed_frontend\\src\\components\\Header.js",
+              "RelativeDocumentMoniker": "src\\components\\Header.js",
+              "ToolTip": "B:\\pensoft\\sceedmillinery_Frontend\\sceed_frontend\\src\\components\\Header.js",
+              "RelativeToolTip": "src\\components\\Header.js",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAsAAAAWAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001646|",
+              "WhenOpened": "2024-10-14T07:39:49.886Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 9,
               "Title": "ProductGrid.js",
               "DocumentMoniker": "B:\\pensoft\\sceedmillinery_Frontend\\sceed_frontend\\src\\components\\ProductGrid.js",
               "RelativeDocumentMoniker": "src\\components\\ProductGrid.js",
@@ -167,25 +233,11 @@
               "RelativeToolTip": "src\\components\\ProductGrid.js",
               "ViewState": "AgIAABgAAAAAAAAAAAAcwDAAAAAbAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001646|",
-              "WhenOpened": "2024-10-14T07:42:57.061Z",
-              "EditorCaption": ""
+              "WhenOpened": "2024-10-14T07:42:57.061Z"
             },
             {
               "$type": "Document",
-              "DocumentIndex": 5,
-              "Title": "Header.js",
-              "DocumentMoniker": "B:\\pensoft\\sceedmillinery_Frontend\\sceed_frontend\\src\\components\\Header.js",
-              "RelativeDocumentMoniker": "src\\components\\Header.js",
-              "ToolTip": "B:\\pensoft\\sceedmillinery_Frontend\\sceed_frontend\\src\\components\\Header.js",
-              "RelativeToolTip": "src\\components\\Header.js",
-              "ViewState": "AgIAAE0AAAAAAAAAAAAAAFIAAAAcAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001646|",
-              "WhenOpened": "2024-10-14T07:39:49.886Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 7,
+              "DocumentIndex": 10,
               "Title": "HomePage.js",
               "DocumentMoniker": "B:\\pensoft\\sceedmillinery_Frontend\\sceed_frontend\\src\\pages\\HomePage.js",
               "RelativeDocumentMoniker": "src\\pages\\HomePage.js",
@@ -193,12 +245,11 @@
               "RelativeToolTip": "src\\pages\\HomePage.js",
               "ViewState": "AgIAAAYAAAAAAAAAAAAAAKEAAAAyAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001646|",
-              "WhenOpened": "2024-10-14T08:01:32.977Z",
-              "EditorCaption": ""
+              "WhenOpened": "2024-10-14T08:01:32.977Z"
             },
             {
               "$type": "Document",
-              "DocumentIndex": 8,
+              "DocumentIndex": 11,
               "Title": "AboutPage.js",
               "DocumentMoniker": "B:\\pensoft\\sceedmillinery_Frontend\\sceed_frontend\\src\\pages\\aboutPage.js",
               "RelativeDocumentMoniker": "src\\pages\\aboutPage.js",
@@ -206,12 +257,11 @@
               "RelativeToolTip": "src\\pages\\aboutPage.js",
               "ViewState": "AgIAAAAAAAAAAAAAAAAAACkAAAA3AAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001646|",
-              "WhenOpened": "2024-10-14T13:42:56.889Z",
-              "EditorCaption": ""
+              "WhenOpened": "2024-10-14T13:42:56.889Z"
             },
             {
               "$type": "Document",
-              "DocumentIndex": 11,
+              "DocumentIndex": 14,
               "Title": "Footer.js",
               "DocumentMoniker": "B:\\pensoft\\sceedmillinery_Frontend\\sceed_frontend\\src\\components\\Footer.js",
               "RelativeDocumentMoniker": "src\\components\\Footer.js",
@@ -219,12 +269,11 @@
               "RelativeToolTip": "src\\components\\Footer.js",
               "ViewState": "AgIAAAAAAAAAAAAAAAAAABcAAAAQAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001646|",
-              "WhenOpened": "2024-10-14T07:45:47.323Z",
-              "EditorCaption": ""
+              "WhenOpened": "2024-10-14T07:45:47.323Z"
             },
             {
               "$type": "Document",
-              "DocumentIndex": 10,
+              "DocumentIndex": 13,
               "Title": "ContactPage.js",
               "DocumentMoniker": "B:\\pensoft\\sceedmillinery_Frontend\\sceed_frontend\\src\\pages\\contactPage.js",
               "RelativeDocumentMoniker": "src\\pages\\contactPage.js",
@@ -232,12 +281,11 @@
               "RelativeToolTip": "src\\pages\\contactPage.js",
               "ViewState": "AgIAALwAAAAAAAAAAAAmwNUAAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001646|",
-              "WhenOpened": "2024-10-14T07:40:47.066Z",
-              "EditorCaption": ""
+              "WhenOpened": "2024-10-14T07:40:47.066Z"
             },
             {
               "$type": "Document",
-              "DocumentIndex": 9,
+              "DocumentIndex": 12,
               "Title": "Filter.js",
               "DocumentMoniker": "B:\\pensoft\\sceedmillinery_Frontend\\sceed_frontend\\src\\components\\Filter.js",
               "RelativeDocumentMoniker": "src\\components\\Filter.js",
@@ -245,12 +293,11 @@
               "RelativeToolTip": "src\\components\\Filter.js",
               "ViewState": "AgIAAAAAAAAAAAAAAAAAAAUAAAAzAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001646|",
-              "WhenOpened": "2024-10-14T07:41:19.381Z",
-              "EditorCaption": ""
+              "WhenOpened": "2024-10-14T07:41:19.381Z"
             },
             {
               "$type": "Document",
-              "DocumentIndex": 14,
+              "DocumentIndex": 17,
               "Title": "SearchContext.js",
               "DocumentMoniker": "B:\\pensoft\\sceedmillinery_Frontend\\sceed_frontend\\src\\components\\SearchContext.js",
               "RelativeDocumentMoniker": "src\\components\\SearchContext.js",
@@ -262,7 +309,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 13,
+              "DocumentIndex": 16,
               "Title": "SearchResults.js",
               "DocumentMoniker": "B:\\pensoft\\sceedmillinery_Frontend\\sceed_frontend\\src\\components\\SearchResults.js",
               "RelativeDocumentMoniker": "src\\components\\SearchResults.js",
@@ -274,7 +321,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 12,
+              "DocumentIndex": 15,
               "Title": "SearchBar.js",
               "DocumentMoniker": "B:\\pensoft\\sceedmillinery_Frontend\\sceed_frontend\\src\\components\\SearchBar.js",
               "RelativeDocumentMoniker": "src\\components\\SearchBar.js",
@@ -286,7 +333,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 15,
+              "DocumentIndex": 18,
               "Title": "Gallery.js",
               "DocumentMoniker": "B:\\pensoft\\sceedmillinery_Frontend\\sceed_frontend\\src\\components\\Gallery.js",
               "RelativeDocumentMoniker": "src\\components\\Gallery.js",
@@ -298,7 +345,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 16,
+              "DocumentIndex": 19,
               "Title": "bannerTwo.js",
               "DocumentMoniker": "B:\\pensoft\\sceedmillinery_Frontend\\sceed_frontend\\src\\components\\bannerTwo.js",
               "RelativeDocumentMoniker": "src\\components\\bannerTwo.js",
@@ -310,7 +357,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 17,
+              "DocumentIndex": 20,
               "Title": "bannerOne.js",
               "DocumentMoniker": "B:\\pensoft\\sceedmillinery_Frontend\\sceed_frontend\\src\\components\\bannerOne.js",
               "RelativeDocumentMoniker": "src\\components\\bannerOne.js",

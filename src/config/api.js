@@ -26,6 +26,9 @@ export const API_ENDPOINTS = {
   getUserProfile: `${API_BASE_URL}/users/profile`, // Get user profile details
   updateUserProfile: `${API_BASE_URL}/users/profile`, // Update user profile details
 
+  // Cart APIs/Endpoints
+  cart: `${API_BASE_URL}/cart`,// Retrieve cart items
+
   // Subscription APIs
   subscribeUser: `${API_BASE_URL}/users/subscribe`, // Subscribe user to mailing list
 };

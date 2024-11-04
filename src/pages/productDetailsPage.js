@@ -1,13 +1,15 @@
 // sceed_frontend/src/pages/productDetailsPage.js
 import React, { useState, useEffect, useCallback } from "react";
-import { useParams } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
 import Header from "../components/Header";
 import Footer from "../components/Footer";
 import BannerOne from "../components/bannerOne";
 import BannerTwo from "../components/bannerTwo";
 import RelatedProducts from "../components/relatedProducts";
 import { API_ENDPOINTS } from "../config/api";
-import { Heart } from "lucide-react";
+import { Heart, ShoppingCart, Check, X } from "lucide-react";
+import { useCart } from "../contexts/CartContext";
+import { message, Button } from "antd";
 
 const ProductDetailsPage = () => {
   const { id } = useParams();
@@ -59,27 +61,80 @@ const ProductDetailsPage = () => {
     const imageObj = product.images.find((img) => img.color === colorName);
     return imageObj ? imageObj.image : "";
   };
+  // Renamed the loading state for useCart to be more specific
+  //const { addToCart, loading: isAddingToCart } = useCart();
+
+  const { addToCart } = useCart();
+  const navigate = useNavigate();
 
   const handleAddToCart = async () => {
     try {
-      const response = await fetch("/api/cart", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          productId: id,
-          quantity,
-          color: selectedColor.name,
-        }),
-      });
-      if (response.ok) {
-        // Handle success (e.g., show notification, update cart count)
+      const success = await addToCart(id, quantity, selectedColor.name);
+      if (success) {
+        message.success({
+          content: (
+            <div className="flex flex-col gap-2">
+              <div className="flex items-center gap-2">
+                <Check size={16} className="text-green-500" />
+                <span>Added {quantity} item(s) to cart!</span>
+              </div>
+              <div className="flex gap-2 mt-2">
+                <Button
+                  size="small"
+                  className="flex items-center gap-1"
+                  onClick={() => navigate("/cart")}>
+                  <ShoppingCart size={14} />
+                  View Cart
+                </Button>
+                <Button
+                  size="small"
+                  type="link"
+                  onClick={() => message.destroy()}>
+                  <X size={14} />
+                </Button>
+              </div>
+            </div>
+          ),
+          className: "custom-message",
+          duration: 5,
+          style: {
+            marginTop: "20vh",
+          },
+        });
       }
     } catch (error) {
-      console.error("Error adding to cart:", error);
+      message.error({
+        content: (
+          <div className="flex items-center gap-2">
+            <span className="text-red-500">Failed to add item to cart</span>
+          </div>
+        ),
+        className: "custom-message",
+        duration: 3,
+      });
     }
   };
+
+  // const handleAddToCart = async () => {
+  //   try {
+  //     const response = await fetch("/api/cart", {
+  //       method: "POST",
+  //       headers: {
+  //         "Content-Type": "application/json",
+  //       },
+  //       body: JSON.stringify({
+  //         productId: id,
+  //         quantity,
+  //         color: selectedColor.name,
+  //       }),
+  //     });
+  //     if (response.ok) {
+  //       // Handle success (e.g., show notification, update cart count)
+  //     }
+  //   } catch (error) {
+  //     console.error("Error adding to cart:", error);
+  //   }
+  // };
 
   if (loading) {
     return (

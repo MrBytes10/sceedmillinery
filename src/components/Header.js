@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { Link, useNavigate, useLocation } from "react-router-dom";
 import { Heart, ShoppingCart, User, Menu, X } from "lucide-react";
-import logoImage from "../images/sceedWhiteLogo.png";
+import logoImage from "../images/sceedWhiteLogo444.png";
 import SearchBar from "./SearchBar";
 import { useSearch } from "./SearchContext";
 import { useFavorites } from "../contexts/FavoritesContext";
@@ -126,7 +126,7 @@ const Header = () => {
           <img
             src={logoImage}
             alt="SceedMillinery"
-            className="w-32 h-auto sm:w-[180px] sm:h-[72px] mb-2 sm:mb-0"
+            className="w-60 h-auto sm:w-[250px] sm:h-[100px] mb-2 sm:mb-0"
           />
           <p className="text-center text-base sm:text-lg lg:text-xl font-medium font-poppins sm:absolute sm:left-1/2 sm:transform sm:-translate-x-1/2 sm:top-1/2 sm:-translate-y-1/2">
             Contemporary. Bespoke. Elegance
@@ -139,7 +139,7 @@ const Header = () => {
         <div className="container mx-auto flex flex-col sm:flex-row justify-between items-center">
           <div className="flex justify-between w-full sm:w-auto mb-2 sm:mb-0">
             <div className="flex space-x-4">
-              {/* User Icon and Menu */}
+            
               {/* User Icon and Menu */}
               <div className="relative user-menu-container">
                 <User

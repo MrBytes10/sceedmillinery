@@ -17,6 +17,7 @@ import { FavoritesProvider } from "./contexts/FavoritesContext";
 import UserProfile from "./pages/userProfilePage";
 import CartPage from "./pages/cartPage";
 import CheckoutPage from "./pages/paymentPage";
+import { CartProvider } from "./contexts/CartContext";
 //import { AuthProvider } from "./contexts/AuthContext";
 //AdminTests
 //test2
@@ -34,36 +35,38 @@ function App() {
       <Router>
         <ApiErrorBoundary>
           <FavoritesProvider>
-            <Routes>
-              <Route path="/" element={<HomePage />} />
-              <Route path="/shop" element={<ShopPage />} />
-              <Route path="/about" element={<AboutPage />} />
-              <Route path="/contact" element={<ContactPage />} />
-              <Route path="/search-results" element={<SearchResults />} />
-              <Route path="/sign-up" element={<SignUpPage />} />{" "}
-              {/* A route for the SignUpPage component */}
-              <Route path="/login" element={<LoginPage />} />
-              <Route path="/product/:id" element={<ProductDetailsPage />} />
-              <Route
-                path="/registration-success"
-                element={<RegistrationSuccess />}
-              />
-              <Route path="/my-profile" element={<UserProfile />} />
-              <Route path="/favorites" element={<FavoritesPage />} />
-              <Route path="/cart" element={<CartPage />} />
-              <Route path="/checkout" element={<CheckoutPage />} />
-              {/* // Admin Routes */}
-              <Route path="*" element={<h1>Not Found</h1>} />
-              {/* Admin Dashboard Routes */}
-              <Route path="/admin/login" element={<AdminLogin />} />
-              {/* Admin routes */}
-              <Route path="/admin" element={<AdminLayout />}>
-                <Route index element={<DashboardOverview />} />
-                <Route path="products" element={<ProductsManagement />} />
-                <Route path="orders" element={<OrdersManagement />} />
-                <Route path="users" element={<UsersManagement />} />
-              </Route>
-            </Routes>
+            <CartProvider>
+              <Routes>
+                <Route path="/" element={<HomePage />} />
+                <Route path="/shop" element={<ShopPage />} />
+                <Route path="/about" element={<AboutPage />} />
+                <Route path="/contact" element={<ContactPage />} />
+                <Route path="/search-results" element={<SearchResults />} />
+                <Route path="/sign-up" element={<SignUpPage />} />{" "}
+                {/* A route for the SignUpPage component */}
+                <Route path="/login" element={<LoginPage />} />
+                <Route path="/product/:id" element={<ProductDetailsPage />} />
+                <Route
+                  path="/registration-success"
+                  element={<RegistrationSuccess />}
+                />
+                <Route path="/my-profile" element={<UserProfile />} />
+                <Route path="/favorites" element={<FavoritesPage />} />
+                <Route path="/cart" element={<CartPage />} />
+                <Route path="/checkout" element={<CheckoutPage />} />
+                {/* // Admin Routes */}
+                <Route path="*" element={<h1>Not Found</h1>} />
+                {/* Admin Dashboard Routes */}
+                <Route path="/admin/login" element={<AdminLogin />} />
+                {/* Admin routes */}
+                <Route path="/admin" element={<AdminLayout />}>
+                  <Route index element={<DashboardOverview />} />
+                  <Route path="products" element={<ProductsManagement />} />
+                  <Route path="orders" element={<OrdersManagement />} />
+                  <Route path="users" element={<UsersManagement />} />
+                </Route>
+              </Routes>
+            </CartProvider>
           </FavoritesProvider>
         </ApiErrorBoundary>
       </Router>

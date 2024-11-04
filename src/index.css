@@ -56,3 +56,11 @@ p {
   width: 100%;
   border: 1px solid #cacaca;
 } */
+/* In your global CSS file */
+.custom-message {
+  @apply flex items-center;
+}
+
+.ant-message-notice-content {
+  @apply shadow-lg border border-gray-100;
+}

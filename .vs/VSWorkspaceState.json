@@ -3,9 +3,9 @@
     "",
     "\\src",
     "\\src\\assets",
-    "\\src\\components",
-    "\\src\\pages"
+    "\\src\\config",
+    "\\src\\contexts"
   ],
-  "SelectedNode": "\\src\\pages\\productDetailsPage.js",
+  "SelectedNode": "\\src\\App.js",
   "PreviewInSolutionExplorer": false
 }
