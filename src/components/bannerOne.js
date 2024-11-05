@@ -1,7 +1,8 @@
 //sceed_frontend/src/components/bannerOne.js
 
 import React from "react";
-import fascinator from "../images/model-with-fascinator.png";
+//import fascinator from "../images/model-with-fascinator.png";
+import fascinator from "../images/Homepage-Pic-copy2.jpg";
 
 function Banner() {
   return (

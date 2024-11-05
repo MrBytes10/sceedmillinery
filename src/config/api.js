@@ -27,7 +27,12 @@ export const API_ENDPOINTS = {
   updateUserProfile: `${API_BASE_URL}/users/profile`, // Update user profile details
 
   // Cart APIs/Endpoints
-  cart: `${API_BASE_URL}/cart`,// Retrieve cart items
+  cart: `${API_BASE_URL}/cart`, // Retrieve cart items
+  addToCart: `${API_BASE_URL}/cart`, // Add item to cart
+  updateCartItem: (itemId) => `${API_BASE_URL}/cart/${itemId}`, // Update item quantity in cart
+  removeFromCart: (itemId) => `${API_BASE_URL}/cart/${itemId}`, // Remove item from cart
+  clearCart: `${API_BASE_URL}/cart/clear`, // Clear all items from cart
+  mergeCart: `${API_BASE_URL}/cart/merge`, // Merge anonymous cart with user cart
 
   // Subscription APIs
   subscribeUser: `${API_BASE_URL}/users/subscribe`, // Subscribe user to mailing list

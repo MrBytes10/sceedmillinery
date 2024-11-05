@@ -54,7 +54,7 @@ const LoginPage = () => {
       }));
     }
   };
-
+  // handle submit function for login form
   const handleSubmit = async (e) => {
     e.preventDefault();
 
@@ -81,26 +81,37 @@ const LoginPage = () => {
       const text = await response.text();
       let data;
       try {
-        // Try to parse as JSON if possible
         data = JSON.parse(text);
       } catch (e) {
-        // If parsing fails, use the text directly
         data = { error: text };
       }
 
       if (!response.ok) {
-        // Handle both object with error property and direct string error
         throw new Error(data.error || data);
       }
 
       // Store the authentication token
       if (data.token) {
         localStorage.setItem("authToken", data.token);
+
+        // Merge cart items after successful login
+        try {
+          await fetch(API_ENDPOINTS.mergeCart, {
+            method: "POST",
+            headers: {
+              Authorization: `Bearer ${data.token}`,
+              "Content-Type": "application/json",
+            },
+          });
+        } catch (error) {
+          console.error("Error merging cart:", error);
+          // Don't block the login process if cart merge fails
+        }
       }
 
       setServerMessage("Login successful!");
       setTimeout(() => {
-        window.location.href = "/"; // or wherever you want to redirect after login
+        window.location.href = "/";
       }, 1000);
     } catch (error) {
       console.error("Login error:", error);
@@ -109,6 +120,62 @@ const LoginPage = () => {
       setIsSubmitting(false);
     }
   };
+
+  // const handleSubmit = async (e) => {
+  //   e.preventDefault();
+
+  //   if (!validateForm()) {
+  //     return;
+  //   }
+
+  //   setIsSubmitting(true);
+  //   setServerMessage("");
+
+  //   try {
+  //     const response = await fetch(API_ENDPOINTS.loginUser, {
+  //       method: "POST",
+  //       headers: {
+  //         "Content-Type": "application/json",
+  //       },
+  //       body: JSON.stringify({
+  //         email: formData.email,
+  //         password: formData.password,
+  //       }),
+  //     });
+
+  //     // Parse the response text
+  //     const text = await response.text();
+  //     let data;
+  //     try {
+  //       // Try to parse as JSON if possible
+  //       data = JSON.parse(text);
+  //     } catch (e) {
+  //       // If parsing fails, use the text directly
+  //       data = { error: text };
+  //     }
+
+  //     if (!response.ok) {
+  //       // Handle both object with error property and direct string error
+  //       throw new Error(data.error || data);
+  //     }
+
+  //     // Store the authentication token
+  //     if (data.token) {
+  //       localStorage.setItem("authToken", data.token);
+  //     }
+
+  //     setServerMessage("Login successful!");
+  //     setTimeout(() => {
+  //       window.location.href = "/"; // or wherever you want to redirect after login
+  //     }, 1000);
+  //   } catch (error) {
+  //     console.error("Login error:", error);
+  //     setServerMessage(error.message || "Invalid email or password.");
+  //   } finally {
+  //     setIsSubmitting(false);
+  //   }
+  // };
+
   return (
     <div className="flex flex-col min-h-screen">
       <SecondHeader />

@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { Link, useNavigate, useLocation } from "react-router-dom";
 import { Heart, ShoppingCart, User, Menu, X } from "lucide-react";
-import logoImage from "../images/sceedWhiteLogo444.png";
+import logoImage from "../images/sceedBlackLogo.png";
 import SearchBar from "./SearchBar";
 import { useSearch } from "./SearchContext";
 import { useFavorites } from "../contexts/FavoritesContext";
@@ -121,25 +121,24 @@ const Header = () => {
   return (
     <header className="relative w-full">
       {/* Logo and top text */}
-      <div className="bg-black text-white rounded-b-[10px]">
-        <div className="container mx-auto flex flex-col sm:flex-row justify-between items-center py-0 px-4 sm:px-6 lg:px-8">
+      <div className="bg-white text-black rounded-b-[10px]">
+        <div className="container mx-auto flex flex-col sm:flex-row justify-center items-center py-0 px-4 sm:px-6 lg:px-8">
           <img
             src={logoImage}
             alt="SceedMillinery"
-            className="w-60 h-auto sm:w-[250px] sm:h-[100px] mb-2 sm:mb-0"
+            className="w-60 h-auto sm:w-[250px] sm:h-[100px] mb-1 sm:mb-0"
           />
-          <p className="text-center text-base sm:text-lg lg:text-xl font-medium font-poppins sm:absolute sm:left-1/2 sm:transform sm:-translate-x-1/2 sm:top-1/2 sm:-translate-y-1/2">
+          {/* <p className="text-center text-base sm:text-lg lg:text-xl font-medium font-poppins sm:absolute sm:left-1/2 sm:transform sm:-translate-x-1/2 sm:top-1/2 sm:-translate-y-1/2">
             Contemporary. Bespoke. Elegance
-          </p>
+          </p> */}
         </div>
       </div>
 
       {/* Navbar */}
-      <div className="bg-white py-2 px-4 sm:px-6 lg:px-8">
+      <div className="bg-[#CECDC8] py-2 px-4 sm:px-6 lg:px-8">
         <div className="container mx-auto flex flex-col sm:flex-row justify-between items-center">
           <div className="flex justify-between w-full sm:w-auto mb-2 sm:mb-0">
             <div className="flex space-x-4">
-            
               {/* User Icon and Menu */}
               <div className="relative user-menu-container">
                 <User
@@ -212,8 +211,11 @@ const Header = () => {
           </div>
 
           {/* Navigation Links */}
-          <nav className={`${isMenuOpen ? "block" : "hidden"} sm:block`}>
-            <ul className="flex flex-col sm:flex-row space-y-2 sm:space-y-0 sm:space-x-6">
+          <nav
+            className={`${
+              isMenuOpen ? "block" : "hidden"
+            } sm:block sm:ml-auto`}>
+            <ul className="flex flex-col sm:flex-row sm:space-x-6 space-y-2 sm:space-y-0 text-right mr-0">
               <li>
                 <Link
                   to="/"
