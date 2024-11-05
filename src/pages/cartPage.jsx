@@ -46,7 +46,7 @@ const CartPage = () => {
     <div className="flex flex-col min-h-screen">
       <Header />
       <div
-        style={{ backgroundColor: "#CECDC8" }}
+        style={{ backgroundColor: "#FFFFFF" }}
         className="h-10 w-full border font-bold text-black flex justify-center items-center">
         <h1 className="flex items-center gap-2">
           Cart <ShoppingCart size={20} />

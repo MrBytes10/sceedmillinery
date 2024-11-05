@@ -241,10 +241,10 @@ const ShopPage = () => {
       <Header />
 
       {/* Empty row to separate header */}
-      <div
+      {/* <div
         style={{ backgroundColor: "#CECDC8" }}
         className="h-10 w-full border"
-      />
+      /> */}
 
       {/* Main content */}
       <main className="flex-grow container mx-auto px-4 mt-8">

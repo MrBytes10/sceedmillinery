@@ -43,10 +43,10 @@ const FavoritesPage = () => {
       <Header />
 
       {/* Empty row to separate header - matching homepage style */}
-      <div
+      {/* <div
         style={{ backgroundColor: "#CECDC8" }}
         className="h-10 w-full border"
-      />
+      /> */}
 
       {/* Main content */}
       <main className="flex-grow container mx-auto px-4">
