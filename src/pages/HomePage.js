@@ -204,7 +204,7 @@ const HomePage = () => {
           className={`md:w-1/4 ${filterSticky ? "md:sticky md:top-20" : ""}`}
           style={{ height: "fit-content" }}>
           {/* <Filter priceRange={priceRange} setPriceRange={setPriceRange} /> */}
-          <Filter
+          {/* <Filter
             priceRange={priceRange}
             setPriceRange={setPriceRange}
             discountFilters={discountFilters}
@@ -215,7 +215,7 @@ const HomePage = () => {
               // This will trigger a re-render of the ProductGrid
               // You can also add any additional filter logic here
             }}
-          />
+          /> */}
         </div>
         {/*filtered products*/}
 
