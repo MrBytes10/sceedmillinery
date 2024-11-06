@@ -7,7 +7,7 @@ const SearchResultsPage = () => {
   const { results, searchTerm, message } = location.state || {};
 
   return (
-    <div className="container mx-auto px-4 py-8">
+    <div className="container mx-auto px-1 py-8">
       <div className="mb-8">
         <h1 className="text-2xl font-bold mb-2">
           Search Results for "{searchTerm}"

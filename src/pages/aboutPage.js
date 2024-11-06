@@ -3,7 +3,7 @@
 import React from "react";
 import Header from "../components/Header";
 import Footer from "../components/Footer";
-import sceedLogo from "../images/sceedBlackLogo.png";
+import sceedLogo from "../images/sceedWhiteLogo444.png";
 import abtTailorMadeModel from "../images/abtTailorMadeElegance.png";
 import transformOutfitsModel from "../images/transformOutfits.png";
 import { ReactComponent as HandShakeIcon } from "../assets/icons/HandShakeIcon.svg";
@@ -15,15 +15,19 @@ const AboutPage = () => {
   return (
     <div className="bg-gray-100">
       <Header />
-      <main className="container mx-auto px-4 py-0">
-        <section className="relative h-[296px] bg-[#CECDC8] w-full">
-          <div className="container mx-auto px-4 h-full flex flex-col items-center justify-center">
+      <main className="container mx-auto px-1 py-0">
+        <section
+          className="relative h-[296px] w-full"
+          style={{
+            backgroundColor: "rgba(0, 0, 0, 0.7)", // White background with 80% opacity
+          }}>
+          <div className="container mx-auto px-1 h-full flex flex-col items-center justify-center">
             <img
               src={sceedLogo}
               alt="Sceed Millinery Logo"
               className="w-[284px] h-[100px] mb-4 md:absolute md:left-1/2 md:transform md:-translate-x-1/2 md:top-6"
             />
-            <p className="font-poppins font-medium text-sm md:text-base text-center max-w-[754px] mt-4 md:mt-0 md:absolute md:left-1/2 md:transform md:-translate-x-1/2 md:top-[165px]">
+            <p className="font-poppins font-medium text-white text-sm md:text-base text-center max-w-[754px] mt-4 md:mt-0 md:absolute md:left-1/2 md:transform md:-translate-x-1/2 md:top-[165px]">
               First Uganda based Milliner 💃💃💃. We were honoured to design
               headwear for our prestigious clients
               <br />

@@ -54,7 +54,7 @@ const CartPage = () => {
       </div>
 
       <main className="flex-grow">
-        <div className="container mx-auto px-4 py-4">
+        <div className="container mx-auto px-1 py-4">
           {items.length === 0 ? (
             <h1 className="text-2xl font-medium mb-8 text-black text-center opacity-50">
               Your cart is empty

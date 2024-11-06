@@ -49,7 +49,7 @@ const FavoritesPage = () => {
       /> */}
 
       {/* Main content */}
-      <main className="flex-grow container mx-auto px-4">
+      <main className="flex-grow container mx-auto px-1">
         {/* Favorites Section */}
         <div className="mt-8 mb-12">
           <h1 className="text-3xl font-bold text-center mb-8">My Favorites</h1>

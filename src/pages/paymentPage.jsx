@@ -32,7 +32,7 @@ const PaymentPage = () => {
       <Header />
 
       <main className="flex-grow bg-gray-50">
-        <div className="container mx-auto px-4 py-4 pb-0">
+        <div className="container mx-auto px-1 py-4 pb-0">
           <h1 className=" justify justify-center text-center text-2xl font-medium mb-2">
             Place your Order
           </h1>

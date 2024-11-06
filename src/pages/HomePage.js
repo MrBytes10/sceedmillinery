@@ -185,7 +185,7 @@ const HomePage = () => {
     return (
       <div className="flex flex-col min-h-screen">
         <Header />
-        <div className="flex-grow container mx-auto px-4 mt-8">
+        <div className="flex-grow container mx-auto px-1 mt-8">
           <div className="flex justify-center items-center h-64">
             <div className="text-xl">Loading products...</div>
           </div>
@@ -219,7 +219,7 @@ const HomePage = () => {
         </div>
         {/*filtered products*/}
 
-        <div className="flex-grow container mx-auto px-4 mt-[-20vw]">
+        <div className="flex-grow container mx-auto px-1 mt-[-20vw]">
           <div className="flex justify-center items-center h-64">
             <div className="text-xl text-red-600">{error}</div>
           </div>
@@ -247,7 +247,7 @@ const HomePage = () => {
       /> */}
 
       {/* Main content */}
-      <main className="flex-grow container mx-auto px-4 mt-8">
+      <main className="flex-grow container mx-auto px-1 mt-8">
         {/* Filter and product grid */}
         <div
           className="flex flex-col md:flex-row gap-8"
