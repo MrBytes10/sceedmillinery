@@ -151,7 +151,7 @@ export const CartProvider = ({ children }) => {
           method: "PUT",
           credentials: "include",
           headers: getHeaders(),
-          body: JSON.stringify({ quantity }),
+          body: quantity.toString(), //orJSON.stringify({ quantity }) // Send quantity as request body
         });
         if (!response.ok) throw new Error("Failed to update cart item");
         dispatch({ type: "UPDATE_ITEM", payload: { id: itemId, quantity } });

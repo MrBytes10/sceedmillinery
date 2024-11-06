@@ -25,9 +25,9 @@ const AboutPage = () => {
             <img
               src={sceedLogo}
               alt="Sceed Millinery Logo"
-              className="w-[284px] h-[100px] mb-4 md:absolute md:left-1/2 md:transform md:-translate-x-1/2 md:top-6"
+              className="w-[334px] h-[150px] mb-6 md:absolute md:left-1/2 md:transform md:-translate-x-1/2 md:top-6"
             />
-            <p className="font-poppins font-medium text-white text-sm md:text-base text-center max-w-[754px] mt-4 md:mt-0 md:absolute md:left-1/2 md:transform md:-translate-x-1/2 md:top-[165px]">
+            <p className="font-poppins font-medium text-white text-sm md:text-base text-center max-w-[754px] mt-6 md:mt-0 md:absolute md:left-1/2 md:transform md:-translate-x-1/2 md:top-[165px]">
               First Uganda based Milliner 💃💃💃. We were honoured to design
               headwear for our prestigious clients
               <br />

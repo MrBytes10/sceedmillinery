@@ -66,6 +66,7 @@ const LoginPage = () => {
     setServerMessage("");
 
     try {
+      // Login request
       const response = await fetch(API_ENDPOINTS.loginUser, {
         method: "POST",
         headers: {
@@ -77,7 +78,6 @@ const LoginPage = () => {
         }),
       });
 
-      // Parse the response text
       const text = await response.text();
       let data;
       try {
@@ -90,19 +90,23 @@ const LoginPage = () => {
         throw new Error(data.error || data);
       }
 
-      // Store the authentication token
+      // Store token and merge cart
       if (data.token) {
         localStorage.setItem("authToken", data.token);
 
-        // Merge cart items after successful login
+        // Cart merge should be a separate request with the new auth token
         try {
-          await fetch(API_ENDPOINTS.mergeCart, {
+          const mergeResponse = await fetch(API_ENDPOINTS.mergeCart, {
             method: "POST",
             headers: {
               Authorization: `Bearer ${data.token}`,
               "Content-Type": "application/json",
             },
           });
+
+          if (!mergeResponse.ok) {
+            console.warn("Cart merge failed, but continuing login");
+          }
         } catch (error) {
           console.error("Error merging cart:", error);
           // Don't block the login process if cart merge fails
