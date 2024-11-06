@@ -42,11 +42,12 @@ const RelatedProducts = ({ products }) => {
 
             <div className="flex justify-between items-center">
               <div>
-                {product.originalPrice && (
+                {/* Removed the original Price..as it's not needed */}
+                {/* {product.originalPrice && (
                   <span className="text-sm text-gray-500 line-through mr-2">
                     $ {product.originalPrice.toLocaleString()}
                   </span>
-                )}
+                )} */}
                 <span className="text-sm font-medium text-gray-900">
                   $ {product.price.toLocaleString()}
                 </span>
