@@ -1,23 +1,104 @@
-// PaymentPage.js
-import React from "react";
+// sceed_frontend/src/pages/paymentPage.jsx
+
+import React, { useState, useEffect } from "react";
+import Select from "react-select";
+import CreatableSelect from "react-select/creatable";
 import Header from "../components/Header";
 import Footer from "../components/Footer";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
+import axios from "axios";
+import { useCart } from "../contexts/CartContext";
+import { ReactComponent as PayPalIcon } from "../assets/icons/paypallogo.svg";
+import { ReactComponent as VisaIcon } from "../assets/icons/visalogo.svg";
+import { ChevronLeft } from "lucide-react";
 
 const PaymentPage = () => {
-  const [deliveryDetails, setDeliveryDetails] = React.useState({
+  const location = useLocation();
+  const navigate = useNavigate();
+  const { cartItems, subtotal } = location.state;
+  const [deliveryDetails, setDeliveryDetails] = useState({
     fullName: "",
     country: "",
+    city: "",
     phone: "",
     address: "",
     apartment: "",
-    city: "",
     additionalInfo: "",
     saveInfo: false,
   });
-  const navigate = useNavigate();
+  const [countries, setCountries] = useState([]);
+  const [cities, setCities] = useState([]);
+  const [shippingCost, setShippingCost] = useState(100.0);
+  const [discountedTotal, setDiscountedTotal] = useState(subtotal);
+  const [paymentMethod, setPaymentMethod] = useState("paypal");
+  const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState(null);
+  const [selectedShipping, setSelectedShipping] = useState(null); //for shipping cost
+  const [tax, setTax] = useState(5.0); //tax rate
 
-  const [selectedShipping, setSelectedShipping] = React.useState("");
+  useEffect(() => {
+    const fetchCountries = async () => {
+      try {
+        const response = await axios.get("https://restcountries.com/v3.1/all");
+        setCountries(
+          response.data
+            .map((country) => ({
+              label: country.name.common,
+              value: country.cca2,
+            }))
+            .sort((a, b) => a.label.localeCompare(b.label))
+        );
+      } catch (error) {
+        console.error("Error fetching countries:", error);
+      }
+    };
+    fetchCountries();
+  }, []);
+
+  useEffect(() => {
+    const fetchCities = async () => {
+      try {
+        const response = await axios.get(
+          `https://api.worldbank.org/v2/country/${deliveryDetails.country}/city?format=json`
+        );
+        const cityOptions =
+          response.data[1]?.map((city) => ({
+            label: city.name,
+            value: city.name,
+          })) || [];
+        setCities(cityOptions);
+      } catch (error) {
+        console.error("Error fetching cities:", error);
+        setCities([]);
+      }
+    };
+
+    if (deliveryDetails.country) {
+      fetchCities();
+    } else {
+      setCities([]);
+    }
+  }, [deliveryDetails.country]);
+
+  //shipping cost function to fetch from the backend
+
+  useEffect(() => {
+    const calculateShippingCost = async () => {
+      try {
+        const response = await axios.post("/api/checkout/shipping-cost", {
+          shippingMethod: selectedShipping,
+        });
+        setShippingCost(response.data.shippingCost);
+      } catch (error) {
+        console.error("Error calculating shipping cost:", error);
+        setShippingCost(0);
+      }
+    };
+
+    if (selectedShipping) {
+      calculateShippingCost();
+    }
+  }, [selectedShipping]);
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
@@ -27,76 +108,162 @@ const PaymentPage = () => {
     }));
   };
 
+  const handleShippingSelection = (option) => {
+    setSelectedShipping(option);
+  }; // to handle the shipping selection
+
+  const handleDiscountApply = async () => {
+    try {
+      const response = await axios.post("/api/checkout/apply-discount", {
+        total: discountedTotal,
+        discountCode: "SUMMER2023",
+      });
+      setDiscountedTotal(response.data.discountedTotal);
+    } catch (error) {
+      console.error("Error applying discount:", error);
+      setError("Error applying discount. Please try again.");
+    }
+  };
+
+  const handlePayment = async () => {
+    setIsLoading(true);
+    try {
+      const response = await axios.post("/api/checkout/payment", {
+        userId: localStorage.getItem("userId"),
+        deliveryAddress: deliveryDetails,
+        shippingMethod: selectedShipping,
+        paymentMethod: paymentMethod,
+        total: discountedTotal,
+      });
+      setIsLoading(false);
+      navigate("/order-confirmation", {
+        state: {
+          orderId: response.data.orderId,
+          total: response.data.total,
+          createdAt: response.data.createdAt,
+        },
+      });
+    } catch (error) {
+      setIsLoading(false);
+      setError("Error processing payment. Please try again.");
+    }
+  };
+
   return (
     <div className="flex flex-col min-h-screen">
       <Header />
 
       <main className="flex-grow bg-gray-50">
-        <div className="container mx-auto px-1 py-4 pb-0">
-          <h1 className=" justify justify-center text-center text-2xl font-medium mb-2">
+        <div className="container mx-auto px-4 py-4">
+          <h1 className="text-center text-2xl font-medium mb-4">
             Place your Order
           </h1>
 
           <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
             {/* Delivery Form */}
             <div className="lg:col-span-2">
-              <div className="bg-white rounded-lg p-2 shadow-sm">
-                <h2 className="text-xl font-medium mb-6 border-2 ">
+              <div className="bg-white rounded-lg p-4 shadow-md">
+                <h2 className="text-xl font-medium mb-6 border-b pb-2">
                   Delivery Address
                 </h2>
 
-                <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-4">
-                  <div className="col-span-1">
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
+                  <div>
                     <label className="block text-sm mb-1">Full Name</label>
                     <input
                       type="text"
                       name="fullName"
                       value={deliveryDetails.fullName}
                       onChange={handleInputChange}
-                      className="w-full rounded-md p-2 border-2 border-black focus:outline-double focus:ring-4 focus:ring-black"
-                      placeholder="John Doe Sam"
+                      className="w-full rounded-md p-2 border-2 border-gray-300 focus:outline-none focus:ring-2 focus:ring-indigo-600"
+                      placeholder="John Doe"
                     />
                   </div>
-
-                  <div className="col-span-1">
-                    <label className="block text-sm mb-1">Country/Region</label>
-                    <input
-                      type="text"
-                      name="country"
-                      value={deliveryDetails.country}
-                      onChange={handleInputChange}
-                      className="w-full rounded-md p-2 border-2 border-black focus:outline-double focus:ring-4 focus:ring-black"
-                      placeholder="Kenya"
-                    />
-                  </div>
-
-                  <div className="col-span-1">
+                  {/*phone number*/}
+                  <div>
                     <label className="block text-sm mb-1">Phone Number</label>
                     <input
                       type="tel"
                       name="phone"
                       value={deliveryDetails.phone}
                       onChange={handleInputChange}
-                      className="w-full rounded-md p-2 border-2 border-black focus:outline-double focus:ring-4 focus:ring-black"
-                      placeholder="+254704 840 443"
+                      className="w-full rounded-md p-2 border-2 border-gray-300 focus:outline-none focus:ring-2 focus:ring-indigo-600"
+                      placeholder="+123 456 789"
                     />
                   </div>
                 </div>
 
-                <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-4">
-                  <div className="col-span-1">
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
+                  {/* Add the country and city dropdowns */}
+                  <div>
+                    <label className="block text-sm mb-1">Country</label>
+                    <Select
+                      options={countries}
+                      value={countries.find(
+                        (country) => country.value === deliveryDetails.country
+                      )}
+                      onChange={(selectedOption) => {
+                        setDeliveryDetails((prev) => ({
+                          ...prev,
+                          country: selectedOption?.value || "",
+                          city: "",
+                        }));
+                      }}
+                      placeholder="Select a country"
+                      isClearable
+                      className="w-full"
+                    />
+                  </div>
+                  <div>
+                    <label className="block text-sm mb-1">City</label>
+                    <CreatableSelect
+                      options={cities}
+                      value={
+                        deliveryDetails.city
+                          ? {
+                              label: deliveryDetails.city,
+                              value: deliveryDetails.city,
+                            }
+                          : null
+                      }
+                      onChange={(selectedOption) => {
+                        setDeliveryDetails((prev) => ({
+                          ...prev,
+                          city: selectedOption?.value || "",
+                        }));
+                      }}
+                      onCreateOption={(inputValue) => {
+                        setDeliveryDetails((prev) => ({
+                          ...prev,
+                          city: inputValue,
+                        }));
+                      }}
+                      placeholder="Select or type a city"
+                      isClearable
+                      className="w-full"
+                      noOptionsMessage={() =>
+                        deliveryDetails.country
+                          ? "Type to add a new city"
+                          : "Select a country first"
+                      }
+                    />
+                  </div>
+                </div>
+
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
+                  <div>
                     <label className="block text-sm mb-1">Address</label>
                     <input
                       type="text"
                       name="address"
                       value={deliveryDetails.address}
                       onChange={handleInputChange}
-                      className="w-full rounded-md p-2 border-2 border-black focus:outline-double focus:ring-4 focus:ring-black"
-                      placeholder="TRM Drive, Roysambu"
+                      className="w-full rounded-md p-2 border-2 border-gray-300 focus:outline-none focus:ring-2 focus:ring-indigo-600"
+                      placeholder="123 Main St"
                     />
                   </div>
 
-                  <div className="col-span-1">
+                  <div>
                     <label className="block text-sm mb-1">
                       Apartment, suite, etc. (optional)
                     </label>
@@ -105,20 +272,8 @@ const PaymentPage = () => {
                       name="apartment"
                       value={deliveryDetails.apartment}
                       onChange={handleInputChange}
-                      className="w-full  rounded-md p-2 border-2 border-black focus:outline-double focus:ring-4 focus:ring-black"
-                      placeholder="Pinnacle Apartment"
-                    />
-                  </div>
-
-                  <div className="col-span-1">
-                    <label className="block text-sm mb-1">City</label>
-                    <input
-                      type="text"
-                      name="city"
-                      value={deliveryDetails.city}
-                      onChange={handleInputChange}
-                      className="w-full rounded-md p-2 border-2 border-black focus:outline-double focus:ring-4 focus:ring-black"
-                      placeholder="Nairobi"
+                      className="w-full rounded-md p-2 border-2 border-gray-300 focus:outline-none focus:ring-2 focus:ring-indigo-600"
+                      placeholder="Apt 4B"
                     />
                   </div>
                 </div>
@@ -131,9 +286,9 @@ const PaymentPage = () => {
                     name="additionalInfo"
                     value={deliveryDetails.additionalInfo}
                     onChange={handleInputChange}
-                    className="w-full rounded-md p-2 border-2 border-black focus:outline-double focus:ring-4 focus:ring-black"
+                    className="w-full rounded-md p-2 border-2 border-gray-300 focus:outline-none focus:ring-2 focus:ring-indigo-600"
                     rows="3"
-                    placeholder="Anything you would like us to know about the Delivery?"
+                    placeholder="Any special instructions you would wish to share with us?"
                   />
                 </div>
 
@@ -150,7 +305,7 @@ const PaymentPage = () => {
                       }
                       className="mr-2"
                     />
-                    Save information for Next Purchases
+                    Save information for next purchases
                   </label>
                 </div>
 
@@ -158,43 +313,49 @@ const PaymentPage = () => {
                 <div className="mb-6">
                   <h3 className="text-lg font-medium mb-4">Shipping Options</h3>
                   <div className="space-y-3">
-                    <label className="flex items-center p-3 rounded-md border-2 border-black focus:outline-double focus:ring-4 focus:ring-black">
+                    <label className="flex items-center p-3 rounded-md border-2 border-gray-300 focus:outline-none focus:ring-2 focus:ring-indigo-600">
                       <input
                         type="radio"
                         name="shipping"
                         value="self-pickup"
                         checked={selectedShipping === "self-pickup"}
-                        onChange={(e) => setSelectedShipping(e.target.value)}
+                        onChange={() => handleShippingSelection("self-pickup")}
                         className="mr-3"
                       />
                       <span>Self Pick-up</span>
                       <span className="ml-auto">Free</span>
                     </label>
 
-                    <label className="flex items-center p-3 rounded-md border-2 border-black focus:outline-double focus:ring-4 focus:ring-black">
+                    <label className="flex items-center p-3 rounded-md border-2 border-gray-300 focus:outline-none focus:ring-2 focus:ring-indigo-600">
                       <input
                         type="radio"
                         name="shipping"
-                        value="nairobi"
-                        checked={selectedShipping === "nairobi"}
-                        onChange={(e) => setSelectedShipping(e.target.value)}
+                        value="fedx"
+                        checked={selectedShipping === "fedx"}
+                        onChange={() => handleShippingSelection("fedx")}
                         className="mr-3"
                       />
-                      <span>Delivery within Nairobi (1 business day)</span>
-                      <span className="ml-auto">KES XX,000</span>
+                      <span>
+                        FedEx International Shipping (5-10 business days)
+                      </span>
+                      <span className="ml-auto">
+                        ${shippingCost.toFixed(2)}
+                      </span>
                     </label>
 
-                    <label className="flex items-center p-3 rounded-md border-2 border-black focus:outline-double focus:ring-4 focus:ring-black">
+                    <label className="flex items-center p-3 rounded-md border-2 border-gray-300 focus:outline-none focus:ring-2 focus:ring-indigo-600">
                       <input
                         type="radio"
                         name="shipping"
-                        value="outside-nairobi"
-                        checked={selectedShipping === "outside-nairobi"}
-                        onChange={(e) => setSelectedShipping(e.target.value)}
+                        value="dhl-express"
+                        checked={selectedShipping === "dhl-express"}
+                        onChange={() => handleShippingSelection("dhl-express")}
                         className="mr-3"
                       />
-                      <span>Delivery outside Nairobi (1-2 business days)</span>
-                      <span className="ml-auto">KES XX,000</span>
+                      <span>DHL Express (5-10 business days)</span>
+                      <span className="ml-auto">
+                        ${shippingCost.toFixed(2)}
+                      </span>
                     </label>
                   </div>
                 </div>
@@ -209,35 +370,17 @@ const PaymentPage = () => {
                   </p>
 
                   <div className="grid grid-cols-4 gap-4">
-                    {/* // comment out the payment methods not implemented at the moment */}
-                    {/* <button className="p-4 border rounded-md hover:border-gray-400 transition-colors">
-                      <img
-                        src="/path-to-mpesa-logo"
-                        alt="M-Pesa"
-                        className="h-6 mx-auto"
-                      />
+                    <button
+                      className="w-full h-full border rounded-md hover:border-gray-400 transition-colors flex items-center justify-center"
+                      onClick={() => setPaymentMethod("paypal")}>
+                      <PayPalIcon className="w-full h-full" alt="PayPal" />
                     </button>
-                    <button className="p-4 border rounded-md hover:border-gray-400 transition-colors">
-                      <img
-                        src="/path-to-visa-logo"
-                        alt="Visa"
-                        className="h-6 mx-auto"
-                      />
-                    </button>
-                    <button className="p-4 border rounded-md hover:border-gray-400 transition-colors">
-                      <img
-                        src="/path-to-gpay-logo"
-                        alt="Google Pay"
-                        className="h-6 mx-auto"
-                      />
+                    {/* <button
+                      className="w-full h-full border rounded-md hover:border-gray-400 transition-colors flex items-center justify-center"
+                      onClick={() => setPaymentMethod("visa")}
+                    >
+                      <VisaIcon className="w-full h-full" alt="Visa" />
                     </button> */}
-                    <button className="p-4 border rounded-md hover:border-gray-400 transition-colors">
-                      <img
-                        src="/path-to-paypal-logo"
-                        alt="PayPal"
-                        className="h-6 mx-auto"
-                      />
-                    </button>
                   </div>
                 </div>
               </div>
@@ -245,86 +388,107 @@ const PaymentPage = () => {
 
             {/* Order Summary */}
             <div className="lg:col-span-1">
-              <div className="bg-white rounded-lg p-2 shadow-sm">
-                <h2 className="text-xl font-medium mb-4 border-2">
+              <div className="bg-white rounded-lg p-4 shadow-md">
+                <h2 className="text-xl font-medium mb-4 border-b pb-2">
                   Order Summary
                 </h2>
 
-                <div className="flex items-center space-x-4 mb-2">
-                  <div className="w-16 h-16 bg-gray-100 rounded-md">
-                    <img
-                      src="/path-to-product-image"
-                      alt="Fascinator"
-                      className="w-full h-full object-cover"
-                    />
-                  </div>
-                  <div>
-                    <h3 className="font-medium">Fascinator</h3>
-                    <p className="text-sm text-gray-500">Colour XXXXX</p>
-                  </div>
-                  <div className="ml-auto">
-                    <span>KES XX,000</span>
-                  </div>
-                </div>
-
-                <div className="border-t pt-4">
-                  <div className="flex mb-2">
-                    <input
-                      type="text"
-                      placeholder="Gift Card"
-                      className="flex-grow border rounded-l-md p-2"
-                    />
-                    <button className="bg-gray-500 text-white px-4 rounded-r-md hover:bg-gray-600 transition-colors">
-                      Apply
-                    </button>
-                  </div>
-
-                  <div className="space-y-2 mb-4">
-                    <div className="flex justify-between">
-                      <span>Subtotal</span>
-                      <span>KES XX,000</span>
-                    </div>
-                    <div className="flex justify-between">
-                      <span className="flex items-center">
-                        Shipping
-                        <span
-                          className="ml-1 text-gray-500 cursor-help"
-                          title="Shipping costs vary by location">
-                          ⓘ
-                        </span>
+                {/* Cart Items */}
+                {cartItems.map((item) => (
+                  <div
+                    key={item.id}
+                    className="flex items-center space-x-4 mb-2">
+                    <div className="relative w-16 h-16 bg-gray-100 rounded-md">
+                      <img
+                        src={item.productImage}
+                        alt={item.productName}
+                        className="w-full h-full object-cover"
+                      />
+                      <span className="absolute top-0 right-0 -mt-2 -mr-2 bg-red-500 text-white rounded-full px-2 py-1 text-xs">
+                        {item.quantity}
                       </span>
-                      <span className="text-green-600">FREE</span>
+                    </div>
+                    <div>
+                      <h3 className="font-medium">{item.productName}</h3>
+                      <p className="text-sm text-gray-500">
+                        Color: {item.color}
+                      </p>
+                    </div>
+                    <div className="ml-auto">
+                      <span>${(item.price * item.quantity).toFixed(2)}</span>
                     </div>
                   </div>
+                ))}
 
-                  <div className="border-t pt-2">
-                    <div className="flex justify-between mb-2">
-                      <span className="font-medium">Total</span>
-                      <div className="text-right">
-                        <span className="block font-medium">KES XX,000</span>
-                        <span className="text-sm text-gray-500">
-                          Including KES 0.00 in taxes
-                        </span>
-                      </div>
+                {/* DUMMY Tax and total calculation */}
+                <div className="border-t pt-2">
+                  <div className="flex justify-between mb-2">
+                    <span className="font-medium">Subtotal</span>
+                    <span>${subtotal.toFixed(2)}</span>
+                  </div>
+                  <div className="flex justify-between mb-2">
+                    <span className="flex items-center">
+                      Shipping
+                      <span
+                        className="ml-1 text-gray-500 cursor-help"
+                        title="Shipping costs vary by location">
+                        ⓘ
+                      </span>
+                    </span>
+                    <span
+                      className={
+                        selectedShipping === "self-pickup"
+                          ? "text-green-600"
+                          : "text-gray-600"
+                      }>
+                      {selectedShipping === "self-pickup"
+                        ? "FREE"
+                        : `$${shippingCost.toFixed(2)}`}
+                    </span>
+                  </div>
+                  <div className="flex justify-between mb-2">
+                    <span className="flex items-center">
+                      Tax
+                      <span
+                        className="ml-1 text-gray-500 cursor-help"
+                        title="Tax may vary by location">
+                        ⓘ
+                      </span>
+                    </span>
+                    <span className="text-gray-600">${tax.toFixed(2)}</span>
+                  </div>
+                  <div className="flex justify-between mb-2">
+                    <span className="font-medium">Total</span>
+                    <div className="text-right">
+                      <span className="block font-medium">
+                        ${(subtotal + shippingCost + tax).toFixed(2)}
+                      </span>
                     </div>
                   </div>
                 </div>
+
+                {error && (
+                  <div className="mt-4 bg-red-100 text-red-500 p-2 rounded">
+                    {error}
+                  </div>
+                )}
+
+                <button
+                  className="mt-4 w-full bg-indigo-600 text-white py-3 rounded-md hover:bg-indigo-700 transition-colors disabled:bg-gray-400 disabled:cursor-not-allowed"
+                  onClick={handlePayment}
+                  disabled={isLoading}>
+                  {isLoading ? "Processing..." : "Place Order"}
+                </button>
+                {/*back button*/}
+                <button
+                  className="mt-2 w-full text-gray-600 flex items-center justify-center space-x-2 hover:text-gray-800 border"
+                  onClick={() => navigate(-1)}>
+                  <span>
+                    <ChevronLeft />
+                  </span>
+                  <span>Go Back & Continue Shopping</span>
+                </button>
               </div>
-
-              <button
-                className="mt-2 w-full bg-black text-white py-3 rounded-md hover:bg-gray-800 transition-colors"
-                onClick={() => {
-                  // Handle payment submission
-                }}>
-                Pay Now
-              </button>
-
-              <button
-                className="mt-2 w-full text-gray-600 flex items-center justify-center space-x-2 hover:text-gray-800"
-                onClick={() => navigate(-1)}>
-                <span>←</span>
-                <span>Go Back & Continue Shopping</span>
-              </button>
             </div>
           </div>
         </div>

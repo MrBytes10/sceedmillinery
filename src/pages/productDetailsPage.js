@@ -240,7 +240,9 @@ const ProductDetailsPage = () => {
 
               {/* Buy Now and Favorite Row */}
               <div className="flex space-x-4">
-                <button className="flex-1 bg-gray-400 text-white py-2 px-4 rounded hover:bg-gray-500 transition-colors">
+                <button
+                  onClick={handleAddToCart}
+                  className="flex-1 bg-gray-400 text-white py-2 px-4 rounded hover:bg-gray-500 transition-colors">
                   BUY NOW
                 </button>
                 <button

@@ -1,5 +1,5 @@
 // sceed_frontend/src/pages/cartPage.jsx
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { Heart, ShoppingCart, Minus, Plus, Trash2 } from "lucide-react";
 import Header from "../components/Header";
@@ -7,10 +7,12 @@ import Footer from "../components/Footer";
 import BannerOne from "../components/bannerOne";
 import BannerTwo from "../components/bannerTwo";
 import { useCart } from "../contexts/CartContext";
+import { ChevronLeft } from "lucide-react";
 
 const CartPage = () => {
   const navigate = useNavigate();
   const { items, loading, error, updateCartItem, removeFromCart } = useCart();
+  const [selectedShipping, setSelectedShipping] = useState(""); //added
 
   if (loading) {
     return (
@@ -40,6 +42,17 @@ const CartPage = () => {
 
   const handleRemoveItem = async (itemId) => {
     await removeFromCart(itemId);
+  };
+
+  const handleCheckout = () => {
+    // Pass the necessary data to the PaymentPage
+    navigate("/checkout", {
+      state: {
+        cartItems: items,
+        subtotal: calculateSubtotal(),
+        selectedShipping: selectedShipping,
+      },
+    });
   };
 
   return (
@@ -143,9 +156,19 @@ const CartPage = () => {
                     </div>
 
                     <button
-                      onClick={() => navigate("/checkout")}
+                      onClick={handleCheckout}
                       className="w-full bg-gray-500 text-white py-3 rounded-lg hover:bg-gray-600 transition-colors">
-                      Checkout for ${calculateSubtotal().toFixed(2)}
+                      {/* Checkout for ${calculateSubtotal().toFixed(2)} */}
+                      Proceed to Checkout
+                    </button>
+                    {/*back button*/}
+                    <button
+                      className="mt-2 w-full text-gray-600 flex items-center justify-center space-x-2 hover:text-gray-800 border"
+                      onClick={() => navigate(-1)}>
+                      <span>
+                        <ChevronLeft />
+                      </span>
+                      <span>Go Back & Continue Shopping</span>
                     </button>
                   </div>
                 </div>

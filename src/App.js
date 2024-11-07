@@ -17,6 +17,7 @@ import { FavoritesProvider } from "./contexts/FavoritesContext";
 import UserProfile from "./pages/userProfilePage";
 import CartPage from "./pages/cartPage";
 import CheckoutPage from "./pages/paymentPage";
+import OrderConfirmation from "./pages/orderConfirmationPage";
 import { CartProvider } from "./contexts/CartContext";
 //import { AuthProvider } from "./contexts/AuthContext";
 //AdminTests
@@ -54,6 +55,10 @@ function App() {
                 <Route path="/favorites" element={<FavoritesPage />} />
                 <Route path="/cart" element={<CartPage />} />
                 <Route path="/checkout" element={<CheckoutPage />} />
+                <Route
+                  path="/order-confirmed"
+                  element={<OrderConfirmation />}
+                />
                 {/* // Admin Routes */}
                 <Route path="*" element={<h1>Not Found</h1>} />
                 {/* Admin Dashboard Routes */}
