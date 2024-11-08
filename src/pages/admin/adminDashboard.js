@@ -4,3 +4,4 @@ export { default as DashboardOverview } from "../../components/admin/dashboardOv
 export { default as ProductsManagement } from "../../components/admin/productsManagement";
 export { default as OrdersManagement } from "../../components/admin/ordersManagement";
 export { default as UsersManagement } from "../../components/admin/userManagement";
+export { default as MessagesManagement } from "../../components/admin/messagesManagement";

@@ -34,6 +34,23 @@ export const API_ENDPOINTS = {
   clearCart: `${API_BASE_URL}/cart/clear`, // Clear all items from cart
   mergeCart: `${API_BASE_URL}/cart/merge`, // Merge anonymous cart with user cart
 
+  // Order APIs
+  createOrder: `${API_BASE_URL}/orders`,
+  getOrder: (id) => `${API_BASE_URL}/orders/${id}`,
+  getUserOrders: (userId) => `${API_BASE_URL}/orders/user/${userId}`,
+
+  // Shipping APIs
+  calculateShipping: (method) =>
+    `${API_BASE_URL}/orders/shipping-cost/${method}`,
+
+  // Payment APIs
+  processPayment: `${API_BASE_URL}/payments/process`,
+  verifyPayment: (paymentId) => `${API_BASE_URL}/payments/verify/${paymentId}`,
+
+  // Contact APIs
+  submitContactForm: `${API_BASE_URL}/contact/submit`, // Submit a contact form message
+  getContactMessages: `${API_BASE_URL}/contact/messages`, // Retrieve all contact form messages
+
   // Subscription APIs
   subscribeUser: `${API_BASE_URL}/users/subscribe`, // Subscribe user to mailing list
 };

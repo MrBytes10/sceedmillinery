@@ -5,7 +5,7 @@ import backgroundImage from "../images/woman-portrait-female-african-american.jp
 import RegistrationSuccessImg from "../images/registration-success.png";
 import API_ENDPOINTS from "../config/api";
 
-const RegistrationSuccessPage = () => {
+const OrderConfirmationPage = () => {
   // State to track if the user has opted into the mailing list subscription
   const [isSubscribed, setIsSubscribed] = useState(false);
 
@@ -54,7 +54,7 @@ const RegistrationSuccessPage = () => {
           backgroundColor: "rgba(206, 205, 200, 0.8)",
         }}>
         <main className="flex-grow container mx-auto px-4 py-1 max-w-4xl min-h-[calc(100vh-120px)]">
-          {/*Registration Success Image*/}
+          {/*Success Image*/}
           <div className="flex justify-center mb-2">
             <div className="relative w-full max-w-[600px] h-[300px]">
               <img
@@ -71,7 +71,7 @@ const RegistrationSuccessPage = () => {
               Order Successful: We will get in contact with you shortly
             </h1>
 
-            <p className="text-sm text-[#212121] leading-relaxed px-2 font-poppins font-[12px]">
+            <p className="text-sm text-[#212121] leading-relaxed px-2 font-poppins font-[10px]">
               Thank you for your order! We're excited to begin crafting your
               custom-made fascinator at Sceed Millinery. Our artisans are
               already at work, ensuring that your piece is created with the
@@ -103,12 +103,12 @@ const RegistrationSuccessPage = () => {
             {/* Navigation Buttons */}
             <div className="flex justify-center space-x-4 mt-8">
               <button
-                onClick={() => (window.location.href = "/shop")}
+                onClick={() => (window.location.href = "/order-status")}
                 className="bg-[#7B7B7B] text-white px-6 py-2 rounded-md hover:bg-gray-800 transition-colors">
                 view order status
               </button>
               <button
-                onClick={() => (window.location.href = "/my-profile")}
+                onClick={() => (window.location.href = "/track-order")}
                 className="bg-[#7B7B7B] text-white px-6 py-2 rounded-md hover:bg-gray-800 transition-colors">
                 Track Order
               </button>
@@ -121,4 +121,4 @@ const RegistrationSuccessPage = () => {
   );
 };
 
-export default RegistrationSuccessPage;
+export default OrderConfirmationPage;

@@ -29,6 +29,7 @@ import {
   ProductsManagement,
   OrdersManagement,
   UsersManagement,
+  MessagesManagement,
 } from "./pages/admin/adminDashboard";
 function App() {
   return (
@@ -69,6 +70,7 @@ function App() {
                   <Route path="products" element={<ProductsManagement />} />
                   <Route path="orders" element={<OrdersManagement />} />
                   <Route path="users" element={<UsersManagement />} />
+                  <Route path="messages" element={<MessagesManagement />} />
                 </Route>
               </Routes>
             </CartProvider>

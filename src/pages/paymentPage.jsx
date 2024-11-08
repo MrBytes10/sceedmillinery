@@ -10,7 +10,10 @@ import axios from "axios";
 import { useCart } from "../contexts/CartContext";
 import { ReactComponent as PayPalIcon } from "../assets/icons/paypallogo.svg";
 import { ReactComponent as VisaIcon } from "../assets/icons/visalogo.svg";
+import { ReactComponent as MpesaIcon } from "../assets/icons/mpesalogo.svg";
+import { ReactComponent as GooglePayIcon } from "../assets/icons/googlepaylogo.svg";
 import { ChevronLeft } from "lucide-react";
+import { API_ENDPOINTS } from "../config/api";
 
 const PaymentPage = () => {
   const location = useLocation();
@@ -30,7 +33,7 @@ const PaymentPage = () => {
   const [cities, setCities] = useState([]);
   const [shippingCost, setShippingCost] = useState(100.0);
   const [discountedTotal, setDiscountedTotal] = useState(subtotal);
-  const [paymentMethod, setPaymentMethod] = useState("paypal");
+  const [paymentMethod, setPaymentMethod] = useState("visa");
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState(null);
   const [selectedShipping, setSelectedShipping] = useState(null); //for shipping cost
@@ -128,25 +131,30 @@ const PaymentPage = () => {
   const handlePayment = async () => {
     setIsLoading(true);
     try {
-      const response = await axios.post("/api/checkout/payment", {
+      const orderResponse = await axios.post(API_ENDPOINTS.createOrder, {
         userId: localStorage.getItem("userId"),
         deliveryAddress: deliveryDetails,
         shippingMethod: selectedShipping,
         paymentMethod: paymentMethod,
-        total: discountedTotal,
+        cartItems: cartItems,
       });
-      setIsLoading(false);
+
+      // Navigate to confirmation page
       navigate("/order-confirmation", {
         state: {
-          orderId: response.data.orderId,
-          total: response.data.total,
-          createdAt: response.data.createdAt,
+          orderId: orderResponse.data.orderId,
+          total: orderResponse.data.total,
+          createdAt: orderResponse.data.createdAt,
         },
       });
     } catch (error) {
+      setError("Error processing order. Please try again.");
+    } finally {
       setIsLoading(false);
-      setError("Error processing payment. Please try again.");
     }
+  };
+  const handlePaymentMethodChange = (method) => {
+    setPaymentMethod(method);
   };
 
   return (
@@ -361,7 +369,7 @@ const PaymentPage = () => {
                 </div>
 
                 {/* Payment Methods */}
-                <div>
+                <div className="mt-6">
                   <h3 className="text-lg font-medium mb-4">
                     Choose Payment Method
                   </h3>
@@ -370,17 +378,45 @@ const PaymentPage = () => {
                   </p>
 
                   <div className="grid grid-cols-4 gap-4">
+                    {/* Mpesa Payment */}
                     <button
-                      className="w-full h-full border rounded-md hover:border-gray-400 transition-colors flex items-center justify-center"
-                      onClick={() => setPaymentMethod("paypal")}>
-                      <PayPalIcon className="w-full h-full" alt="PayPal" />
+                      className={`w-full h-full border rounded-md hover:border-gray-400 transition-colors flex items-center justify-center ${
+                        paymentMethod === "mpesa" ? "border-indigo-600" : ""
+                      }`}
+                      onClick={() => handlePaymentMethodChange("mpesa")}>
+                      <MpesaIcon className="w-full h-full" alt="Mpesa" />
                     </button>
-                    {/* <button
-                      className="w-full h-full border rounded-md hover:border-gray-400 transition-colors flex items-center justify-center"
-                      onClick={() => setPaymentMethod("visa")}
-                    >
+
+                    {/* Visa Payment */}
+                    <button
+                      className={`w-full h-full border rounded-md hover:border-gray-400 transition-colors flex items-center justify-center ${
+                        paymentMethod === "visa" ? "border-indigo-600" : ""
+                      }`}
+                      onClick={() => handlePaymentMethodChange("visa")}>
                       <VisaIcon className="w-full h-full" alt="Visa" />
-                    </button> */}
+                    </button>
+
+                    {/* Google Pay */}
+                    <button
+                      className={`w-full h-full border rounded-md hover:border-gray-400 transition-colors flex items-center justify-center ${
+                        paymentMethod === "gpay" ? "border-indigo-600" : ""
+                      }`}
+                      onClick={() => handlePaymentMethodChange("gpay")}>
+                      <GooglePayIcon
+                        className="w-full h-full"
+                        alt="Google Pay"
+                      />
+                    </button>
+                    {/* PayPal Payment */}
+                    <button
+                      className={`w-full h-full border rounded-md hover:border-gray-400 transition-colors flex items-center justify-center ${
+                        paymentMethod === "paypal"
+                          ? "border-indigo-600 border-2"
+                          : ""
+                      }`}
+                      onClick={() => handlePaymentMethodChange("paypal")}>
+                      <PayPalIcon className="w-[100%] h-[100%]" alt="PayPal" />
+                    </button>
                   </div>
                 </div>
               </div>

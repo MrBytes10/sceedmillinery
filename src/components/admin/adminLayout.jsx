@@ -5,6 +5,7 @@ import {
   LayoutDashboard,
   Package,
   Users,
+  MessageSquareMore,
   ShoppingCart,
   LogOut,
   Menu,
@@ -40,6 +41,11 @@ const AdminLayout = () => {
       path: "/admin/users",
       icon: <Users className="w-5 h-5" />,
       label: "Users",
+    },
+    {
+      path: "/admin/messages",
+      icon: <MessageSquareMore className="w-5 h-5" />,
+      label: "Client Messages",
     },
   ];
 

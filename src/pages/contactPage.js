@@ -7,6 +7,7 @@ import contactPageBackground from "../images/woman-portrait-female-african-ameri
 import { ReactComponent as YoutubeIcon } from "../assets/icons/youtubeIcon.svg";
 import { ReactComponent as FacebookIcon } from "../assets/icons/facebookIcon.svg";
 import { ReactComponent as InstagramIcon } from "../assets/icons/instagramIcon.svg";
+import { API_ENDPOINTS } from "../config/api";
 
 const ContactPage = () => {
   const [formData, setFormData] = useState({
@@ -15,14 +16,41 @@ const ContactPage = () => {
     subject: "",
     message: "",
   });
+  const [loading, setLoading] = useState(false);
+  const [successMessage, setSuccessMessage] = useState("");
+  const [errorMessage, setErrorMessage] = useState("");
 
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log("Form submitted:", formData);
+    setLoading(true);
+    setSuccessMessage("");
+    setErrorMessage("");
+
+    try {
+      const response = await fetch(API_ENDPOINTS.submitContactForm, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(formData),
+      });
+
+      if (response.ok) {
+        setSuccessMessage("Your message has been sent successfully!");
+        setFormData({ fullName: "", email: "", subject: "", message: "" }); // Clear form
+      } else {
+        const errorData = await response.json();
+        setErrorMessage(
+          errorData.error || "Failed to send message. Please try again."
+        );
+      }
+    } catch (error) {
+      setErrorMessage("An error occurred. Please try again later.");
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
@@ -127,7 +155,7 @@ const ContactPage = () => {
                       value={formData.fullName}
                       onChange={handleChange}
                       className="w-full px-4 py-2 border-2 border-black rounded-md focus:outline-none focus:ring-2 focus:ring-black"
-                      placeholder="Jean Solomon Mukwa"
+                      placeholder="John Doe"
                       required
                     />
                   </div>
@@ -144,7 +172,7 @@ const ContactPage = () => {
                       value={formData.email}
                       onChange={handleChange}
                       className="w-full px-4 py-2 border-2 border-black rounded-md focus:outline-none focus:ring-2 focus:ring-black"
-                      placeholder="solomonjeann@gmail.com"
+                      placeholder="johndoe1@gmail.com"
                       required
                     />
                   </div>
@@ -163,7 +191,7 @@ const ContactPage = () => {
                     value={formData.subject}
                     onChange={handleChange}
                     className="w-full px-4 py-2 border-2 border-black rounded-md focus:outline-none focus:ring-2 focus:ring-black"
-                    placeholder="What is the Subject of your Message"
+                    placeholder="Subject of your Message"
                     required
                   />
                 </div>
@@ -183,7 +211,7 @@ const ContactPage = () => {
                       onChange={handleChange}
                       rows="4"
                       className="w-full px-4 py-2 rounded-md focus:outline-none"
-                      placeholder="What is your Message"
+                      placeholder="Type your Message here"
                       required></textarea>
                   </div>
                 </div>
@@ -191,9 +219,16 @@ const ContactPage = () => {
                 <button
                   type="submit"
                   className="w-1/3 bg-black text-white py-2 px-4 rounded-md hover:bg-gray-800 transition-colors duration-200">
-                  Send Message
+                  {loading ? "Sending..." : "Send Message"}
                 </button>
               </form>
+              {/* Display success or error messages */}
+              {successMessage && (
+                <p className="text-green-600 mt-4">{successMessage}</p>
+              )}
+              {errorMessage && (
+                <p className="text-red-600 mt-4">{errorMessage}</p>
+              )}
             </section>
 
             <div className="text-center mt-12">
