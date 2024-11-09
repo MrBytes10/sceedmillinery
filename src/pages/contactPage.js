@@ -38,7 +38,9 @@ const ContactPage = () => {
       });
 
       if (response.ok) {
-        setSuccessMessage("Your message has been sent successfully!");
+        setSuccessMessage(
+          "Your message has been sent successfully, we'll get back to you via Email!"
+        );
         setFormData({ fullName: "", email: "", subject: "", message: "" }); // Clear form
       } else {
         const errorData = await response.json();
@@ -87,7 +89,7 @@ const ContactPage = () => {
               <div className="mb-8">
                 <h2 className="mb-4 font-normal">How to Reach Us:</h2>
                 <p className="mb-2 font-bold">Phone: [+256 787 315801]</p>
-                <p className="font-bold">Email: [glamandpoppy@gmail.com]</p>
+                <p className="font-bold">Email: [sceedmillinery@gmail.com]</p>
               </div>
 
               <div className="mb-8">

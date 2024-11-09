@@ -86,7 +86,7 @@ const MessagesManagement = () => {
         <div className="flex items-center space-x-2">
           <Button
             onClick={() =>
-              antdMessage.warning("Delete functionality not implemented")
+              antdMessage.warning("Delete functionality not allowed")
             }
             type="link"
             danger
