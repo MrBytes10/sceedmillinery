@@ -70,7 +70,7 @@ function Footer() {
               <ul className="space-y-1">
                 <li>
                   <a
-                    href="#"
+                    href="/shop"
                     className="hover:text-gray-300"
                     target="_blank"
                     rel="noreferrer">
