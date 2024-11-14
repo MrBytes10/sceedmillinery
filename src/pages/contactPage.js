@@ -32,14 +32,11 @@ const ContactPage = () => {
 
     try {
       // const response = await fetch(API_ENDPOINTS.submitContactForm, {
-      const response = await fetch(
-        "http://backend.sceedmillinery.com/api/contact/submit",
-        {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify(formData),
-        }
-      );
+      const response = await fetch(API_ENDPOINTS.submitContactForm, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(formData),
+      });
 
       if (response.ok) {
         setSuccessMessage(
