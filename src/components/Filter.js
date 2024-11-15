@@ -123,7 +123,7 @@ const Filter = ({
         </div>
         <input
           type="range"
-          min="0"
+          min="200"
           max="1000"
           value={localPriceRange}
           onChange={handlePriceChange}
