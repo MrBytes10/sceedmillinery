@@ -1,49 +1,53 @@
-//sceed_frontend/src/components/Filter.js
 import React, { useState, useEffect } from "react";
 import { ChevronDown } from "lucide-react";
 
 const Filter = ({
-  priceRange = 10000,
+  priceRange = 1000,
   setPriceRange = () => {},
-  discountFilters = {},
-  setDiscountFilters = () => {},
+  availableColors = [],
+  setSelectedColors = () => {},
+  selectedColors = [],
+  categories = ["Hatinators", "Fascinators"],
+  setSelectedCategory = () => {},
+  selectedCategory = null,
   inStock,
   setInStock,
 }) => {
   // Initialize local state with props
-  const [localDiscountFilters, setLocalDiscountFilters] =
-    useState(discountFilters);
-  //const [inStock, setInStock] = useState(false);
+  const [localPriceRange, setLocalPriceRange] = useState(priceRange);
+  const [localSelectedColors, setLocalSelectedColors] =
+    useState(selectedColors);
+  const [localSelectedCategory, setLocalSelectedCategory] =
+    useState(selectedCategory);
 
   // Sync local state when props change
   useEffect(() => {
-    setLocalDiscountFilters(discountFilters);
-  }, [discountFilters]);
+    setLocalPriceRange(priceRange);
+    setLocalSelectedColors(selectedColors);
+    setLocalSelectedCategory(selectedCategory);
+  }, [priceRange, selectedColors, selectedCategory]);
 
   const handlePriceChange = (e) => {
+    setLocalPriceRange(parseInt(e.target.value));
     setPriceRange(parseInt(e.target.value));
   };
 
-  const handleDiscountChange = (value) => {
-    setLocalDiscountFilters((prev) => ({
-      ...prev,
-      [value]: !prev[value],
-    }));
+  const handleColorChange = (color) => {
+    setLocalSelectedColors((prev) => {
+      if (prev.includes(color)) {
+        return prev.filter((c) => c !== color);
+      } else {
+        return [...prev, color];
+      }
+    });
+    setSelectedColors(localSelectedColors);
   };
 
-  const handleApplyFilters = () => {
-    // Update parent state with local state
-    setDiscountFilters(localDiscountFilters);
+  const handleCategoryChange = (category) => {
+    setLocalSelectedCategory(category);
+    setSelectedCategory(category);
   };
 
-  // Define discount options
-  const discountOptions = [
-    // { label: "On Sale", value: "any" },
-    // { label: "30% or More", value: 30 },
-    { label: "20% or More", value: 20 },
-    { label: "10% or More", value: 10 },
-  ];
-  // in Stock is a boolean, so we don't need to define options for it
   const handleInStockChange = (checked) => {
     setInStock(checked);
   };
@@ -67,25 +71,46 @@ const Filter = ({
         </label>
       </div>
 
-      {/* Discount Percentage Section */}
+      {/* Color Filter Section */}
       <div className="mb-5">
         <div className="flex justify-between items-center mb-1">
-          <h3 className="text-xs font-medium text-[#212121]">
-            Discount Percentage
-          </h3>
+          <h3 className="text-xs font-medium text-[#212121]">Color</h3>
           <ChevronDown size={14} className="text-[#212121]" />
         </div>
-        {discountOptions.map((item) => (
-          <label
-            key={item.value}
-            className="flex items-center mb-1 cursor-pointer">
+        {availableColors.map((color) => (
+          <label key={color} className="flex items-center mb-1 cursor-pointer">
             <input
               type="checkbox"
-              checked={localDiscountFilters[item.value] || false}
-              onChange={() => handleDiscountChange(item.value)}
+              checked={localSelectedColors.includes(color)}
+              onChange={() => handleColorChange(color)}
               className="w-3 h-3 accent-[#212121] cursor-pointer"
             />
-            <span className="text-xs text-[#212121] ml-2">{item.label}</span>
+            <span className="text-xs text-[#212121] ml-2">{color}</span>
+          </label>
+        ))}
+      </div>
+
+      {/* Category Filter Section */}
+      <div className="mb-5">
+        <div className="flex justify-between items-center mb-1">
+          <h3 className="text-xs font-medium text-[#212121]">Category</h3>
+          <ChevronDown size={14} className="text-[#212121]" />
+        </div>
+        {categories.map((category) => (
+          <label
+            key={category}
+            className={`flex items-center mb-1 cursor-pointer ${
+              localSelectedCategory === category
+                ? "font-bold text-[#212121]"
+                : "text-[#212121]"
+            }`}>
+            <input
+              type="radio"
+              checked={localSelectedCategory === category}
+              onChange={() => handleCategoryChange(category)}
+              className="w-3 h-3 accent-[#212121] cursor-pointer"
+            />
+            <span className="text-xs ml-2">{category}</span>
           </label>
         ))}
       </div>
@@ -99,26 +124,30 @@ const Filter = ({
         <input
           type="range"
           min="0"
-          max="10000"
-          value={priceRange}
+          max="1000"
+          value={localPriceRange}
           onChange={handlePriceChange}
           className="w-full h-1 bg-[#D9D9D9] rounded-full appearance-none mb-2 cursor-pointer"
           style={{
             backgroundImage: `linear-gradient(to right, #6C6C6C 0%, #6C6C6C ${
-              (priceRange / 10000) * 100
-            }%, #D9D9D9 ${(priceRange / 10000) * 100}%, #D9D9D9 100%)`,
+              (localPriceRange / 1000) * 100
+            }%, #D9D9D9 ${(localPriceRange / 1000) * 100}%, #D9D9D9 100%)`,
           }}
         />
         <div className="p-1 border border-[#212121] rounded text-xs flex items-center justify-between">
           <span className="text-[#212121]">KSh</span>
-          <span className="font-bold text-[#757575]">{priceRange}</span>
+          <span className="font-bold text-[#757575]">{localPriceRange}</span>
           <span className="text-[#212121]">and Under</span>
         </div>
       </div>
 
       {/* Apply Filter Button */}
       <button
-        onClick={handleApplyFilters}
+        onClick={() => {
+          setPriceRange(localPriceRange);
+          setSelectedColors(localSelectedColors);
+          setSelectedCategory(localSelectedCategory);
+        }}
         className="w-full bg-[#8F8F8F] text-white font-medium text-xs py-2 rounded-[8px] hover:bg-[#6c6c6c] transition-colors mt-3">
         Apply Filter
       </button>
