@@ -26,7 +26,7 @@ const HomePage = () => {
   const [products, setProducts] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
-  const [priceRange, setPriceRange] = useState(10000);
+  const [priceRange, setPriceRange] = useState(1000);
   const [filterSticky, setFilterSticky] = useState(false);
   const [showAdditionalSections, setShowAdditionalSections] = useState(false);
 
