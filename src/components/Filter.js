@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import { ChevronDown } from "lucide-react";
 
 const Filter = ({
-  priceRange = 1000,
+  priceRange = 10000,
   setPriceRange = () => {},
   availableColors = [],
   setSelectedColors = () => {},
@@ -123,15 +123,15 @@ const Filter = ({
         </div>
         <input
           type="range"
-          min="200"
-          max="1000"
+          min="0"
+          max="10000"
           value={localPriceRange}
           onChange={handlePriceChange}
           className="w-full h-1 bg-[#D9D9D9] rounded-full appearance-none mb-2 cursor-pointer"
           style={{
             backgroundImage: `linear-gradient(to right, #6C6C6C 0%, #6C6C6C ${
-              (localPriceRange / 1000) * 100
-            }%, #D9D9D9 ${(localPriceRange / 1000) * 100}%, #D9D9D9 100%)`,
+              (localPriceRange / 10000) * 100
+            }%, #D9D9D9 ${(localPriceRange / 10000) * 100}%, #D9D9D9 100%)`,
           }}
         />
         <div className="p-1 border border-[#212121] rounded text-xs flex items-center justify-between">

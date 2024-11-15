@@ -29,6 +29,9 @@ const ShopPage = () => {
   const [priceRange, setPriceRange] = useState(1000);
   const [filterSticky, setFilterSticky] = useState(false);
   const [showAdditionalSections, setShowAdditionalSections] = useState(false);
+  const [inStock, setInStock] = useState(false);
+  const [selectedColors, setSelectedColors] = useState([]);
+  const [selectedCategory, setSelectedCategory] = useState(null);
 
   const filterRef = useRef(null);
   const productGridRef = useRef(null);
@@ -40,8 +43,6 @@ const ShopPage = () => {
     20: false,
     10: false,
   });
-  // Add this with your other state declarations at the top of HomePage
-  const [inStock, setInStock] = useState(false);
 
   const [currentPage, setCurrentPage] = useState(1);
   const productsPerPage = 12; // Number of products to show per page
