@@ -38,8 +38,8 @@ const Filter = ({
 
   // Define discount options
   const discountOptions = [
-    { label: "On Sale", value: "any" },
-    { label: "30% or More", value: 30 },
+    // { label: "On Sale", value: "any" },
+    // { label: "30% or More", value: 30 },
     { label: "20% or More", value: 20 },
     { label: "10% or More", value: 10 },
   ];
