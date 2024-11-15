@@ -63,9 +63,9 @@ const AdminLayout = () => {
         ${sidebarOpen ? "translate-x-0" : "-translate-x-full"} 
         md:translate-x-0
       `}>
-        <div className="h-full px-3 py-4 bg-white border-r">
-          <div className="mb-8 p-4">
-            <h2 className="text-2xl font-bold">Admin Panel</h2>
+        <div className="h-full px-3 py-4 bg-customGray border-r">
+          <div className="mb-2 p-4">
+            <h2 className="text-2xl font-bold">SceedMillinery Admin Panel</h2>
           </div>
 
           <nav className="space-y-2">
