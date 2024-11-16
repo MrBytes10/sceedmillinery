@@ -1,9 +1,6 @@
 // sceed_frontend/src/config/api.js
 
-
-
-  const API_BASE_URL =
-    "https://sceedbackend.pensoft.co.ke/api" || "http://localhost:5284/api";
+const API_BASE_URL = "https://sceedbackend.pensoft.co.ke/api"; // OR this for local "https://localhost:7295/api";
 
 export const API_ENDPOINTS = {
   // Product APIs
