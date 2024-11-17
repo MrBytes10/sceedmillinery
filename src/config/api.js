@@ -1,6 +1,6 @@
 // sceed_frontend/src/config/api.js
 
-const API_BASE_URL = "https://sceedbackend.pensoft.co.ke/api"; // OR this for local "https://localhost:7295/api";
+const API_BASE_URL = "https://sceedbackend.pensoft.co.ke/api"; // Should be either "https://sceedbackend.pensoft.co.ke/api"; OR this for local "https://localhost:7295/api";
 
 export const API_ENDPOINTS = {
   // Product APIs
@@ -15,6 +15,10 @@ export const API_ENDPOINTS = {
   deleteProduct: (id) => `${API_BASE_URL}/products/${id}`, // Delete a product by ID
 
   updateProduct: (id) => `${API_BASE_URL}/products/${id}`, // Update an existing product by ID
+
+  // Filter APIs
+  getCategories: `${API_BASE_URL}/products/categories`, // Get all available product categories
+  getColors: `${API_BASE_URL}/products/colors`, // Get all available product colors
   // Stock APIs
   getStock: (id) => `${API_BASE_URL}/products/${id}/stock`,
   updateStock: (id) => `${API_BASE_URL}/products/${id}/stock`, // Update stock quantity for a product by ID

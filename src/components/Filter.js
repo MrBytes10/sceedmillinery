@@ -1,55 +1,88 @@
 import React, { useState, useEffect } from "react";
 import { ChevronDown } from "lucide-react";
+import { API_ENDPOINTS } from "../config/api";
 
 const Filter = ({
   priceRange = 1000,
   setPriceRange = () => {},
-  availableColors = [],
   setSelectedColors = () => {},
   selectedColors = [],
-  categories = ["Hatinators", "Fascinators"],
   setSelectedCategory = () => {},
   selectedCategory = null,
   inStock,
   setInStock,
 }) => {
-  // Initialize local state with props
+  // Local state for all filters
   const [localPriceRange, setLocalPriceRange] = useState(priceRange);
   const [localSelectedColors, setLocalSelectedColors] =
     useState(selectedColors);
   const [localSelectedCategory, setLocalSelectedCategory] =
     useState(selectedCategory);
+  const [localInStock, setLocalInStock] = useState(inStock);
+
+  const [isColorDropdownOpen, setIsColorDropdownOpen] = useState(false);
+  const [availableColors, setAvailableColors] = useState([]);
+  const [categories] = useState(["Hatinators", "Fascinators"]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
 
   // Sync local state when props change
   useEffect(() => {
     setLocalPriceRange(priceRange);
     setLocalSelectedColors(selectedColors);
     setLocalSelectedCategory(selectedCategory);
-  }, [priceRange, selectedColors, selectedCategory]);
+    setLocalInStock(inStock);
+  }, [priceRange, selectedColors, selectedCategory, inStock]);
+
+  // Fetch available colors from the API
+  useEffect(() => {
+    const fetchColors = async () => {
+      try {
+        const response = await fetch(API_ENDPOINTS.getColors);
+        if (!response.ok) {
+          throw new Error("Failed to fetch colors");
+        }
+        const colors = await response.json();
+        setAvailableColors(colors);
+        setLoading(false);
+      } catch (err) {
+        setError("Error loading colors");
+        setLoading(false);
+      }
+    };
+
+    fetchColors();
+  }, []);
 
   const handlePriceChange = (e) => {
     setLocalPriceRange(parseInt(e.target.value));
-    setPriceRange(parseInt(e.target.value));
   };
 
-  const handleColorChange = (color) => {
+  const handleColorSelect = (color) => {
     setLocalSelectedColors((prev) => {
       if (prev.includes(color)) {
         return prev.filter((c) => c !== color);
-      } else {
-        return [...prev, color];
       }
+      return [...prev, color];
     });
-    setSelectedColors(localSelectedColors);
+    setIsColorDropdownOpen(false);
   };
 
   const handleCategoryChange = (category) => {
-    setLocalSelectedCategory(category);
-    setSelectedCategory(category);
+    setLocalSelectedCategory(
+      category === localSelectedCategory ? null : category
+    );
   };
 
   const handleInStockChange = (checked) => {
-    setInStock(checked);
+    setLocalInStock(checked);
+  };
+
+  const applyFilters = () => {
+    setPriceRange(localPriceRange);
+    setSelectedColors(localSelectedColors);
+    setSelectedCategory(localSelectedCategory);
+    setInStock(localInStock);
   };
 
   return (
@@ -63,7 +96,7 @@ const Filter = ({
         <label className="flex items-center mb-1 cursor-pointer">
           <input
             type="checkbox"
-            checked={inStock}
+            checked={localInStock}
             onChange={(e) => handleInStockChange(e.target.checked)}
             className="w-3 h-3 accent-[#212121] cursor-pointer"
           />
@@ -71,23 +104,67 @@ const Filter = ({
         </label>
       </div>
 
-      {/* Color Filter Section */}
-      <div className="mb-5">
-        <div className="flex justify-between items-center mb-1">
-          <h3 className="text-xs font-medium text-[#212121]">Color</h3>
-          <ChevronDown size={14} className="text-[#212121]" />
+      {/* Color Dropdown Section */}
+      <div className="mb-5 relative">
+        <div
+          className="flex justify-between items-center mb-1 cursor-pointer"
+          onClick={() => setIsColorDropdownOpen(!isColorDropdownOpen)}>
+          <h3 className="text-xs font-medium text-[#212121]">
+            Color{" "}
+            <>
+              {" "}
+              <ChevronDown size={14} className="text-[#212121]" />
+            </>
+          </h3>
+          <ChevronDown
+            size={14}
+            className={`text-[#212121] transform transition-transform ${
+              isColorDropdownOpen ? "rotate-180" : ""
+            }`}
+          />
         </div>
-        {availableColors.map((color) => (
-          <label key={color} className="flex items-center mb-1 cursor-pointer">
-            <input
-              type="checkbox"
-              checked={localSelectedColors.includes(color)}
-              onChange={() => handleColorChange(color)}
-              className="w-3 h-3 accent-[#212121] cursor-pointer"
-            />
-            <span className="text-xs text-[#212121] ml-2">{color}</span>
-          </label>
-        ))}
+
+        {/* Selected Colors Display */}
+        {localSelectedColors.length > 0 && (
+          <div className="flex flex-wrap gap-1 mb-2">
+            {localSelectedColors.map((color) => (
+              <span
+                key={color}
+                className="text-xs bg-gray-100 rounded-full px-2 py-1 flex items-center gap-1">
+                {color}
+                <button
+                  onClick={() => handleColorSelect(color)}
+                  className="text-gray-500 hover:text-gray-700">
+                  ×
+                </button>
+              </span>
+            ))}
+          </div>
+        )}
+
+        {/* Dropdown Menu */}
+        {isColorDropdownOpen && (
+          <div className="absolute z-10 w-full bg-white border rounded-md shadow-lg mt-1 max-h-48 overflow-y-auto">
+            {loading ? (
+              <div className="p-2 text-center text-sm">Loading colors...</div>
+            ) : error ? (
+              <div className="p-2 text-center text-sm text-red-500">
+                {error}
+              </div>
+            ) : (
+              availableColors.map((color) => (
+                <div
+                  key={color}
+                  className={`px-3 py-2 text-xs cursor-pointer hover:bg-gray-100 ${
+                    localSelectedColors.includes(color) ? "bg-gray-50" : ""
+                  }`}
+                  onClick={() => handleColorSelect(color)}>
+                  {color}
+                </div>
+              ))
+            )}
+          </div>
+        )}
       </div>
 
       {/* Category Filter Section */}
@@ -135,7 +212,7 @@ const Filter = ({
           }}
         />
         <div className="p-1 border border-[#212121] rounded text-xs flex items-center justify-between">
-          <span className="text-[#212121]">KSh</span>
+          <span className="text-[#212121]">$</span>
           <span className="font-bold text-[#757575]">{localPriceRange}</span>
           <span className="text-[#212121]">and Under</span>
         </div>
@@ -143,12 +220,8 @@ const Filter = ({
 
       {/* Apply Filter Button */}
       <button
-        onClick={() => {
-          setPriceRange(localPriceRange);
-          setSelectedColors(localSelectedColors);
-          setSelectedCategory(localSelectedCategory);
-        }}
-        className="w-full bg-[#8F8F8F] text-white font-medium text-xs py-2 rounded-[8px] hover:bg-[#6c6c6c] transition-colors mt-3">
+        onClick={applyFilters}
+        className="mt-auto w-full bg-[#8F8F8F] text-white font-medium text-xs py-2 rounded-[8px] hover:bg-[#6c6c6c] transition-colors">
         Apply Filter
       </button>
     </div>

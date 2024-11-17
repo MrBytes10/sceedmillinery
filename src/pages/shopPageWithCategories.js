@@ -1,3 +1,5 @@
+// sceed_frontend/src/pages/shopPage.js
+
 import React, { useRef, useState, useEffect } from "react";
 import Header from "../components/Header";
 import Filter from "../components/Filter";

@@ -134,11 +134,27 @@ const ProductsManagement = () => {
   // Delete a product
   const handleDelete = async (id) => {
     try {
-      await axios.delete(API_ENDPOINTS.deleteProduct(id));
+      console.log(`Attempting to delete product with ID: ${id}`);
+      console.log(`Delete URL: ${API_ENDPOINTS.deleteProduct(id)}`);
+
+      const response = await axios.delete(API_ENDPOINTS.deleteProduct(id));
+      console.log("Delete response:", response);
+
       notification.success({ message: "Product deleted successfully" });
       fetchProducts();
     } catch (error) {
-      notification.error({ message: "Failed to delete product" });
+      console.error("Delete error details:", {
+        message: error.message,
+        response: error.response?.data,
+        status: error.response?.status,
+        headers: error.response?.headers,
+        config: error.config,
+      });
+
+      notification.error({
+        message: "Failed to delete product",
+        description: error.response?.data || error.message,
+      });
     }
   };
 
