@@ -94,7 +94,10 @@ function Footer() {
               <h3 className="font-semibold font-poppins mb-2">Company</h3>
               <ul className="space-y-1">
                 <li>
-                  <a href="#" className="hover:text-gray-300" rel="noreferrer">
+                  <a
+                    href="/shop"
+                    className="hover:text-gray-300"
+                    rel="noreferrer">
                     Store
                   </a>
                 </li>
