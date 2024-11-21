@@ -10,7 +10,7 @@ import { ReactComponent as JeanSignature } from "../assets/icons/jeanGmailSignat
 
 function Footer() {
   return (
-    <div className="container mx-auto px-0">
+    <div className=" mx-auto px-0">
       <footer className="bg-black text-white py-8">
         <div className="container mx-auto px-4">
           {/* Changed grid-cols-4 to grid-cols-1 on mobile and grid-cols-4 on medium screens and up */}

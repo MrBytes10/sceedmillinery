@@ -17,7 +17,10 @@ import { FavoritesProvider } from "./contexts/FavoritesContext";
 import UserProfile from "./pages/userProfilePage";
 import CartPage from "./pages/cartPage";
 import CheckoutPage from "./pages/paymentPage";
-import OrderConfirmation from "./pages/orderConfirmationPage";
+import OrderConfirmation from "./pages/paymentSuccessPage";
+import PaymentVerifyPage from "./pages/paymentVerifyPage";
+import PaymentCancelPage from "./pages/paymentCancelPage";
+
 import { CartProvider } from "./contexts/CartContext";
 //import { AuthProvider } from "./contexts/AuthContext";
 //AdminTests
@@ -31,6 +34,9 @@ import {
   UsersManagement,
   MessagesManagement,
 } from "./pages/admin/adminDashboard";
+
+import setupAxiosInterceptors from "./config/axiosConfig";
+setupAxiosInterceptors();
 function App() {
   return (
     <SearchProvider>
@@ -57,9 +63,11 @@ function App() {
                 <Route path="/cart" element={<CartPage />} />
                 <Route path="/checkout" element={<CheckoutPage />} />
                 <Route
-                  path="/order-confirmed"
+                  path="/payment/success"
                   element={<OrderConfirmation />}
                 />
+                <Route path="/payment/verify" element={<PaymentVerifyPage />} />
+                <Route path="/payment/cancel" element={<PaymentCancelPage />} />
                 {/* // Admin Routes */}
                 <Route path="*" element={<h1>Not Found</h1>} />
                 {/* Admin Dashboard Routes */}

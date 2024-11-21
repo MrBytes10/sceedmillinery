@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useMemo } from "react";
 import { ChevronDown } from "lucide-react";
 import { API_ENDPOINTS } from "../config/api";
 
@@ -12,27 +12,43 @@ const Filter = ({
   inStock,
   setInStock,
 }) => {
-  // Local state for all filters
-  const [localPriceRange, setLocalPriceRange] = useState(priceRange);
-  const [localSelectedColors, setLocalSelectedColors] =
-    useState(selectedColors);
-  const [localSelectedCategory, setLocalSelectedCategory] =
-    useState(selectedCategory);
-  const [localInStock, setLocalInStock] = useState(inStock);
+  // Memoize initial state to prevent unnecessary re-renders
+  const initialState = useMemo(
+    () => ({
+      localPriceRange: priceRange,
+      localSelectedColors: selectedColors,
+      localSelectedCategory: selectedCategory,
+      localInStock: inStock,
+    }),
+    [priceRange, selectedColors, selectedCategory, inStock]
+  );
 
+  // Local state for all filters
+  // using initial state to set the local state
+  const [localPriceRange, setLocalPriceRange] = useState(
+    initialState.localPriceRange
+  );
+  const [localSelectedColors, setLocalSelectedColors] = useState(
+    initialState.localSelectedColors
+  );
+  const [localSelectedCategory, setLocalSelectedCategory] = useState(
+    initialState.localSelectedCategory
+  );
+  const [localInStock, setLocalInStock] = useState(initialState.localInStock);
+  // others
   const [isColorDropdownOpen, setIsColorDropdownOpen] = useState(false);
   const [availableColors, setAvailableColors] = useState([]);
   const [categories] = useState(["Hatinators", "Fascinators"]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
-  // Sync local state when props change
-  useEffect(() => {
-    setLocalPriceRange(priceRange);
-    setLocalSelectedColors(selectedColors);
-    setLocalSelectedCategory(selectedCategory);
-    setLocalInStock(inStock);
-  }, [priceRange, selectedColors, selectedCategory, inStock]);
+  // Simplified sync of local state with props
+  // useEffect(() => {
+  //   setLocalPriceRange(priceRange);
+  //   setLocalSelectedColors(selectedColors);
+  //   setLocalSelectedCategory(selectedCategory);
+  //   setLocalInStock(inStock);
+  // }, [priceRange, selectedColors, selectedCategory, inStock]);
 
   // Fetch available colors from the API
   useEffect(() => {

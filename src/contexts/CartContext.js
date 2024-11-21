@@ -169,9 +169,10 @@ export const CartProvider = ({ children }) => {
       dispatch({ type: "SET_LOADING", payload: true });
       try {
         const response = await fetch(`${API_ENDPOINTS.cart}/${itemId}`, {
-          method: "DELETE",
+          method: "DELETE", //or "POST" with "DELETE" in body as JSON.stringify({ id: itemId }) // Send itemId as request body or query param (e.g. /cart?id=123) // or use "PATCH" with "DELETE" in body as JSON.stringify({ id: itemId }) // Send itemId as request body or query param (e.g. /cart?id=123)
           credentials: "include",
           headers: getHeaders(),
+          //mode: "no-cors",
         });
         if (!response.ok) throw new Error("Failed to remove item from cart");
         dispatch({ type: "REMOVE_ITEM", payload: itemId });

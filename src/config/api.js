@@ -38,7 +38,7 @@ export const API_ENDPOINTS = {
   mergeCart: `${API_BASE_URL}/cart/merge`, // Merge anonymous cart with user cart
 
   // Order APIs
-  createOrder: `${API_BASE_URL}/orders`,
+  createOrder: `${API_BASE_URL}/order/create`, // Create a new order
   getOrder: (id) => `${API_BASE_URL}/orders/${id}`,
   getUserOrders: (userId) => `${API_BASE_URL}/orders/user/${userId}`,
 
@@ -47,8 +47,9 @@ export const API_ENDPOINTS = {
     `${API_BASE_URL}/orders/shipping-cost/${method}`,
 
   // Payment APIs
-  processPayment: `${API_BASE_URL}/payments/process`,
-  verifyPayment: (paymentId) => `${API_BASE_URL}/payments/verify/${paymentId}`,
+  processPayment: `${API_BASE_URL}/payment/process`, // Process a new payment
+  verifyPayment: (transToken) => `${API_BASE_URL}/payment/verify/${transToken}`, // Verify payment status
+  paymentWebhook: `${API_BASE_URL}/payment/webhook`, // Handle payment webhooks from DPO
 
   // Contact APIs
   submitContactForm: `${API_BASE_URL}/contact/submit`, // Submit a contact form message

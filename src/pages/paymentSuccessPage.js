@@ -101,7 +101,7 @@ const OrderConfirmationPage = () => {
             </div>
 
             {/* Navigation Buttons */}
-            <div className="flex justify-center space-x-4 mt-8">
+            {/* <div className="flex justify-center space-x-4 mt-8">
               <button
                 onClick={() => (window.location.href = "/order-status")}
                 className="bg-[#7B7B7B] text-white px-6 py-2 rounded-md hover:bg-gray-800 transition-colors">
@@ -112,7 +112,7 @@ const OrderConfirmationPage = () => {
                 className="bg-[#7B7B7B] text-white px-6 py-2 rounded-md hover:bg-gray-800 transition-colors">
                 Track Order
               </button>
-            </div>
+            </div> */}
           </div>
         </main>
         <Footer />

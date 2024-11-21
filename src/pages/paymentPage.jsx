@@ -11,7 +11,11 @@ import { useCart } from "../contexts/CartContext";
 import { ReactComponent as PayPalIcon } from "../assets/icons/paypallogo.svg";
 import { ReactComponent as VisaIcon } from "../assets/icons/visalogo.svg";
 import { ReactComponent as MpesaIcon } from "../assets/icons/mpesalogo.svg";
-import { ReactComponent as GooglePayIcon } from "../assets/icons/googlepaylogo.svg";
+import { ReactComponent as MasterCardIcon } from "../assets/icons/mastercardlogo.svg";
+import { ReactComponent as BankIcon } from "../assets/icons/banklogo.svg";
+import { ReactComponent as TigoPesaIcon } from "../assets/icons/tigopesalogo.svg";
+import { ReactComponent as AirtelMoneyIcon } from "../assets/icons/airtelmoneylogo.svg";
+import { ReactComponent as MTNIcon } from "../assets/icons/mtnlogo.svg";
 import { ChevronLeft } from "lucide-react";
 import { API_ENDPOINTS } from "../config/api";
 
@@ -19,6 +23,67 @@ const PaymentPage = () => {
   const location = useLocation();
   const navigate = useNavigate();
   const { cartItems, subtotal } = location.state;
+
+  // Define supported payment methods with their details
+  const PAYMENT_METHODS = {
+    CARD: {
+      id: "CARD",
+      name: "Credit/Debit Card",
+      icons: [VisaIcon, MasterCardIcon],
+      countries: ["all"],
+      description: "Pay securely with your credit or debit card",
+      processorFields: [],
+    },
+    MPESA: {
+      id: "MPESA",
+      // name: "M-Pesa",
+      icons: [MpesaIcon],
+      countries: ["KE"],
+      description: "Pay with M-Pesa mobile money",
+      processorFields: ["phone"],
+    },
+    TIGO: {
+      id: "TIGO",
+      // name: "Tigo Pesa",
+      icons: [TigoPesaIcon],
+      countries: ["TZ"],
+      description: "Pay with Tigo Pesa (Tanzania)",
+      processorFields: ["phone"],
+    },
+    AIRTEL: {
+      id: "AIRTEL",
+      name: "Airtel Money",
+      icons: [AirtelMoneyIcon],
+      countries: ["KE", "TZ", "UG", "RW"],
+      description: "Pay with Airtel Money",
+      processorFields: ["phone"],
+    },
+    MTN: {
+      id: "MTN",
+      name: "MTN Mobile Money",
+      icons: [MTNIcon],
+      countries: ["UG", "RW", "ZM"],
+      description: "Pay with MTN Mobile Money",
+      processorFields: ["phone"],
+    },
+    BANK: {
+      id: "BANK",
+      name: "Bank Transfer",
+      icons: [BankIcon],
+      countries: ["all"],
+      description: "Pay directly from your bank account",
+      processorFields: [],
+    },
+    PAYPAL: {
+      id: "PAYPAL",
+      name: "PayPal",
+      icons: [PayPalIcon],
+      countries: ["all"],
+      description: "Pay securely with PayPal",
+      processorFields: [],
+    },
+  };
+
   const [deliveryDetails, setDeliveryDetails] = useState({
     fullName: "",
     country: "",
@@ -29,15 +94,79 @@ const PaymentPage = () => {
     additionalInfo: "",
     saveInfo: false,
   });
+
   const [countries, setCountries] = useState([]);
   const [cities, setCities] = useState([]);
   const [shippingCost, setShippingCost] = useState(100.0);
-  const [discountedTotal, setDiscountedTotal] = useState(subtotal);
-  const [paymentMethod, setPaymentMethod] = useState("visa");
-  const [isLoading, setIsLoading] = useState(false);
+  const [paymentMethod, setPaymentMethod] = useState(null);
+  const [processingPayment, setProcessingPayment] = useState(false);
+  const [selectedShipping, setSelectedShipping] = useState(null);
+  const [tax, setTax] = useState(5.0);
   const [error, setError] = useState(null);
-  const [selectedShipping, setSelectedShipping] = useState(null); //for shipping cost
-  const [tax, setTax] = useState(5.0); //tax rate
+  const [paymentFields, setPaymentFields] = useState({});
+
+  // handleInputChange function to update delivery details
+  const handleInputChange = (e) => {
+    const { name, value } = e.target;
+    setDeliveryDetails((prev) => ({
+      ...prev,
+      [name]: value,
+    }));
+  };
+
+  // handleShippingSelection function to update selected shipping method
+  const handleShippingSelection = (method) => {
+    setSelectedShipping(method);
+
+    switch (method) {
+      case "self-pickup":
+        setShippingCost(0);
+        break;
+      case "fedx":
+      case "dhl-express":
+        setShippingCost(100.0);
+        break;
+      default:
+        setShippingCost(0);
+    }
+  };
+
+  // useEffect to verify payment on page load
+  useEffect(() => {
+    const params = new URLSearchParams(window.location.search);
+    const transToken = params.get("TransToken");
+
+    if (transToken) {
+      verifyPayment(transToken);
+    }
+  }, []);
+
+  const verifyPayment = async (transToken) => {
+    try {
+      const response = await axios.get(`/api/payment/verify/${transToken}`);
+      if (response.data.status === "completed") {
+        // Handle successful payment
+        navigate("/payment/success");
+      } else {
+        // Handle failed payment
+        setError("Payment verification failed");
+      }
+    } catch (error) {
+      console.error("Payment verification error:", error);
+      setError("Payment verification failed");
+    }
+  };
+
+  // Filter payment methods based on selected country
+  const getAvailablePaymentMethods = () => {
+    if (!deliveryDetails.country) return Object.values(PAYMENT_METHODS);
+
+    return Object.values(PAYMENT_METHODS).filter(
+      (method) =>
+        method.countries.includes("all") ||
+        method.countries.includes(deliveryDetails.country)
+    );
+  };
 
   useEffect(() => {
     const fetchCountries = async () => {
@@ -60,6 +189,11 @@ const PaymentPage = () => {
 
   useEffect(() => {
     const fetchCities = async () => {
+      if (!deliveryDetails.country) {
+        setCities([]);
+        return;
+      }
+
       try {
         const response = await axios.get(
           `https://api.worldbank.org/v2/country/${deliveryDetails.country}/city?format=json`
@@ -76,104 +210,221 @@ const PaymentPage = () => {
       }
     };
 
-    if (deliveryDetails.country) {
-      fetchCities();
-    } else {
-      setCities([]);
-    }
+    fetchCities();
   }, [deliveryDetails.country]);
 
-  //shipping cost function to fetch from the backend
-
-  useEffect(() => {
-    const calculateShippingCost = async () => {
-      try {
-        const response = await axios.post("/api/checkout/shipping-cost", {
-          shippingMethod: selectedShipping,
-        });
-        setShippingCost(response.data.shippingCost);
-      } catch (error) {
-        console.error("Error calculating shipping cost:", error);
-        setShippingCost(0);
-      }
-    };
-
-    if (selectedShipping) {
-      calculateShippingCost();
-    }
-  }, [selectedShipping]);
-
-  const handleInputChange = (e) => {
-    const { name, value } = e.target;
-    setDeliveryDetails((prev) => ({
-      ...prev,
-      [name]: value,
-    }));
-  };
-
-  const handleShippingSelection = (option) => {
-    setSelectedShipping(option);
-  }; // to handle the shipping selection
-
-  const handleDiscountApply = async () => {
-    try {
-      const response = await axios.post("/api/checkout/apply-discount", {
-        total: discountedTotal,
-        discountCode: "SUMMER2023",
-      });
-      setDiscountedTotal(response.data.discountedTotal);
-    } catch (error) {
-      console.error("Error applying discount:", error);
-      setError("Error applying discount. Please try again.");
-    }
-  };
-
+  //handlePayment function to process payment ....
   const handlePayment = async () => {
-    setIsLoading(true);
+    // Validate delivery details first
+    if (
+      !deliveryDetails.fullName ||
+      !deliveryDetails.country ||
+      !deliveryDetails.phone ||
+      !deliveryDetails.address
+    ) {
+      setError("Please fill in all required delivery details first");
+      return;
+    }
+
+    // Validate shipping method
+    if (!selectedShipping) {
+      setError("Please select a shipping method");
+      return;
+    }
+
+    // Validate payment method
+    if (!paymentMethod) {
+      setError("Please select a payment method");
+      return;
+    }
+
+    setProcessingPayment(true);
+    setError(null);
+
     try {
+      const authToken = localStorage.getItem("authToken");
+      console.log("The auth Token is", authToken); // Log the auth token to the console for debugging
+
+      if (!authToken) {
+        setError("You must be logged in to place an order");
+        setProcessingPayment(false);
+        return;
+      }
+      // First create the order with auth token
       const orderResponse = await axios.post(API_ENDPOINTS.createOrder, {
         userId: localStorage.getItem("userId"),
-        deliveryAddress: deliveryDetails,
+        deliveryDetails: {
+          ...deliveryDetails,
+          country:
+            countries.find((c) => c.value === deliveryDetails.country)?.label ||
+            deliveryDetails.country,
+        },
         shippingMethod: selectedShipping,
-        paymentMethod: paymentMethod,
-        cartItems: cartItems,
+        shippingCost,
+        paymentMethod,
+        cartItems,
+        subtotal,
+        tax,
+        totalAmount: subtotal + shippingCost + tax,
       });
 
-      // Navigate to confirmation page
-      navigate("/order-confirmation", {
-        state: {
+      // Process payment through payment gateway
+      const paymentResponse = await axios.post(
+        API_ENDPOINTS.processPayment,
+        {
           orderId: orderResponse.data.orderId,
-          total: orderResponse.data.total,
-          createdAt: orderResponse.data.createdAt,
+          paymentMethod,
+          amount: subtotal + shippingCost + tax,
+          currency: "USD",
+          customerDetails: {
+            email: localStorage.getItem("userEmail"), // Make sure you have this stored
+            firstName: deliveryDetails.fullName.split(" ")[0],
+            lastName:
+              deliveryDetails.fullName.split(" ").slice(1).join(" ") ||
+              deliveryDetails.fullName.split(" ")[0],
+            phone: deliveryDetails.phone,
+            country: countries.find((c) => c.value === deliveryDetails.country)
+              ?.label,
+            city: deliveryDetails.city,
+            address: deliveryDetails.address,
+            ...paymentFields, // Additional fields specific to payment method (e.g., mobile money number)
+          },
+          returnUrl: `${window.location.origin}/payment/verify`, // Add this to your routes
+          cancelUrl: `${window.location.origin}/payment/cancel`,
         },
-      });
+        {
+          headers: {
+            Authorization: `Bearer ${authToken}`,
+          },
+        }
+      );
+
+      console.log("Order Response:", orderResponse.data); // Log the order response to the console for debugging
+
+      // Handle the payment response
+      if (paymentResponse.data.paymentUrl) {
+        // For redirect-based payments (Card, PayPal)
+        window.location.href = paymentResponse.data.paymentUrl;
+      } else if (paymentResponse.data.paymentInstructions) {
+        // For mobile money payments that need user action
+        // You might want to show these instructions in a modal or redirect to a instructions page
+        navigate("/payment/instructions", {
+          state: {
+            instructions: paymentResponse.data.paymentInstructions,
+            orderId: orderResponse.data.orderId,
+          },
+        });
+      } else {
+        throw new Error("Invalid payment response");
+      }
     } catch (error) {
-      setError("Error processing order. Please try again.");
-    } finally {
-      setIsLoading(false);
+      //console.error("Payment processing error:", error);
+      console.error("Full error response:", {
+        message: error.message,
+        response: error.response?.data,
+        status: error.response?.status,
+        headers: error.response?.headers,
+      });
+      console.error("Error config:", error.config);
+      setError(
+        error.response?.data?.message ||
+          error.response?.data?.error ||
+          error.message ||
+          "Error processing payment. Please try again."
+      );
+      setProcessingPayment(false);
     }
   };
-  const handlePaymentMethodChange = (method) => {
-    setPaymentMethod(method);
-  };
+
+  //render payment methods function to display payment methods
+  const renderPaymentMethods = () => (
+    <div className="mt-6">
+      <h3 className="text-lg font-medium mb-4">Choose Payment Method</h3>
+      <p className="text-sm text-gray-500 mb-4">
+        All Transactions are Secure and Encrypted
+      </p>
+
+      <div className="space-y-4">
+        {getAvailablePaymentMethods().map((method) => (
+          <button
+            key={method.id}
+            onClick={() => setPaymentMethod(method.id)}
+            className={`w-full p-4 border rounded-lg hover:border-gray-400 transition-colors ${
+              paymentMethod === method.id
+                ? "border-indigo-600 bg-indigo-50"
+                : ""
+            }`}>
+            <div className="flex items-center justify-between">
+              <div className="flex items-center space-x-4">
+                <div className="flex space-x-2">
+                  {method.icons.map((Icon, index) => (
+                    <Icon key={index} className="w-10 h-10" alt={method.name} />
+                  ))}
+                </div>
+                <div className="text-left">
+                  <h4 className="font-medium">{method.name}</h4>
+                  <p className="text-sm text-gray-500">{method.description}</p>
+                </div>
+              </div>
+              <div className="flex items-center">
+                <div
+                  className={`w-6 h-6 border-2 rounded-full flex items-center justify-center ${
+                    paymentMethod === method.id
+                      ? "border-indigo-600"
+                      : "border-gray-300"
+                  }`}>
+                  {paymentMethod === method.id && (
+                    <div className="w-3 h-3 bg-indigo-600 rounded-full" />
+                  )}
+                </div>
+              </div>
+            </div>
+
+            {/* Additional fields for payment method if needed */}
+            {paymentMethod === method.id &&
+              method.processorFields.length > 0 && (
+                <div className="mt-4 pl-16">
+                  {method.processorFields.includes("phone") && (
+                    <div>
+                      <label className="block text-sm mb-1">
+                        Mobile Money Number
+                      </label>
+                      <input
+                        type="tel"
+                        className="w-full rounded-md p-2 border-2 border-gray-300 focus:outline-none focus:ring-2 focus:ring-indigo-600"
+                        placeholder="Enter your mobile money number"
+                        onChange={(e) =>
+                          setPaymentFields((prev) => ({
+                            ...prev,
+                            phoneNumber: e.target.value,
+                          }))
+                        }
+                      />
+                    </div>
+                  )}
+                </div>
+              )}
+          </button>
+        ))}
+      </div>
+    </div>
+  );
 
   return (
     <div className="flex flex-col min-h-screen">
       <Header />
-
       <main className="flex-grow bg-gray-50">
         <div className="container mx-auto px-4 py-4">
-          <h1 className="text-center text-2xl font-medium mb-4">
-            Place your Order
-          </h1>
-
           <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-            {/* Delivery Form */}
+            {/* Left column - Form */}
             <div className="lg:col-span-2">
               <div className="bg-white rounded-lg p-4 shadow-md">
+                {/* Delivery Address Section */}
                 <h2 className="text-xl font-medium mb-6 border-b pb-2">
                   Delivery Address
                 </h2>
+
+                {/* ///////////////////////////////////////////////////////////////// /////////////////*/}
 
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
                   <div>
@@ -369,60 +620,35 @@ const PaymentPage = () => {
                 </div>
 
                 {/* Payment Methods */}
-                <div className="mt-6">
-                  <h3 className="text-lg font-medium mb-4">
-                    Choose Payment Method
-                  </h3>
-                  <p className="text-sm text-gray-500 mb-4">
-                    All Transactions are Secure and Encrypted
-                  </p>
-
-                  <div className="grid grid-cols-4 gap-4">
-                    {/* Mpesa Payment */}
-                    <button
-                      className={`w-full h-full border rounded-md hover:border-gray-400 transition-colors flex items-center justify-center ${
-                        paymentMethod === "mpesa" ? "border-indigo-600" : ""
-                      }`}
-                      onClick={() => handlePaymentMethodChange("mpesa")}>
-                      <MpesaIcon className="w-full h-full" alt="Mpesa" />
-                    </button>
-
-                    {/* Visa Payment */}
-                    <button
-                      className={`w-full h-full border rounded-md hover:border-gray-400 transition-colors flex items-center justify-center ${
-                        paymentMethod === "visa" ? "border-indigo-600" : ""
-                      }`}
-                      onClick={() => handlePaymentMethodChange("visa")}>
-                      <VisaIcon className="w-full h-full" alt="Visa" />
-                    </button>
-
-                    {/* Google Pay */}
-                    <button
-                      className={`w-full h-full border rounded-md hover:border-gray-400 transition-colors flex items-center justify-center ${
-                        paymentMethod === "gpay" ? "border-indigo-600" : ""
-                      }`}
-                      onClick={() => handlePaymentMethodChange("gpay")}>
-                      <GooglePayIcon
-                        className="w-full h-full"
-                        alt="Google Pay"
-                      />
-                    </button>
-                    {/* PayPal Payment */}
-                    <button
-                      className={`w-full h-full border rounded-md hover:border-gray-400 transition-colors flex items-center justify-center ${
-                        paymentMethod === "paypal"
-                          ? "border-indigo-600 border-2"
-                          : ""
-                      }`}
-                      onClick={() => handlePaymentMethodChange("paypal")}>
-                      <PayPalIcon className="w-[100%] h-[100%]" alt="PayPal" />
-                    </button>
-                  </div>
-                </div>
+                {/* Payment Methods Section */}
+                {renderPaymentMethods()}
               </div>
+
+              {/* Submit Button */}
+              <button
+                className="mt-4 w-full bg-indigo-600 text-white py-3 rounded-md hover:bg-indigo-700 transition-colors disabled:bg-gray-400 disabled:cursor-not-allowed"
+                onClick={handlePayment}
+                disabled={processingPayment || !paymentMethod}>
+                {processingPayment ? "Processing Payment..." : "Place Order"}
+              </button>
+
+              {error && (
+                <div className="mt-4 bg-red-100 text-red-500 p-2 rounded">
+                  {error}
+                </div>
+              )}
+              {/*back button*/}
+              <button
+                className="mt-2 w-full text-gray-600 flex items-center justify-center space-x-2 hover:text-gray-800 border"
+                onClick={() => navigate(-1)}>
+                <span>
+                  <ChevronLeft />
+                </span>
+                <span>Go Back & Continue Shopping</span>
+              </button>
             </div>
 
-            {/* Order Summary */}
+            {/* Right column - Order Summary */}
             <div className="lg:col-span-1">
               <div className="bg-white rounded-lg p-4 shadow-md">
                 <h2 className="text-xl font-medium mb-4 border-b pb-2">
@@ -509,21 +735,22 @@ const PaymentPage = () => {
                   </div>
                 )}
 
-                <button
+                {/* Place Order Button */}
+                {/* <button
                   className="mt-4 w-full bg-indigo-600 text-white py-3 rounded-md hover:bg-indigo-700 transition-colors disabled:bg-gray-400 disabled:cursor-not-allowed"
                   onClick={handlePayment}
                   disabled={isLoading}>
                   {isLoading ? "Processing..." : "Place Order"}
-                </button>
+                </button> */}
                 {/*back button*/}
-                <button
+                {/* <button
                   className="mt-2 w-full text-gray-600 flex items-center justify-center space-x-2 hover:text-gray-800 border"
                   onClick={() => navigate(-1)}>
                   <span>
                     <ChevronLeft />
                   </span>
                   <span>Go Back & Continue Shopping</span>
-                </button>
+                </button> */}
               </div>
             </div>
           </div>
