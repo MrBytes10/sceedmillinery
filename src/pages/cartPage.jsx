@@ -97,11 +97,11 @@ const CartPage = () => {
                             </h3>
 
                             {/* //remove/delete item button  */}
-                            <button
+                            {/* <button
                               onClick={() => handleRemoveItem(item.id)}
                               className="text-gray-400 hover:text-red-500">
                               <Trash2 size={20} />
-                            </button>
+                            </button> */}
                           </div>
 
                           <div className="mt-2">
