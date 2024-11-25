@@ -46,7 +46,13 @@ export const API_ENDPOINTS = {
   calculateShipping: (method) =>
     `${API_BASE_URL}/orders/shipping-cost/${method}`,
 
-  // Payment APIs
+  // M-Pesa Payment APIs
+  mpesaInitiate: `${API_BASE_URL}/Mpesa/initiate`, // Initiate STK Push
+  mpesaCallback: `${API_BASE_URL}/Mpesa/callback`, // M-Pesa callback URL
+  mpesaVerify: (checkoutRequestId) =>
+    `${API_BASE_URL}/Mpesa/verify/${checkoutRequestId}`, // Verify M-Pesa transaction
+
+  // DPOPayment APIs
   processPayment: `${API_BASE_URL}/payment/process`, // Process a new payment
   verifyPayment: (transToken) => `${API_BASE_URL}/payment/verify/${transToken}`, // Verify payment status
   paymentWebhook: `${API_BASE_URL}/payment/webhook`, // Handle payment webhooks from DPO

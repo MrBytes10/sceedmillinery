@@ -94,7 +94,7 @@ const LoginPage = () => {
       if (data.token) {
         if (data.token) {
           localStorage.setItem("authToken", data.token);
-          localStorage.setItem("userId", data.user.id); // from data.user.id in response JSON object from API
+          localStorage.setItem("userId", data.user.id.toString()); // from data.user.id in response JSON object from API
           localStorage.setItem("userEmail", data.user.email); // from data.user.email in response JSON object from API
         }
 

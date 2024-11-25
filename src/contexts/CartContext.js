@@ -51,27 +51,51 @@ export const CartProvider = ({ children }) => {
   });
 
   const getHeaders = useCallback(() => {
-    const headers = { "Content-Type": "application/json" };
+    const headers = {
+      "Content-Type": "application/json",
+      Accept: "application/json",
+    };
+
     const token = localStorage.getItem("authToken");
     if (token) {
       headers["Authorization"] = `Bearer ${token}`;
     }
+
     return headers;
   }, []);
 
   // Fetch initial cart data
+  // Update fetchCart function
   const fetchCart = useCallback(async () => {
     dispatch({ type: "SET_LOADING", payload: true });
     try {
-      const response = await fetch(API_ENDPOINTS.cart, {
-        credentials: "include",
+      // No need to get userId here as it's handled by the backend session
+      const response = await fetch(`${API_ENDPOINTS.cart}`, {
+        credentials: "include", // Important for cookies/session
         headers: getHeaders(),
       });
-      if (!response.ok) throw new Error("Failed to fetch cart");
+
+      if (!response.ok) {
+        // Only handle 401 specifically for authenticated users
+        if (response.status === 401 && localStorage.getItem("authToken")) {
+          localStorage.removeItem("authToken");
+          // Optionally redirect to login or handle differently
+          // window.location.href = "/login";
+        }
+        throw new Error("Failed to fetch cart");
+      }
+
       const data = await response.json();
       dispatch({ type: "SET_CART", payload: data });
     } catch (error) {
+      console.error("Cart fetch error:", error);
       dispatch({ type: "SET_ERROR", payload: error.message });
+      // For anonymous users, we might want to initialize an empty cart
+      if (!localStorage.getItem("authToken")) {
+        dispatch({ type: "SET_CART", payload: [] });
+      }
+    } finally {
+      dispatch({ type: "SET_LOADING", payload: false });
     }
   }, [getHeaders]);
 
@@ -93,20 +117,41 @@ export const CartProvider = ({ children }) => {
   }, [getHeaders, fetchCart]);
 
   // Listen for auth state changes to trigger merge or fetch
+  // Update useEffect for auth changes
+  // Update useEffect for auth changes
   useEffect(() => {
-    const handleAuthChange = () => {
+    const handleAuthChange = async () => {
       const token = localStorage.getItem("authToken");
       if (token) {
-        mergeCart();
+        try {
+          // First fetch the current cart
+          await fetchCart();
+
+          // Then attempt to merge if there was an anonymous cart
+          const mergeResponse = await fetch(`${API_ENDPOINTS.cart}/merge`, {
+            method: "POST",
+            credentials: "include",
+            headers: getHeaders(),
+          });
+
+          if (!mergeResponse.ok) {
+            console.error("Failed to merge cart");
+          }
+
+          // Fetch the cart again after merging
+          await fetchCart();
+        } catch (error) {
+          console.error("Error during cart merge:", error);
+        }
       } else {
-        fetchCart();
+        // Just fetch the anonymous cart
+        await fetchCart();
       }
     };
 
-    // Trigger initial fetch/merge on mount
     handleAuthChange();
 
-    // Listen for storage events for cross-tab login/logout handling
+    // Listen for storage events
     window.addEventListener("storage", (e) => {
       if (e.key === "authToken") {
         handleAuthChange();
@@ -116,18 +161,19 @@ export const CartProvider = ({ children }) => {
     return () => {
       window.removeEventListener("storage", handleAuthChange);
     };
-  }, [mergeCart, fetchCart]);
+  }, [fetchCart]);
 
   // Define action methods for cart management
   const addToCart = useCallback(
     async (productId, quantity, color) => {
       dispatch({ type: "SET_LOADING", payload: true });
       try {
+        const userId = parseInt(localStorage.getItem("userId")); // Parse userId as an integer
         const response = await fetch(API_ENDPOINTS.cart, {
           method: "POST",
           credentials: "include",
           headers: getHeaders(),
-          body: JSON.stringify({ productId, quantity, color }),
+          body: JSON.stringify({ productId, quantity, color, userId }),
         });
         if (!response.ok) throw new Error("Failed to add item to cart");
         const data = await response.json();
@@ -153,7 +199,8 @@ export const CartProvider = ({ children }) => {
           headers: getHeaders(),
           body: quantity.toString(), //orJSON.stringify({ quantity }) // Send quantity as request body
         });
-        if (!response.ok) throw new Error("Failed to update cart item");
+        if (!response.ok)
+          throw new Error("Failed to update cart item, please login first");
         dispatch({ type: "UPDATE_ITEM", payload: { id: itemId, quantity } });
       } catch (error) {
         dispatch({ type: "SET_ERROR", payload: error.message });
@@ -174,7 +221,10 @@ export const CartProvider = ({ children }) => {
           headers: getHeaders(),
           //mode: "no-cors",
         });
-        if (!response.ok) throw new Error("Failed to remove item from cart");
+        if (!response.ok)
+          throw new Error(
+            "Failed to remove item from cart, please login first"
+          );
         dispatch({ type: "REMOVE_ITEM", payload: itemId });
       } catch (error) {
         dispatch({ type: "SET_ERROR", payload: error.message });

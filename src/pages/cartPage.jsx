@@ -97,11 +97,12 @@ const CartPage = () => {
                             </h3>
 
                             {/* //remove/delete item button  */}
-                            {/* <button
+                            <button
                               onClick={() => handleRemoveItem(item.id)}
-                              className="text-gray-400 hover:text-red-500">
+                              className="flex items-center gap-2 text-gray-400 hover:text-red-500">
                               <Trash2 size={20} />
-                            </button> */}
+                              <span>Remove item</span>
+                            </button>
                           </div>
 
                           <div className="mt-2">
@@ -118,26 +119,25 @@ const CartPage = () => {
                             <div className="flex items-center space-x-4 border-2 rounded-2xl px-2">
                               {/* quantity buttons plus and minus */}
                               <button
-                                // onClick={() =>
-                                //   handleUpdateQuantity(
-                                //     item.id,
-                                //     item.quantity - 1
-                                //   )
-                                // }
-
+                                onClick={() =>
+                                  handleUpdateQuantity(
+                                    item.id,
+                                    item.quantity - 1
+                                  )
+                                }
                                 className="w-8 h-8 flex items-center justify-center">
-                                {/* <Minus size={16} /> */}
+                                <Minus size={16} />
                               </button>
                               <span>{item.quantity} Pieces</span>
                               <button
-                                // onClick={() =>
-                                //   handleUpdateQuantity(
-                                //     item.id,
-                                //     item.quantity + 1
-                                //   )
-                                // }
+                                onClick={() =>
+                                  handleUpdateQuantity(
+                                    item.id,
+                                    item.quantity + 1
+                                  )
+                                }
                                 className="w-8 h-8 flex items-center justify-center">
-                                {/* <Plus size={16} /> */}
+                                <Plus size={16} />
                               </button>
                             </div>
                             <span className="text-lg font-medium">

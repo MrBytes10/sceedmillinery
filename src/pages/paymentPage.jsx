@@ -18,6 +18,9 @@ import { ReactComponent as AirtelMoneyIcon } from "../assets/icons/airtelmoneylo
 import { ReactComponent as MTNIcon } from "../assets/icons/mtnlogo.svg";
 import { ChevronLeft } from "lucide-react";
 import { API_ENDPOINTS } from "../config/api";
+import { toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+import { ToastContainer } from "react-toastify";
 
 // Import new components
 import DeliveryAddressForm from "../components/paymentComponents/DeliveryAddressForm";
@@ -221,7 +224,7 @@ const PaymentPage = () => {
 
   // handlePayment function to process payment and create order///////////
   const handlePayment = async () => {
-    // Validate delivery details
+    // Validation checks
     if (
       !deliveryDetails.fullName ||
       !deliveryDetails.country ||
@@ -232,7 +235,6 @@ const PaymentPage = () => {
       return;
     }
 
-    // Validate shipping and payment methods
     if (!selectedShipping) {
       setError("Please select a shipping method");
       return;
@@ -254,63 +256,159 @@ const PaymentPage = () => {
         return;
       }
 
-      // Create order
-      const orderResponse = await axios.post(API_ENDPOINTS.createOrder, {
-        userId: localStorage.getItem("userId"),
-        deliveryDetails: {
-          ...deliveryDetails,
-          country:
-            countries.find((c) => c.value === deliveryDetails.country)?.label ||
-            deliveryDetails.country,
-        },
-        shippingMethod: selectedShipping,
-        shippingCost,
-        paymentMethod,
-        cartItems,
-        subtotal,
-        tax,
-        totalAmount: subtotal + shippingCost + tax,
-      });
-
-      // Process payment for MPESA
-      if (paymentMethod === "MPESA") {
-        const paymentResponse = await axios.post(
-          API_ENDPOINTS.processPayment,
-          {
-            orderId: orderResponse.data.orderId,
-            paymentMethod,
-            amount: subtotal + shippingCost + tax,
-            currency: "KES",
-            customerDetails: {
-              phone: paymentFields.phoneNumber,
-              fullName: deliveryDetails.fullName,
-              country: deliveryDetails.country,
-            },
-            returnUrl: `${window.location.origin}/payment/verify`,
-            cancelUrl: `${window.location.origin}/payment/cancel`,
+      // Create order first
+      const orderResponse = await axios.post(
+        API_ENDPOINTS.createOrder,
+        {
+          userId: localStorage.getItem("userId"),
+          deliveryDetails: {
+            ...deliveryDetails,
+            country:
+              countries.find((c) => c.value === deliveryDetails.country)
+                ?.label || deliveryDetails.country,
           },
-          {
-            headers: {
-              Authorization: `Bearer ${authToken}`,
-            },
-          }
-        );
+          shippingMethod: selectedShipping,
+          shippingCost,
+          paymentMethod,
+          cartItems,
+          subtotal,
+          tax,
+          totalAmount: subtotal + shippingCost + tax,
+        },
+        {
+          headers: { Authorization: `Bearer ${authToken}` },
+        }
+      );
 
-        // Handle MPESA payment response
-        if (paymentResponse.data.paymentUrl) {
-          window.location.href = paymentResponse.data.paymentUrl;
-        } else {
-          throw new Error("Invalid payment response");
+      const totalAmount = subtotal + shippingCost + tax;
+
+      if (paymentMethod === "MPESA") {
+        // M-Pesa Payment Flow
+        try {
+          const mpesaResponse = await axios.post(
+            API_ENDPOINTS.mpesaInitiate,
+            {
+              orderId: orderResponse.data.orderId,
+              phoneNumber: paymentFields.phoneNumber,
+              amount: totalAmount,
+              description: `Payment for Order #${orderResponse.data.orderId}`,
+              accountReference: `ORDER${orderResponse.data.orderId}`,
+            },
+            {
+              headers: { Authorization: `Bearer ${authToken}` },
+            }
+          );
+
+          if (mpesaResponse.data.success) {
+            // Show STK push notification message
+            toast.info(
+              "Please check your phone for the M-Pesa payment prompt",
+              {
+                position: "top-center",
+                autoClose: false,
+              }
+            );
+
+            // Start checking payment status
+            let attempts = 0;
+            const maxAttempts = 12; // 1 minute (5 seconds * 12)
+
+            const checkPaymentStatus = async () => {
+              try {
+                const statusResponse = await axios.get(
+                  API_ENDPOINTS.mpesaVerify(
+                    mpesaResponse.data.checkoutRequestId
+                  )
+                );
+
+                if (statusResponse.data.success) {
+                  toast.success("Payment successful!");
+                  navigate("/payment/success", {
+                    state: { orderId: orderResponse.data.orderId },
+                  });
+                  return;
+                }
+
+                if (statusResponse.data.failed) {
+                  toast.error("Payment failed. Please try again.");
+                  setProcessingPayment(false);
+                  return;
+                }
+
+                attempts++;
+                if (attempts < maxAttempts) {
+                  setTimeout(checkPaymentStatus, 5000); // Check every 5 seconds
+                } else {
+                  toast.warning(
+                    "Payment status unclear. If amount was deducted, please contact support.",
+                    { autoClose: false }
+                  );
+                  setProcessingPayment(false);
+                }
+              } catch (error) {
+                console.error("Payment status check failed:", error);
+                toast.error("Error verifying payment status");
+                setProcessingPayment(false);
+              }
+            };
+
+            // Start the payment status check
+            checkPaymentStatus();
+          } else {
+            throw new Error(
+              mpesaResponse.data.message || "Failed to initiate M-Pesa payment"
+            );
+          }
+        } catch (error) {
+          toast.error(error.response?.data?.message || "M-Pesa payment failed");
+          setProcessingPayment(false);
+        }
+      } else {
+        // Dummy code for other payment methods (DPO Integration placeholder)
+        try {
+          // This will be replaced with actual DPO integration
+          const dpoResponse = await axios.post(
+            API_ENDPOINTS.processPayment,
+            {
+              orderId: orderResponse.data.orderId,
+              paymentMethod,
+              amount: totalAmount,
+              currency: "KES",
+              customerDetails: {
+                firstName: deliveryDetails.fullName.split(" ")[0],
+                lastName: deliveryDetails.fullName
+                  .split(" ")
+                  .slice(1)
+                  .join(" "),
+                email: "customer@example.com", // You'll need to add email to deliveryDetails
+                phone: deliveryDetails.phone,
+                country: deliveryDetails.country,
+              },
+              returnUrl: `${window.location.origin}/payment/verify`,
+              cancelUrl: `${window.location.origin}/payment/cancel`,
+            },
+            {
+              headers: { Authorization: `Bearer ${authToken}` },
+            }
+          );
+
+          // Redirect to DPO payment page
+          if (dpoResponse.data.paymentUrl) {
+            window.location.href = dpoResponse.data.paymentUrl;
+          } else {
+            throw new Error("Invalid payment gateway response");
+          }
+        } catch (error) {
+          toast.error("Payment gateway error. Please try again.");
+          setProcessingPayment(false);
         }
       }
-
-      // Add handling for other payment methods as needed
     } catch (error) {
-      setError(
+      const errorMessage =
         error.response?.data?.message ||
-          error.message ||
-          "Error processing payment. Please try again."
-      );
+        error.message ||
+        "Error processing payment. Please try again.";
+      toast.error(errorMessage);
       setProcessingPayment(false);
     }
   };
@@ -391,6 +489,7 @@ const PaymentPage = () => {
 
   return (
     <div className="flex flex-col min-h-screen">
+      <ToastContainer position="top-center" />
       <Header />
       <main className="flex-grow bg-gray-50">
         <div className="container mx-auto px-4 py-4">
