@@ -22,10 +22,47 @@ const CartPage = () => {
     );
   }
   //incase of cart loading error
+  // if (error) {
+  //   return (
+  //     <div className="min-h-screen flex items-center justify-center text-red-500">
+  //       Error: {error}, please login first
+  //     </div>
+  //   );
+  // }
+  // if (error) {
+  //   return (
+  //     <div className="min-h-screen flex flex-col items-center justify-center text-red-500 text-center">
+  //       <p className="mb-4">
+  //         Error: {error}, Please log in to access your cart and complete your
+  //         shopping experience.
+  //       </p>
+  //       <button
+  //         onClick={() => navigate("/login")}
+  //         className="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600">
+  //         Log In
+  //       </button>
+  //     </div>
+  //   );
+  // }
   if (error) {
     return (
-      <div className="min-h-screen flex items-center justify-center text-red-500">
-        Error: {error}
+      <div className="min-h-screen flex flex-col items-center justify-center text-red-500 text-center">
+        <p className="mb-4">
+          It seems you're not logged in. Please log in to access your cart.
+        </p>
+        <button
+          onClick={() => navigate("/login")}
+          className="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600">
+          Log In
+        </button>
+        <p className="mt-6 text-gray-700">
+          Not registered yet? Sign up to join us and enjoy shopping!
+        </p>
+        <button
+          onClick={() => navigate("/sign-up")}
+          className="mt-2 px-4 py-2 bg-green-500 text-white rounded hover:bg-green-600">
+          Sign Up
+        </button>
       </div>
     );
   }

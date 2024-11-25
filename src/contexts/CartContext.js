@@ -199,8 +199,7 @@ export const CartProvider = ({ children }) => {
           headers: getHeaders(),
           body: quantity.toString(), //orJSON.stringify({ quantity }) // Send quantity as request body
         });
-        if (!response.ok)
-          throw new Error("Failed to update cart item, please login first");
+        if (!response.ok) throw new Error("Failed to update cart item");
         dispatch({ type: "UPDATE_ITEM", payload: { id: itemId, quantity } });
       } catch (error) {
         dispatch({ type: "SET_ERROR", payload: error.message });
@@ -221,10 +220,7 @@ export const CartProvider = ({ children }) => {
           headers: getHeaders(),
           //mode: "no-cors",
         });
-        if (!response.ok)
-          throw new Error(
-            "Failed to remove item from cart, please login first"
-          );
+        if (!response.ok) throw new Error("Failed to remove item from cart");
         dispatch({ type: "REMOVE_ITEM", payload: itemId });
       } catch (error) {
         dispatch({ type: "SET_ERROR", payload: error.message });

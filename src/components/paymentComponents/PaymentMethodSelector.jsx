@@ -2,6 +2,7 @@
 import React, { useState } from "react";
 import axios from "axios";
 import { toast } from "react-toastify";
+import mpesaPhoneUtils from "../../utils/mpesaPhonUtils";
 
 const PaymentMethodSelector = ({
   paymentMethod,
@@ -12,12 +13,12 @@ const PaymentMethodSelector = ({
   const [phoneNumber, setPhoneNumber] = useState("");
   const [phoneError, setPhoneError] = useState("");
 
-  const validateMpesaPhone = (phone) => {
-    // Kenya phone number validation
-    const kenyanPhoneRegex =
-      /^(254|0)(?:7(?:0[0-9]|1[0-2]|3[0-9]|5[0-6]|7[0-7]|8[0-9]|9[0-9])|1(?:1[0-5])|2(?:0[0-9]|1[0-2])|[14](?:0[0-9]|1[0-2])[0-9]{6})$/;
-    return kenyanPhoneRegex.test(phone.replace(/\s/g, ""));
-  };
+  // const validateMpesaPhone = (phone) => {
+  //   // Kenya phone number validation
+  //   const kenyanPhoneRegex =
+  //     /^(254|0)(?:7(?:0[0-9]|1[0-2]|3[0-9]|5[0-6]|7[0-7]|8[0-9]|9[0-9])|1(?:1[0-5])|2(?:0[0-9]|1[0-2])|[14](?:0[0-9]|1[0-2])[0-9]{6})$/;
+  //   return kenyanPhoneRegex.test(phone.replace(/\s/g, ""));
+  // };
 
   const handlePhoneChange = (e) => {
     const input = e.target.value;
@@ -25,16 +26,15 @@ const PaymentMethodSelector = ({
 
     // Validate phone for M-Pesa
     if (paymentMethod === "MPESA") {
-      const isValid = validateMpesaPhone(input);
+      const isValid = mpesaPhoneUtils.isValidKenyanPhone(input);
       setPhoneError(isValid ? "" : "Invalid Kenyan phone number");
 
       // Only set payment fields if valid
       if (isValid) {
+        const formattedNumber = mpesaPhoneUtils.formatToKenyanPhone(input);
         setPaymentFields((prev) => ({
           ...prev,
-          phoneNumber: input.startsWith("0")
-            ? "254" + input.substring(1)
-            : input,
+          phoneNumber: formattedNumber,
         }));
       }
     }
