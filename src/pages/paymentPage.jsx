@@ -23,7 +23,7 @@ import "react-toastify/dist/ReactToastify.css";
 import { ToastContainer } from "react-toastify";
 
 // Import new components
-import DeliveryAddressForm from "../components/paymentComponents/DeliveryAddressForm";
+import DeliveryAddressForm from "../components/paymentComponents/DeliveryAddressForm-copy";
 import ShippingOptions from "../components/paymentComponents/ShippingOptions";
 import PaymentMethodSelection from "../components/paymentComponents/PaymentMethodSelector";
 import OrderSummary from "../components/paymentComponents/OrderSummary";
@@ -133,7 +133,7 @@ const PaymentPage = () => {
         break;
       case "fedx":
       case "dhl-express":
-        setShippingCost(100.0);
+        setShippingCost(0.0);
         break;
       default:
         setShippingCost(0);
@@ -222,7 +222,7 @@ const PaymentPage = () => {
     fetchCities();
   }, [deliveryDetails.country]);
 
-  // handlePayment function to process payment and create order///////////
+  ////////// HANDLEPayment function to process payment and create order///////////
   const handlePayment = async () => {
     // Validation checks
     if (
@@ -231,35 +231,53 @@ const PaymentPage = () => {
       !deliveryDetails.phone ||
       !deliveryDetails.address
     ) {
-      setError("Please fill in all required delivery details");
+      // toError("Please fill in all required delivery details");
+      toast.error("Please fill in all required delivery details");
       return;
     }
 
     if (!selectedShipping) {
-      setError("Please select a shipping method");
+      // setError("Please select a shipping method");
+      toast.error("Please select a shipping method");
       return;
     }
 
     if (!paymentMethod) {
-      setError("Please select a payment method");
+      // setError("Please select a payment method");
+      toast.error("Please select a payment method");
       return;
     }
 
     setProcessingPayment(true);
     setError(null);
+    // Create the processing toast and store its ID
+    const toastId = toast.loading("Processing your order...");
 
     try {
       const authToken = localStorage.getItem("authToken");
       if (!authToken) {
-        setError("You must be logged in to place an order");
+        toast.update(toastId, {
+          render: "You must be logged in to place an order",
+          type: "error",
+          isLoading: false,
+          autoClose: 5000,
+        });
         setProcessingPayment(false);
         return;
       }
 
+      // REPLACE everything from here...TO CHECK IF ORDER IS BEING CREATED
       // Create order first
-      const orderResponse = await axios.post(
-        API_ENDPOINTS.createOrder,
-        {
+      try {
+        // Show processing toast
+        toast.update(toastId, {
+          render: "Creating your order...",
+          type: "info",
+          isLoading: true,
+        });
+
+        // Prepare order payload
+        const orderPayload = {
           userId: localStorage.getItem("userId"),
           deliveryDetails: {
             ...deliveryDetails,
@@ -270,149 +288,224 @@ const PaymentPage = () => {
           shippingMethod: selectedShipping,
           shippingCost,
           paymentMethod,
-          cartItems,
+          cartItems: cartItems.map((item) => ({
+            productId: item.productId,
+            quantity: item.quantity,
+            color: item.color,
+          })),
           subtotal,
           tax,
           totalAmount: subtotal + shippingCost + tax,
-        },
-        {
-          headers: { Authorization: `Bearer ${authToken}` },
+        };
+
+        console.log("Sending order payload:", orderPayload);
+
+        // Create order
+        const orderResponse = await axios.post(
+          API_ENDPOINTS.createOrder,
+          orderPayload,
+          {
+            headers: {
+              Authorization: `Bearer ${authToken}`,
+              "Content-Type": "application/json",
+            },
+            timeout: 100000,
+          }
+        );
+
+        console.log("Order creation response:", orderResponse.data);
+
+        // Check if order was created successfully
+        if (!orderResponse.data || !orderResponse.data.orderId) {
+          throw new Error("Invalid order response from server");
         }
-      );
 
-      const totalAmount = subtotal + shippingCost + tax;
+        // Update toast with success message
+        toast.update(toastId, {
+          render: "Order created successfully, processing payment...",
+          type: "success",
+          isLoading: true,
+        });
 
-      if (paymentMethod === "MPESA") {
-        // M-Pesa Payment Flow
-        try {
-          const mpesaResponse = await axios.post(
-            API_ENDPOINTS.mpesaInitiate,
-            {
-              orderId: orderResponse.data.orderId,
+        const totalAmount = subtotal + shippingCost + tax;
+
+        ////////upto here for checking if order is being created////////////////////////
+
+        if (paymentMethod === "MPESA") {
+          // M-Pesa Payment Flow
+          try {
+            // Add console.log to see what we're sending
+            const mpesaPayload = {
+              orderId: orderResponse.data.orderId || 0, // Fallback to 0 if orderId is undefined
               phoneNumber: paymentFields.phoneNumber,
               amount: totalAmount,
-              description: `Payment for Order #${orderResponse.data.orderId}`,
-              accountReference: `ORDER${orderResponse.data.orderId}`,
-            },
-            {
-              headers: { Authorization: `Bearer ${authToken}` },
-            }
-          );
-
-          if (mpesaResponse.data.success) {
-            // Show STK push notification message
-            toast.info(
-              "Please check your phone for the M-Pesa payment prompt",
-              {
-                position: "top-center",
-                autoClose: false,
-              }
-            );
-
-            // Start checking payment status
-            let attempts = 0;
-            const maxAttempts = 12; // 1 minute (5 seconds * 12)
-
-            const checkPaymentStatus = async () => {
-              try {
-                const statusResponse = await axios.get(
-                  API_ENDPOINTS.mpesaVerify(
-                    mpesaResponse.data.checkoutRequestId
-                  )
-                );
-
-                if (statusResponse.data.success) {
-                  toast.success("Payment successful!");
-                  navigate("/payment/success", {
-                    state: { orderId: orderResponse.data.orderId },
-                  });
-                  return;
-                }
-
-                if (statusResponse.data.failed) {
-                  toast.error("Payment failed. Please try again.");
-                  setProcessingPayment(false);
-                  return;
-                }
-
-                attempts++;
-                if (attempts < maxAttempts) {
-                  setTimeout(checkPaymentStatus, 5000); // Check every 5 seconds
-                } else {
-                  toast.warning(
-                    "Payment status unclear. If amount was deducted, please contact support.",
-                    { autoClose: false }
-                  );
-                  setProcessingPayment(false);
-                }
-              } catch (error) {
-                console.error("Payment status check failed:", error);
-                toast.error("Error verifying payment status");
-                setProcessingPayment(false);
-              }
+              description: `Payment for Order #${
+                orderResponse.data.orderId || "New"
+              }`,
+              accountReference: `SCEED-ORDER${
+                orderResponse.data.orderId || "SceedTEST001"
+              }`,
             };
+            console.log("M-Pesa Payload:", mpesaPayload);
 
-            // Start the payment status check
-            checkPaymentStatus();
-          } else {
-            throw new Error(
-              mpesaResponse.data.message || "Failed to initiate M-Pesa payment"
+            // Initiate M-Pesa Payment
+            const mpesaResponse = await axios.post(
+              API_ENDPOINTS.mpesaInitiate,
+              mpesaPayload,
+              // {
+              //   orderId: orderResponse.data.orderId || 0,
+              //   phoneNumber: paymentFields.phoneNumber,
+              //   amount: totalAmount,
+              //   description: `Payment for Order #${orderResponse.data.orderId}`,
+              //   accountReference: `SCEED-ORDER${orderResponse.data.orderId}`,
+              // },
+              {
+                headers: {
+                  "Content-Type": "application/json",
+                  // Only include Authorization if your endpoint requires it
+                  // Authorization: `Bearer ${authToken}`
+                },
+              }
             );
-          }
-        } catch (error) {
-          toast.error(error.response?.data?.message || "M-Pesa payment failed");
-          setProcessingPayment(false);
-        }
-      } else {
-        // Dummy code for other payment methods (DPO Integration placeholder)
-        try {
-          // This will be replaced with actual DPO integration
-          const dpoResponse = await axios.post(
-            API_ENDPOINTS.processPayment,
-            {
-              orderId: orderResponse.data.orderId,
-              paymentMethod,
-              amount: totalAmount,
-              currency: "KES",
-              customerDetails: {
-                firstName: deliveryDetails.fullName.split(" ")[0],
-                lastName: deliveryDetails.fullName
-                  .split(" ")
-                  .slice(1)
-                  .join(" "),
-                email: "customer@example.com", // You'll need to add email to deliveryDetails
-                phone: deliveryDetails.phone,
-                country: deliveryDetails.country,
-              },
-              returnUrl: `${window.location.origin}/payment/verify`,
-              cancelUrl: `${window.location.origin}/payment/cancel`,
-            },
-            {
-              headers: { Authorization: `Bearer ${authToken}` },
-            }
-          );
+            console.log("M-Pesa Response:", mpesaResponse.data);
 
-          // Redirect to DPO payment page
-          if (dpoResponse.data.paymentUrl) {
-            window.location.href = dpoResponse.data.paymentUrl;
-          } else {
-            throw new Error("Invalid payment gateway response");
+            // if (mpesaResponse.data.success) {
+            //   // Show STK push notification message
+            //   toast.info(
+            //     "Please check your phone for the M-Pesa payment prompt",
+            //     {
+            //       position: "top-center",
+            //       autoClose: false,
+            //     }
+            //   );
+            if (mpesaResponse.data.success) {
+              toast.update(toastId, {
+                render: "Please check your phone for the M-Pesa payment prompt",
+                type: "info",
+                isLoading: false,
+                autoClose: false,
+              });
+
+              // Start checking payment status
+              let attempts = 0;
+              const maxAttempts = 12; // 1 minute (5 seconds * 12)
+
+              const checkPaymentStatus = async () => {
+                try {
+                  const statusResponse = await axios.get(
+                    API_ENDPOINTS.mpesaVerify(
+                      mpesaResponse.data.checkoutRequestId
+                    )
+                  );
+
+                  if (statusResponse.data.success) {
+                    toast.success("Payment successful!");
+                    navigate("/payment/success", {
+                      state: { orderId: orderResponse.data.orderId },
+                    });
+                    return;
+                  }
+
+                  if (statusResponse.data.failed) {
+                    toast.error("Payment failed. Please try again.");
+                    setProcessingPayment(false);
+                    return;
+                  }
+
+                  attempts++;
+                  if (attempts < maxAttempts) {
+                    setTimeout(checkPaymentStatus, 5000); // Check every 5 seconds
+                  } else {
+                    toast.warning(
+                      "Payment status unclear. If amount was deducted, please contact support.",
+                      { autoClose: false }
+                    );
+                    setProcessingPayment(false);
+                  }
+                } catch (error) {
+                  console.error("Payment status check failed:", error);
+                  toast.error("Error verifying payment status");
+                  setProcessingPayment(false);
+                }
+              };
+
+              // Start the payment status check
+              checkPaymentStatus();
+            } else {
+              throw new Error(
+                mpesaResponse.data.message ||
+                  "Failed to initiate M-Pesa payment"
+              );
+            }
+          } catch (error) {
+            toast.error(
+              error.response?.data?.message || "M-Pesa payment failed"
+            );
+            setProcessingPayment(false);
           }
-        } catch (error) {
-          toast.error("Payment gateway error. Please try again.");
-          setProcessingPayment(false);
+        } else {
+          // Dummy code for other payment methods (DPO Integration placeholder)
+          try {
+            // This will be replaced with actual DPO integration
+            const dpoResponse = await axios.post(
+              API_ENDPOINTS.processDPOPayment,
+              {
+                orderId: orderResponse.data.orderId,
+                paymentMethod,
+                amount: totalAmount,
+                currency: "KES",
+                customerDetails: {
+                  firstName: deliveryDetails.fullName.split(" ")[0],
+                  lastName: deliveryDetails.fullName
+                    .split(" ")
+                    .slice(1)
+                    .join(" "),
+                  email: "customer@example.com", // You'll need to add email to deliveryDetails
+                  phone: deliveryDetails.phone,
+                  country: deliveryDetails.country,
+                },
+                returnUrl: `${window.location.origin}/payment/verify`,
+                cancelUrl: `${window.location.origin}/payment/cancel`,
+              },
+              {
+                headers: { Authorization: `Bearer ${authToken}` },
+              }
+            );
+
+            // Redirect to DPO payment page
+            if (dpoResponse.data.paymentUrl) {
+              window.location.href = dpoResponse.data.paymentUrl;
+            } else {
+              throw new Error("Invalid payment gateway response");
+            }
+          } catch (dpoError) {
+            console.error("DPO Error:", dpoError);
+            toast.error("Payment gateway error. Please try again.");
+            setProcessingPayment(false);
+          }
         }
+      } catch (orderError) {
+        console.error("Order Creation Error:", orderError);
+        toast.update(toastId, {
+          render:
+            orderError.response?.data?.message || "Failed to create order",
+          type: "error",
+          isLoading: false,
+          autoClose: 5000,
+        });
+        setProcessingPayment(false);
       }
-    } catch (error) {
-      const errorMessage =
-        error.response?.data?.message ||
-        error.message ||
-        "Error processing payment. Please try again.";
-      toast.error(errorMessage);
+    } catch (mainError) {
+      console.error("Main Error:", mainError);
+      toast.update(toastId, {
+        render: "An unexpected error occurred",
+        type: "error",
+        isLoading: false,
+        autoClose: 5000,
+      });
       setProcessingPayment(false);
     }
-  };
-
+  }; // End of handlePayment
   //render payment methods function to display payment methods
   const renderPaymentMethods = () => (
     <div className="mt-6">
@@ -489,7 +582,20 @@ const PaymentPage = () => {
 
   return (
     <div className="flex flex-col min-h-screen">
-      <ToastContainer position="top-center" />
+      {/* Placing the ToastContainer at the page level */}
+      <ToastContainer
+        position="top-center"
+        autoClose={5000}
+        hideProgressBar={false}
+        newestOnTop
+        closeOnClick
+        rtl={false}
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover
+        theme="light"
+      />
+
       <Header />
       <main className="flex-grow bg-gray-50">
         <div className="container mx-auto px-4 py-4">
@@ -517,20 +623,102 @@ const PaymentPage = () => {
                   getAvailablePaymentMethods={getAvailablePaymentMethods}
                 />
               </div>
-
               <button
                 className="mt-4 w-full bg-indigo-600 text-white py-3 rounded-md hover:bg-indigo-700 transition-colors disabled:bg-gray-400 disabled:cursor-not-allowed"
                 onClick={handlePayment}
                 disabled={processingPayment || !paymentMethod}>
                 {processingPayment ? "Processing Payment..." : "Place Order"}
               </button>
+              {/* //button to test mpesa payment // Add this button temporarily for
+              testing */}
+              {/* <button
+                onClick={async () => {
+                  try {
+                    const testPayload = {
+                      orderId: 0,
+                      phoneNumber: "254712345678", // Use your test number
+                      amount: 1,
+                      description: "Test Payment",
+                      accountReference: "TEST001",
+                    };
 
+                    console.log("Testing M-Pesa with payload:", testPayload);
+
+                    const response = await axios.post(
+                      API_ENDPOINTS.mpesaInitiate,
+                      testPayload,
+                      {
+                        headers: {
+                          "Content-Type": "application/json",
+                        },
+                      }
+                    );
+
+                    console.log("Test response:", response.data);
+                    toast.success("M-Pesa test successful!");
+                  } catch (error) {
+                    console.error("Test error:", error.response || error);
+                    toast.error("M-Pesa test failed!");
+                  }
+                }}
+                className="mt-2 px-4 py-2 bg-blue-500 text-white rounded">
+                Test M-Pesa Integration
+              </button> */}
               {error && (
                 <div className="mt-4 bg-red-100 text-red-500 p-2 rounded">
                   {error}
                 </div>
               )}
+              {/* Test toast */}
+              {/* // Add these test buttons right after your error display and
+              before the "Go Back" button */}
+              {/* <div className="mt-4 space-y-2"> */}
+                {/* Test buttons for different toast types */}
+                {/* <div className="flex gap-2">
+                  <button
+                    className="px-4 py-2 bg-green-500 text-white rounded"
+                    onClick={() => toast.success("This is a success message!")}>
+                    Test Success Toast
+                  </button>
 
+                  <button
+                    className="px-4 py-2 bg-red-500 text-white rounded"
+                    onClick={() => toast.error("This is an error message!")}>
+                    Test Error Toast
+                  </button>
+
+                  <button
+                    className="px-4 py-2 bg-blue-500 text-white rounded"
+                    onClick={() => toast.info("This is an info message!")}>
+                    Test Info Toast
+                  </button>
+                </div>
+
+                <div className="flex gap-2">
+                  <button
+                    className="px-4 py-2 bg-yellow-500 text-white rounded"
+                    onClick={() => toast.warning("This is a warning message!")}>
+                    Test Warning Toast
+                  </button>
+
+                  <button
+                    className="px-4 py-2 bg-purple-500 text-white rounded"
+                    onClick={() =>
+                      toast.promise(
+                        new Promise((resolve) => setTimeout(resolve, 2000)),
+                        {
+                          pending: "Promise is pending...",
+                          success: "Promise resolved 👌",
+                          error: "Promise rejected 🤯",
+                        }
+                      )
+                    }>
+                    Test Promise Toast
+                  </button>
+                </div>
+              </div> */}
+              {/* Your existing Go Back button */}
+              {/* Go back button */}
               <button
                 className="mt-2 w-full text-gray-600 flex items-center justify-center space-x-2 hover:text-gray-800 border"
                 onClick={() => navigate(-1)}>

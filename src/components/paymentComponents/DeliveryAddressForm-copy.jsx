@@ -1,4 +1,5 @@
-import React, { useEffect, useState } from "react";
+// sceed_frontend/src/components/paymentComponents/DeliveryAddressForm.jsx
+import React from "react";
 import Select from "react-select";
 import CreatableSelect from "react-select/creatable";
 
@@ -8,67 +9,12 @@ const DeliveryAddressForm = ({
   countries,
   cities,
 }) => {
-  const [useSavedDetails, setUseSavedDetails] = useState(true);
-
-  useEffect(() => {
-    const savedDetails = localStorage.getItem("savedDeliveryDetails");
-    if (savedDetails) {
-      const parsedDetails = JSON.parse(savedDetails);
-      if (useSavedDetails) {
-        setDeliveryDetails((prev) => ({
-          ...prev,
-          ...parsedDetails,
-          saveInfo: true,
-        }));
-      }
-    }
-  }, [useSavedDetails]);
-
   const handleInputChange = (e) => {
     const { name, value } = e.target;
-    const updatedDetails = {
-      ...deliveryDetails,
-      [name]: value,
-    };
-    setDeliveryDetails(updatedDetails);
-
-    // Only save if the save checkbox is checked
-    if (deliveryDetails.saveInfo) {
-      localStorage.setItem(
-        "savedDeliveryDetails",
-        JSON.stringify(updatedDetails)
-      );
-    }
-  };
-
-  const handleSaveInfoChange = (e) => {
-    const isChecked = e.target.checked;
     setDeliveryDetails((prev) => ({
       ...prev,
-      saveInfo: isChecked,
+      [name]: value,
     }));
-
-    if (isChecked) {
-      localStorage.setItem(
-        "savedDeliveryDetails",
-        JSON.stringify(deliveryDetails)
-      );
-    }
-  };
-
-  const clearSavedDetails = () => {
-    localStorage.removeItem("savedDeliveryDetails");
-    setDeliveryDetails({
-      fullName: "",
-      country: "",
-      city: "",
-      phone: "",
-      address: "",
-      apartment: "",
-      additionalInfo: "",
-      saveInfo: false,
-    });
-    setUseSavedDetails(false);
   };
 
   return (
@@ -77,29 +23,6 @@ const DeliveryAddressForm = ({
         Delivery Address
       </h2>
 
-      {/* Add this section if saved details exist */}
-      {localStorage.getItem("savedDeliveryDetails") && (
-        <div className="mb-4 p-3 bg-gray-50 rounded-md">
-          <div className="flex items-center justify-between">
-            <label className="flex items-center">
-              <input
-                type="checkbox"
-                checked={useSavedDetails}
-                onChange={(e) => setUseSavedDetails(e.target.checked)}
-                className="mr-2"
-              />
-              Use saved delivery information
-            </label>
-            <button
-              onClick={clearSavedDetails}
-              className="text-sm text-red-600 hover:text-red-800">
-              Clear saved information
-            </button>
-          </div>
-        </div>
-      )}
-
-      {/* Existing form fields */}
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
         <div>
           <label className="block text-sm mb-1">Full Name</label>
@@ -220,18 +143,20 @@ const DeliveryAddressForm = ({
         />
       </div>
 
-      {/* Modified save checkbox */}
       <div className="mb-6">
         <label className="flex items-center">
           <input
             type="checkbox"
             checked={deliveryDetails.saveInfo}
-            onChange={handleSaveInfoChange}
+            onChange={(e) =>
+              setDeliveryDetails((prev) => ({
+                ...prev,
+                saveInfo: e.target.checked,
+              }))
+            }
             className="mr-2"
           />
-          {localStorage.getItem("savedDeliveryDetails")
-            ? "Update saved information with these details"
-            : "Save information for next purchases"}
+          Save information for next purchases
         </label>
       </div>
     </div>

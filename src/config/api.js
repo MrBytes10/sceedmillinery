@@ -1,6 +1,6 @@
 // sceed_frontend/src/config/api.js
 
-const API_BASE_URL = "https://localhost:7295/api"; // Should be either "https://sceedbackend.pensoft.co.ke/api"; OR this for local "https://localhost:7295/api";
+const API_BASE_URL = "https://sceedbackend.pensoft.co.ke/api"; // Should be either "https://sceedbackend.pensoft.co.ke/api"; OR this for local "https://localhost:7295/api";
 
 export const API_ENDPOINTS = {
   // Product APIs
@@ -53,9 +53,10 @@ export const API_ENDPOINTS = {
     `${API_BASE_URL}/Mpesa/verify/${checkoutRequestId}`, // Verify M-Pesa transaction
 
   // DPOPayment APIs
-  processPayment: `${API_BASE_URL}/payment/process`, // Process a new payment
-  verifyPayment: (transToken) => `${API_BASE_URL}/payment/verify/${transToken}`, // Verify payment status
-  paymentWebhook: `${API_BASE_URL}/payment/webhook`, // Handle payment webhooks from DPO
+  processDPOPayment: `${API_BASE_URL}/payment/process`, // Process a new payment
+  verifyDPOPayment: (transToken) =>
+    `${API_BASE_URL}/payment/verify/${transToken}`, // Verify payment status
+  DPOpaymentWebhook: `${API_BASE_URL}/payment/webhook`, // Handle payment webhooks from DPO
 
   // Contact APIs
   submitContactForm: `${API_BASE_URL}/contact/submit`, // Submit a contact form message
