@@ -3,19 +3,19 @@ import Select from "react-select";
 import CreatableSelect from "react-select/creatable";
 
 const DeliveryAddressForm = ({
-  deliveryDetails,
-  setDeliveryDetails,
+  deliveryAddress,
+  setDeliveryAddress,
   countries,
   cities,
 }) => {
   const [useSavedDetails, setUseSavedDetails] = useState(true);
 
   useEffect(() => {
-    const savedDetails = localStorage.getItem("savedDeliveryDetails");
+    const savedDetails = localStorage.getItem("savedDeliveryAddress");
     if (savedDetails) {
       const parsedDetails = JSON.parse(savedDetails);
       if (useSavedDetails) {
-        setDeliveryDetails((prev) => ({
+        setDeliveryAddress((prev) => ({
           ...prev,
           ...parsedDetails,
           saveInfo: true,
@@ -27,15 +27,15 @@ const DeliveryAddressForm = ({
   const handleInputChange = (e) => {
     const { name, value } = e.target;
     const updatedDetails = {
-      ...deliveryDetails,
+      ...deliveryAddress,
       [name]: value,
     };
-    setDeliveryDetails(updatedDetails);
+    setDeliveryAddress(updatedDetails);
 
     // Only save if the save checkbox is checked
-    if (deliveryDetails.saveInfo) {
+    if (deliveryAddress.saveInfo) {
       localStorage.setItem(
-        "savedDeliveryDetails",
+        "savedDeliveryAddress",
         JSON.stringify(updatedDetails)
       );
     }
@@ -43,22 +43,22 @@ const DeliveryAddressForm = ({
 
   const handleSaveInfoChange = (e) => {
     const isChecked = e.target.checked;
-    setDeliveryDetails((prev) => ({
+    setDeliveryAddress((prev) => ({
       ...prev,
       saveInfo: isChecked,
     }));
 
     if (isChecked) {
       localStorage.setItem(
-        "savedDeliveryDetails",
-        JSON.stringify(deliveryDetails)
+        "savedDeliveryAddress",
+        JSON.stringify(deliveryAddress)
       );
     }
   };
 
   const clearSavedDetails = () => {
-    localStorage.removeItem("savedDeliveryDetails");
-    setDeliveryDetails({
+    localStorage.removeItem("savedDeliveryAddress");
+    setDeliveryAddress({
       fullName: "",
       country: "",
       city: "",
@@ -78,7 +78,7 @@ const DeliveryAddressForm = ({
       </h2>
 
       {/* Add this section if saved details exist */}
-      {localStorage.getItem("savedDeliveryDetails") && (
+      {localStorage.getItem("savedDeliveryAddress") && (
         <div className="mb-4 p-3 bg-gray-50 rounded-md">
           <div className="flex items-center justify-between">
             <label className="flex items-center">
@@ -106,7 +106,7 @@ const DeliveryAddressForm = ({
           <input
             type="text"
             name="fullName"
-            value={deliveryDetails.fullName}
+            value={deliveryAddress.fullName}
             onChange={handleInputChange}
             className="w-full rounded-md p-2 border-2 border-gray-300 focus:outline-none focus:ring-2 focus:ring-indigo-600"
             placeholder="John Doe"
@@ -117,7 +117,7 @@ const DeliveryAddressForm = ({
           <input
             type="tel"
             name="phone"
-            value={deliveryDetails.phone}
+            value={deliveryAddress.phone}
             onChange={handleInputChange}
             className="w-full rounded-md p-2 border-2 border-gray-300 focus:outline-none focus:ring-2 focus:ring-indigo-600"
             placeholder="+123 456 789"
@@ -131,10 +131,10 @@ const DeliveryAddressForm = ({
           <Select
             options={countries}
             value={countries.find(
-              (country) => country.value === deliveryDetails.country
+              (country) => country.value === deliveryAddress.country
             )}
             onChange={(selectedOption) => {
-              setDeliveryDetails((prev) => ({
+              setDeliveryAddress((prev) => ({
                 ...prev,
                 country: selectedOption?.value || "",
                 city: "",
@@ -150,21 +150,21 @@ const DeliveryAddressForm = ({
           <CreatableSelect
             options={cities}
             value={
-              deliveryDetails.city
+              deliveryAddress.city
                 ? {
-                    label: deliveryDetails.city,
-                    value: deliveryDetails.city,
+                    label: deliveryAddress.city,
+                    value: deliveryAddress.city,
                   }
                 : null
             }
             onChange={(selectedOption) => {
-              setDeliveryDetails((prev) => ({
+              setDeliveryAddress((prev) => ({
                 ...prev,
                 city: selectedOption?.value || "",
               }));
             }}
             onCreateOption={(inputValue) => {
-              setDeliveryDetails((prev) => ({
+              setDeliveryAddress((prev) => ({
                 ...prev,
                 city: inputValue,
               }));
@@ -173,7 +173,7 @@ const DeliveryAddressForm = ({
             isClearable
             className="w-full"
             noOptionsMessage={() =>
-              deliveryDetails.country
+              deliveryAddress.country
                 ? "Type to add a new city"
                 : "Select a country first"
             }
@@ -187,7 +187,7 @@ const DeliveryAddressForm = ({
           <input
             type="text"
             name="address"
-            value={deliveryDetails.address}
+            value={deliveryAddress.address}
             onChange={handleInputChange}
             className="w-full rounded-md p-2 border-2 border-gray-300 focus:outline-none focus:ring-2 focus:ring-indigo-600"
             placeholder="123 Main St"
@@ -200,7 +200,7 @@ const DeliveryAddressForm = ({
           <input
             type="text"
             name="apartment"
-            value={deliveryDetails.apartment}
+            value={deliveryAddress.apartment}
             onChange={handleInputChange}
             className="w-full rounded-md p-2 border-2 border-gray-300 focus:outline-none focus:ring-2 focus:ring-indigo-600"
             placeholder="Apt 4B"
@@ -212,7 +212,7 @@ const DeliveryAddressForm = ({
         <label className="block text-sm mb-1">Additional Information</label>
         <textarea
           name="additionalInfo"
-          value={deliveryDetails.additionalInfo}
+          value={deliveryAddress.additionalInfo}
           onChange={handleInputChange}
           className="w-full rounded-md p-2 border-2 border-gray-300 focus:outline-none focus:ring-2 focus:ring-indigo-600"
           rows="3"
@@ -225,11 +225,11 @@ const DeliveryAddressForm = ({
         <label className="flex items-center">
           <input
             type="checkbox"
-            checked={deliveryDetails.saveInfo}
+            checked={deliveryAddress.saveInfo}
             onChange={handleSaveInfoChange}
             className="mr-2"
           />
-          {localStorage.getItem("savedDeliveryDetails")
+          {localStorage.getItem("savedDeliveryAddress")
             ? "Update saved information with these details"
             : "Save information for next purchases"}
         </label>

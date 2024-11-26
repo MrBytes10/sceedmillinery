@@ -23,7 +23,7 @@ import "react-toastify/dist/ReactToastify.css";
 import { ToastContainer } from "react-toastify";
 
 // Import new components
-import DeliveryAddressForm from "../components/paymentComponents/DeliveryAddressForm-copy";
+import DeliveryAddressForm from "../components/paymentComponents/DeliveryAddressForm";
 import ShippingOptions from "../components/paymentComponents/ShippingOptions";
 import PaymentMethodSelection from "../components/paymentComponents/PaymentMethodSelector";
 import OrderSummary from "../components/paymentComponents/OrderSummary";
@@ -93,7 +93,7 @@ const PaymentPage = () => {
     // },
   };
 
-  const [deliveryDetails, setDeliveryDetails] = useState({
+  const [deliveryAddress, setDeliveryAddress] = useState({
     fullName: "",
     country: "",
     city: "",
@@ -117,7 +117,7 @@ const PaymentPage = () => {
   // handleInputChange function to update delivery details
   const handleInputChange = (e) => {
     const { name, value } = e.target;
-    setDeliveryDetails((prev) => ({
+    setDeliveryAddress((prev) => ({
       ...prev,
       [name]: value,
     }));
@@ -168,12 +168,12 @@ const PaymentPage = () => {
 
   // Filter payment methods based on selected country
   const getAvailablePaymentMethods = () => {
-    if (!deliveryDetails.country) return Object.values(PAYMENT_METHODS);
+    if (!deliveryAddress.country) return Object.values(PAYMENT_METHODS);
 
     return Object.values(PAYMENT_METHODS).filter(
       (method) =>
         method.countries.includes("all") ||
-        method.countries.includes(deliveryDetails.country)
+        method.countries.includes(deliveryAddress.country)
     );
   };
 
@@ -198,14 +198,14 @@ const PaymentPage = () => {
 
   useEffect(() => {
     const fetchCities = async () => {
-      if (!deliveryDetails.country) {
+      if (!deliveryAddress.country) {
         setCities([]);
         return;
       }
 
       try {
         const response = await axios.get(
-          `https://api.worldbank.org/v2/country/${deliveryDetails.country}/city?format=json`
+          `https://api.worldbank.org/v2/country/${deliveryAddress.country}/city?format=json`
         );
         const cityOptions =
           response.data[1]?.map((city) => ({
@@ -220,16 +220,16 @@ const PaymentPage = () => {
     };
 
     fetchCities();
-  }, [deliveryDetails.country]);
+  }, [deliveryAddress.country]);
 
   ////////// HANDLEPayment function to process payment and create order///////////
   const handlePayment = async () => {
     // Validation checks
     if (
-      !deliveryDetails.fullName ||
-      !deliveryDetails.country ||
-      !deliveryDetails.phone ||
-      !deliveryDetails.address
+      !deliveryAddress.fullName ||
+      !deliveryAddress.country ||
+      !deliveryAddress.phone ||
+      !deliveryAddress.address
     ) {
       // toError("Please fill in all required delivery details");
       toast.error("Please fill in all required delivery details");
@@ -260,7 +260,7 @@ const PaymentPage = () => {
           render: "You must be logged in to place an order",
           type: "error",
           isLoading: false,
-          autoClose: 5000,
+          autoClose: 7000,
         });
         setProcessingPayment(false);
         return;
@@ -278,26 +278,39 @@ const PaymentPage = () => {
 
         // Prepare order payload
         const orderPayload = {
-          userId: localStorage.getItem("userId"),
-          deliveryDetails: {
-            ...deliveryDetails,
+          userId: localStorage.getItem("userId") || null, //userId should be a string to avoid errors in backend
+          deliveryAddress: {
+            fullName: deliveryAddress.fullName,
             country:
-              countries.find((c) => c.value === deliveryDetails.country)
-                ?.label || deliveryDetails.country,
+              countries.find((c) => c.value === deliveryAddress.country)
+                ?.label || deliveryAddress.country,
+            city: deliveryAddress.city,
+            phone: deliveryAddress.phone,
+            address: deliveryAddress.address,
+            apartment: deliveryAddress.apartment,
+            additionalInfo: deliveryAddress.additionalInfo,
           },
           shippingMethod: selectedShipping,
           shippingCost,
           paymentMethod,
           cartItems: cartItems.map((item) => ({
-            productId: item.productId,
+            productId: item.productId || item.id,
             quantity: item.quantity,
             color: item.color,
           })),
-          subtotal,
+          subTotal: subtotal,
           tax,
           totalAmount: subtotal + shippingCost + tax,
         };
-
+        // trying validation before sending order payload
+        if (!orderPayload.userId) {
+          toast.error("User ID not found. Please log in again.");
+          setProcessingPayment(false);
+          return;
+        }
+        // Added logging to help debug
+        console.log("User ID:", orderPayload.userId);
+        console.log("Auth Token:", authToken);
         console.log("Sending order payload:", orderPayload);
 
         // Create order
@@ -309,7 +322,7 @@ const PaymentPage = () => {
               Authorization: `Bearer ${authToken}`,
               "Content-Type": "application/json",
             },
-            timeout: 100000,
+            timeout: 300000, // Increased timeout to 5 minutes/1 minute=60000ms
           }
         );
 
@@ -455,14 +468,14 @@ const PaymentPage = () => {
                 amount: totalAmount,
                 currency: "KES",
                 customerDetails: {
-                  firstName: deliveryDetails.fullName.split(" ")[0],
-                  lastName: deliveryDetails.fullName
+                  firstName: deliveryAddress.fullName.split(" ")[0],
+                  lastName: deliveryAddress.fullName
                     .split(" ")
                     .slice(1)
                     .join(" "),
-                  email: "customer@example.com", // You'll need to add email to deliveryDetails
-                  phone: deliveryDetails.phone,
-                  country: deliveryDetails.country,
+                  email: "customer@example.com", // You'll need to add email to deliveryAddress
+                  phone: deliveryAddress.phone,
+                  country: deliveryAddress.country,
                 },
                 returnUrl: `${window.location.origin}/payment/verify`,
                 cancelUrl: `${window.location.origin}/payment/cancel`,
@@ -603,11 +616,11 @@ const PaymentPage = () => {
             <div className="lg:col-span-2">
               <div className="bg-white rounded-lg p-4 shadow-md">
                 <DeliveryAddressForm
-                  deliveryDetails={deliveryDetails}
+                  deliveryAddress={deliveryAddress}
                   countries={countries}
                   cities={cities}
                   handleInputChange={handleInputChange}
-                  setDeliveryDetails={setDeliveryDetails}
+                  setDeliveryAddress={setDeliveryAddress}
                 />
 
                 <ShippingOptions
@@ -673,8 +686,8 @@ const PaymentPage = () => {
               {/* // Add these test buttons right after your error display and
               before the "Go Back" button */}
               {/* <div className="mt-4 space-y-2"> */}
-                {/* Test buttons for different toast types */}
-                {/* <div className="flex gap-2">
+              {/* Test buttons for different toast types */}
+              {/* <div className="flex gap-2">
                   <button
                     className="px-4 py-2 bg-green-500 text-white rounded"
                     onClick={() => toast.success("This is a success message!")}>
