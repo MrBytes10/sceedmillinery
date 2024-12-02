@@ -189,15 +189,61 @@ export const CartProvider = ({ children }) => {
     [getHeaders]
   );
 
+  // const updateCartItem = useCallback(
+  //   async (itemId, quantity) => {
+  //     dispatch({ type: "SET_LOADING", payload: true });
+  //     try {
+  //       const response = await fetch(`${API_ENDPOINTS.cart}/${itemId}`, {
+  //         method: "PUT",
+  //         credentials: "include",
+  //         headers: getHeaders(),
+  //         body: quantity.toString(), //orJSON.stringify({ quantity }) // Send quantity as request body
+  //       });
+  //       if (!response.ok) throw new Error("Failed to update cart item");
+  //       dispatch({ type: "UPDATE_ITEM", payload: { id: itemId, quantity } });
+  //     } catch (error) {
+  //       dispatch({ type: "SET_ERROR", payload: error.message });
+  //     } finally {
+  //       dispatch({ type: "SET_LOADING", payload: false });
+  //     }
+  //   },
+  //   [getHeaders]
+  // );
+
+  // const removeFromCart = useCallback(
+  //   async (itemId) => {
+  //     dispatch({ type: "SET_LOADING", payload: true });
+  //     try {
+  //       const response = await fetch(`${API_ENDPOINTS.cart}/${itemId}`, {
+  //         method: "DELETE", //or "POST" with "DELETE" in body as JSON.stringify({ id: itemId }) // Send itemId as request body or query param (e.g. /cart?id=123) // or use "PATCH" with "DELETE" in body as JSON.stringify({ id: itemId }) // Send itemId as request body or query param (e.g. /cart?id=123)
+  //         credentials: "include",
+  //         headers: getHeaders(),
+  //         //mode: "no-cors",
+  //       });
+  //       if (!response.ok) throw new Error("Failed to remove item from cart");
+  //       dispatch({ type: "REMOVE_ITEM", payload: itemId });
+  //     } catch (error) {
+  //       dispatch({ type: "SET_ERROR", payload: error.message });
+  //     } finally {
+  //       dispatch({ type: "SET_LOADING", payload: false });
+  //     }
+  //   },
+  //   [getHeaders]
+  // );
+
   const updateCartItem = useCallback(
     async (itemId, quantity) => {
       dispatch({ type: "SET_LOADING", payload: true });
       try {
-        const response = await fetch(`${API_ENDPOINTS.cart}/${itemId}`, {
-          method: "PUT",
+        const response = await fetch(API_ENDPOINTS.updateCartItem, {
+          // Use the endpoint directly
+          method: "POST",
           credentials: "include",
           headers: getHeaders(),
-          body: quantity.toString(), //orJSON.stringify({ quantity }) // Send quantity as request body
+          body: JSON.stringify({
+            itemId: itemId,
+            quantity: quantity,
+          }),
         });
         if (!response.ok) throw new Error("Failed to update cart item");
         dispatch({ type: "UPDATE_ITEM", payload: { id: itemId, quantity } });
@@ -210,15 +256,17 @@ export const CartProvider = ({ children }) => {
     [getHeaders]
   );
 
+  // Remove item from cart
   const removeFromCart = useCallback(
     async (itemId) => {
       dispatch({ type: "SET_LOADING", payload: true });
       try {
-        const response = await fetch(`${API_ENDPOINTS.cart}/${itemId}`, {
-          method: "DELETE", //or "POST" with "DELETE" in body as JSON.stringify({ id: itemId }) // Send itemId as request body or query param (e.g. /cart?id=123) // or use "PATCH" with "DELETE" in body as JSON.stringify({ id: itemId }) // Send itemId as request body or query param (e.g. /cart?id=123)
+        const response = await fetch(API_ENDPOINTS.removeFromCart, {
+          // Use the endpoint directly
+          method: "POST",
           credentials: "include",
           headers: getHeaders(),
-          //mode: "no-cors",
+          body: JSON.stringify(itemId), // Send itemId as a number
         });
         if (!response.ok) throw new Error("Failed to remove item from cart");
         dispatch({ type: "REMOVE_ITEM", payload: itemId });
