@@ -1,6 +1,6 @@
 // sceed_frontend/src/config/api.js
 
-const API_BASE_URL = "https://sceedbackend.pensoft.co.ke/api"; // Should be either "https://sceedbackend.pensoft.co.ke/api"; OR this for local "https://localhost:7295/api";
+const API_BASE_URL = "https://localhost:7295/api"; // Should be either "https://sceedbackend.pensoft.co.ke/api"; OR this for local "https://localhost:7295/api";
 // TODO: Change the API_BASE_URL to the correct one when deploying
 export const API_ENDPOINTS = {
   // Product APIs ///////////////////////////////
@@ -29,17 +29,18 @@ export const API_ENDPOINTS = {
   loginUser: `${API_BASE_URL}/users/login`, // Log in an existing user
   googleLoginUser: `${API_BASE_URL}/users/google-login`, // Log in with Google
   getUserProfile: `${API_BASE_URL}/users/profile`, // Get user profile details
-  updateUserProfile: `${API_BASE_URL}/users/profile`, // Update user profile details
+  //updateUserProfile: `${API_BASE_URL}/users/profile`, // Update user profile details
+  updateUserProfile: `${API_BASE_URL}/users/profile/update`, // Changed to match new POST endpoint
 
   // Cart APIs/Endpoints ///////////////////////////////
   cart: `${API_BASE_URL}/cart`, // Retrieve cart items
   addToCart: `${API_BASE_URL}/cart`, // Add item to cart
   //updateCartItem: (itemId) => `${API_BASE_URL}/cart/${itemId}`, // Update item quantity in cart
   //removeFromCart: (itemId) => `${API_BASE_URL}/cart/${itemId}`, // Remove item from cart
-  clearCart: `${API_BASE_URL}/cart/clear`, // Clear all items from cart
   mergeCart: `${API_BASE_URL}/cart/merge`, // Merge anonymous cart with user cart
   updateCartItem: `${API_BASE_URL}/cart/update`, // Changed: now uses POST to update
   removeFromCart: `${API_BASE_URL}/cart/remove`, // Changed: now uses POST to remove
+  clearCart: `${API_BASE_URL}/cart/clear`, // Clear all items from cart
 
   // Order APIs ///////////////////////////////
   orders: `${API_BASE_URL}/orders`, // Base orders endpoint

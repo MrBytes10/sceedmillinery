@@ -78,6 +78,40 @@ const UserProfilePage = () => {
     }));
   };
 
+  // const handleUpdateProfile = async (e) => {
+  //   e.preventDefault();
+  //   try {
+  //     setLoading(true);
+  //     setError(null);
+  //     setUpdateSuccess(false);
+
+  //     const response = await fetch(API_ENDPOINTS.updateUserProfile, {
+  //       method: "PUT",
+  //       headers: {
+  //         Authorization: `Bearer ${localStorage.getItem("authToken")}`,
+  //         "Content-Type": "application/json",
+  //       },
+  //       body: JSON.stringify({
+  //         fullName: profile.fullName,
+  //         email: profile.email,
+  //         phoneNumber: profile.phoneNumber,
+  //         physicalAddress: profile.physicalAddress,
+  //       }),
+  //     });
+
+  //     if (!response.ok) {
+  //       throw new Error("Failed to update profile");
+  //     }
+
+  //     setUpdateSuccess(true);
+  //     setIsEditing(false);
+  //   } catch (error) {
+  //     setError("Error updating profile. Please try again.");
+  //     console.error("Error updating profile:", error);
+  //   } finally {
+  //     setLoading(false);
+  //   }
+  // };
   const handleUpdateProfile = async (e) => {
     e.preventDefault();
     try {
@@ -86,7 +120,7 @@ const UserProfilePage = () => {
       setUpdateSuccess(false);
 
       const response = await fetch(API_ENDPOINTS.updateUserProfile, {
-        method: "PUT",
+        method: "POST", // Changed from PUT to POST
         headers: {
           Authorization: `Bearer ${localStorage.getItem("authToken")}`,
           "Content-Type": "application/json",
