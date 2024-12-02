@@ -115,7 +115,8 @@ const ProductsManagement = () => {
 
     try {
       if (isEditing) {
-        await axios.put(
+        await axios.post(
+          // Changed from put to post
           API_ENDPOINTS.updateProduct(editingProduct.id),
           payload
         );
@@ -132,12 +133,13 @@ const ProductsManagement = () => {
   };
 
   // Delete a product
+  // Update the handleDelete function
   const handleDelete = async (id) => {
     try {
       console.log(`Attempting to delete product with ID: ${id}`);
       console.log(`Delete URL: ${API_ENDPOINTS.deleteProduct(id)}`);
 
-      const response = await axios.delete(API_ENDPOINTS.deleteProduct(id));
+      const response = await axios.post(API_ENDPOINTS.deleteProduct(id)); // Changed from delete to post
       console.log("Delete response:", response);
 
       notification.success({ message: "Product deleted successfully" });

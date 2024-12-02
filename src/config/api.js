@@ -12,9 +12,9 @@ export const API_ENDPOINTS = {
 
   createProduct: `${API_BASE_URL}/products/CreateProduct`, // Create a new product
 
-  deleteProduct: (id) => `${API_BASE_URL}/products/${id}`, // Delete a product by ID
+  deleteProduct: (id) => `${API_BASE_URL}/products/delete/${id}`, // Delete a product by ID/changed to POST method
 
-  updateProduct: (id) => `${API_BASE_URL}/products/${id}`, // Update an existing product by ID
+  updateProduct: (id) => `${API_BASE_URL}/products/update/${id}`, // Update an existing product by ID/ changed to POST method
 
   // Filter APIs ///////////////////////////////
   getCategories: `${API_BASE_URL}/products/categories`, // Get all available product categories
