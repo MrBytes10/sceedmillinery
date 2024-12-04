@@ -347,106 +347,154 @@ const PaymentPage = () => {
 
         ////////upto here for checking if order is being created////////////////////////
 
+        // mpesa payment code
+        // In the M-Pesa section of handlePayment:
         if (paymentMethod === "MPESA") {
-          // M-Pesa Payment Flow
           try {
-            // Add console.log to see what we're sending
             const mpesaPayload = {
-              orderId: orderResponse.data.orderId || 0, // Fallback to 0 if orderId is undefined
+              orderId: orderResponse.data.orderId,
               phoneNumber: paymentFields.phoneNumber,
               amount: totalAmount,
-              description: `Payment for Order #${
-                orderResponse.data.orderId || "New"
-              }`,
-              accountReference: `SCEED-ORDER${
-                orderResponse.data.orderId || "SceedTEST001"
-              }`,
+              description: `Payment for Sceed-Order #${orderResponse.data.orderId}`,
+              accountReference: `SCEED-ORDER${orderResponse.data.orderId}`,
             };
             console.log("M-Pesa Payload:", mpesaPayload);
 
-            // Initiate M-Pesa Payment
+            // Update toast while initiating payment
+            toast.update(toastId, {
+              render: "Initiating M-Pesa payment...",
+              type: "info",
+              isLoading: true,
+            });
+
             const mpesaResponse = await axios.post(
               API_ENDPOINTS.mpesaInitiate,
               mpesaPayload,
-              // {
-              //   orderId: orderResponse.data.orderId || 0,
-              //   phoneNumber: paymentFields.phoneNumber,
-              //   amount: totalAmount,
-              //   description: `Payment for Order #${orderResponse.data.orderId}`,
-              //   accountReference: `SCEED-ORDER${orderResponse.data.orderId}`,
-              // },
               {
                 headers: {
                   "Content-Type": "application/json",
-                  // Only include Authorization if your endpoint requires it
-                  // Authorization: `Bearer ${authToken}`
+                  Authorization: `Bearer ${authToken}`,
                 },
               }
             );
             console.log("M-Pesa Response:", mpesaResponse.data);
 
-            // if (mpesaResponse.data.success) {
-            //   // Show STK push notification message
-            //   toast.info(
-            //     "Please check your phone for the M-Pesa payment prompt",
-            //     {
-            //       position: "top-center",
-            //       autoClose: false,
-            //     }
-            //   );
-            if (mpesaResponse.data.success) {
+            // Check for success and required fields
+            if (
+              mpesaResponse.data.success &&
+              mpesaResponse.data.checkoutRequestId
+            ) {
+              console.log(
+                "Checkout Request ID:",
+                mpesaResponse.data.checkoutRequestId
+              ); // Debug checkoutRequestId
+
+              // Update toast for STK push
               toast.update(toastId, {
-                render: "Please check your phone for the M-Pesa payment prompt",
+                render: "Please check your phone for the M-Pesa prompt...",
                 type: "info",
-                isLoading: false,
+                isLoading: true,
                 autoClose: false,
               });
 
-              // Start checking payment status
+              const checkoutRequestId = mpesaResponse.data.checkoutRequestId;
               let attempts = 0;
-              const maxAttempts = 12; // 1 minute (5 seconds * 12)
+              const maxAttempts = 24; // 2 minutes total
+              const initialDelay = 20000; // 20 seconds initial delay
+              const checkInterval = 5000; // 5 seconds between checks
 
               const checkPaymentStatus = async () => {
                 try {
-                  const statusResponse = await axios.get(
-                    API_ENDPOINTS.mpesaVerify(
-                      mpesaResponse.data.checkoutRequestId
-                    )
+                  const verifyUrl =
+                    API_ENDPOINTS.mpesaVerify(checkoutRequestId);
+                  console.log("Verification URL:", verifyUrl); // Debug URL
+
+                  const statusResponse = await axios.get(verifyUrl, {
+                    headers: {
+                      Authorization: `Bearer ${authToken}`,
+                    },
+                  });
+
+                  console.log(
+                    "Payment status check:",
+                    attempts,
+                    statusResponse.data
                   );
 
                   if (statusResponse.data.success) {
-                    toast.success("Payment successful!");
-                    navigate("/payment/success", {
-                      state: { orderId: orderResponse.data.orderId },
-                    });
-                    return;
+                    if (statusResponse.data.status === "Completed") {
+                      toast.update(toastId, {
+                        render: "Payment successful! Redirecting...",
+                        type: "success",
+                        isLoading: false,
+                        autoClose: 3000,
+                      });
+                      // clear cart
+                      //await clearCart();
+
+                      setTimeout(() => {
+                        navigate("/payment/success", {
+                          state: { orderId: orderResponse.data.orderId },
+                        });
+                      }, 2000);
+                      return;
+                    } else if (statusResponse.data.status === "Failed") {
+                      toast.update(toastId, {
+                        render:
+                          statusResponse.data.failureReason ||
+                          "Payment failed. Please try again.",
+                        type: "error",
+                        isLoading: false,
+                        autoClose: 5000,
+                      });
+                      setProcessingPayment(false);
+                      return;
+                    }
                   }
 
-                  if (statusResponse.data.failed) {
-                    toast.error("Payment failed. Please try again.");
-                    setProcessingPayment(false);
-                    return;
-                  }
-
+                  // Continue checking if still pending
                   attempts++;
                   if (attempts < maxAttempts) {
-                    setTimeout(checkPaymentStatus, 5000); // Check every 5 seconds
+                    setTimeout(checkPaymentStatus, checkInterval);
                   } else {
-                    toast.warning(
-                      "Payment status unclear. If amount was deducted, please contact support.",
-                      { autoClose: false }
-                    );
+                    toast.update(toastId, {
+                      render:
+                        "Payment verification timed out. If you completed the payment, please contact support.",
+                      type: "warning",
+                      isLoading: false,
+                      autoClose: false,
+                    });
                     setProcessingPayment(false);
                   }
                 } catch (error) {
-                  console.error("Payment status check failed:", error);
-                  toast.error("Error verifying payment status");
-                  setProcessingPayment(false);
+                  console.error("Status check error:", error);
+                  // Only show error after several failed attempts
+                  if (attempts > 3) {
+                    toast.update(toastId, {
+                      render:
+                        "Having trouble checking payment status. Please wait...",
+                      type: "info",
+                      isLoading: true,
+                    });
+                  }
+                  // Continue checking despite errors
+                  if (attempts < maxAttempts) {
+                    setTimeout(checkPaymentStatus, checkInterval);
+                  } else {
+                    toast.update(toastId, {
+                      render:
+                        "Could not verify payment. If amount was deducted, please contact support.",
+                      type: "warning",
+                      isLoading: false,
+                      autoClose: false,
+                    });
+                    setProcessingPayment(false);
+                  }
                 }
               };
 
-              // Start the payment status check
-              checkPaymentStatus();
+              // Start checking after initial delay
+              setTimeout(checkPaymentStatus, initialDelay);
             } else {
               throw new Error(
                 mpesaResponse.data.message ||
@@ -454,12 +502,21 @@ const PaymentPage = () => {
               );
             }
           } catch (error) {
-            toast.error(
-              error.response?.data?.message || "M-Pesa payment failed"
-            );
+            console.error("M-Pesa Error:", error);
+            toast.update(toastId, {
+              render:
+                error.response?.data?.message ||
+                error.message ||
+                "M-Pesa payment failed",
+              type: "error",
+              isLoading: false,
+              autoClose: 5000,
+            });
             setProcessingPayment(false);
           }
         } else {
+          // my existing DPO payment code...
+
           // Dummy code for other payment methods (DPO Integration placeholder)
           try {
             // This will be replaced with actual DPO integration
@@ -521,7 +578,9 @@ const PaymentPage = () => {
       });
       setProcessingPayment(false);
     }
-  }; // End of handlePayment
+  };
+  // End of handlePayment
+
   //render payment methods function to display payment methods
   const renderPaymentMethods = () => (
     <div className="mt-6">
