@@ -458,8 +458,24 @@ const PaymentPage = () => {
                     setTimeout(checkPaymentStatus, checkInterval);
                   } else {
                     toast.update(toastId, {
-                      render:
-                        "Payment verification timed out. If you completed the payment, please contact support.",
+                      render: (
+                        <span>
+                          Payment verification timed out. If you completed the
+                          payment, please contact{" "}
+                          {/* <a
+                            href="mailto:sceedmillinery@gmail.com"
+                            className="underline text-blue-600 hover:text-blue-800">
+                            support
+                          </a> */}
+                          <a
+                            href="/contact"
+                            target="_blank"
+                            className="underline text-blue-600 hover:text-blue-800">
+                            support
+                          </a>
+                          .
+                        </span>
+                      ),
                       type: "warning",
                       isLoading: false,
                       autoClose: false,
