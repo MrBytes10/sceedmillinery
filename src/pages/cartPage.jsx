@@ -107,9 +107,19 @@ const CartPage = () => {
         <main className="flex-grow">
           <div className="container mx-auto px-1 py-4">
             {items.length === 0 ? (
-              <h1 className="text-2xl font-medium mb-8 text-black text-center opacity-50">
-                Your cart is empty
-              </h1>
+              <div className="text-center py-0 bg-gray-50 rounded-lg">
+                <h1 className="text-2xl font-medium mb-8 text-black text-center opacity-50">
+                  Your cart is empty
+                </h1>
+                <p className="text-gray-500 mb-6">
+                  You haven't added any products to your Cart yet.
+                </p>
+                <a
+                  href="/shop"
+                  className="inline-block bg-black text-white px-6 py-3 rounded-md hover:bg-gray-800 transition-colors duration-200">
+                  Browse Products
+                </a>
+              </div>
             ) : (
               <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
                 {/* Cart Items Section */}
