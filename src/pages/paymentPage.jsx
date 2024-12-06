@@ -415,20 +415,30 @@ const PaymentPage = () => {
                     },
                   });
 
+                  // Log the entire response for debugging
                   console.log(
-                    "Payment status check:",
-                    attempts,
+                    "Payment status response checking:",
                     statusResponse.data
                   );
 
+                  // Log the specific status
+                  console.log(
+                    "mpesaPayment specific status checking:",
+                    statusResponse.data.status
+                  );
+
                   if (statusResponse.data.success) {
-                    if (statusResponse.data.status === "Completed") {
+                    if (
+                      statusResponse.data.status === "Completed" ||
+                      statusResponse.data.code === "0"
+                    ) {
                       toast.update(toastId, {
                         render: "Payment successful! Redirecting...",
                         type: "success",
                         isLoading: false,
                         autoClose: 3000,
                       });
+
                       // clear cart
                       //await clearCart();
 
