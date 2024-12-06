@@ -1,6 +1,6 @@
 // sceed_frontend/src/config/api.js
 
-const API_BASE_URL = "https://sceedbackend.pensoft.co.ke/api"; // Should be either "https://sceedbackend.pensoft.co.ke/api"; OR this for local "https://localhost:7295/api";
+const API_BASE_URL = "https://localhost:7295/api"; // Should be either "https://sceedbackend.pensoft.co.ke/api"; OR this for local "https://localhost:7295/api";
 // TODO: Change the API_BASE_URL to the correct one when deploying
 export const API_ENDPOINTS = {
   // Product APIs ///////////////////////////////
@@ -74,7 +74,7 @@ export const API_ENDPOINTS = {
   mpesaCallback: `${API_BASE_URL}/Mpesa/callback`, // M-Pesa callback URL
   mpesaVerify: (checkoutRequestId) =>
     `${API_BASE_URL}/Mpesa/verify/${checkoutRequestId}`, // Verify M-Pesa transaction
-  mpesaStatus: `${API_BASE_URL}/Mpesa/status`,
+  //mpesaStatus: `${API_BASE_URL}/Mpesa/status`,
 
   // DPOPayment APIs ///////////////////////////////
   processDPOPayment: `${API_BASE_URL}/payment/process`, // Process a new payment

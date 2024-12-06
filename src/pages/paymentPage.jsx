@@ -399,8 +399,8 @@ const PaymentPage = () => {
 
               const checkoutRequestId = mpesaResponse.data.checkoutRequestId;
               let attempts = 0;
-              const maxAttempts = 24; // 2 minutes total
-              const initialDelay = 20000; // 20 seconds initial delay
+              const maxAttempts = 30; // 2 minutes total//.increased from 24
+              const initialDelay = 15000; // 15 seconds initial delay
               const checkInterval = 5000; // 5 seconds between checks
 
               const checkPaymentStatus = async () => {
