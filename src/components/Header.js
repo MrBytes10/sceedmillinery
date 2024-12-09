@@ -254,6 +254,15 @@ const Header = () => {
                   Contact Us
                 </Link>
               </li>
+              <li>
+                <Link
+                  to="/our-awards"
+                  className={`text-black hover:text-gray-600 font-medium text-sm sm:text-base ${
+                    isActive("/our-awards") ? "opacity-50" : ""
+                  }`}>
+                  Our Awards
+                </Link>
+              </li>
             </ul>
           </nav>
         </div>

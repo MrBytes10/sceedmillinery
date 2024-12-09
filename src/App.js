@@ -20,6 +20,7 @@ import CheckoutPage from "./pages/paymentPage";
 import OrderConfirmation from "./pages/paymentSuccessPage";
 import PaymentVerifyPage from "./pages/paymentVerifyPage";
 import PaymentCancelPage from "./pages/paymentCancelPage";
+import AwardsPage from "./pages/awardsPage";
 
 import { CartProvider } from "./contexts/CartContext";
 //import { AuthProvider } from "./contexts/AuthContext";
@@ -49,6 +50,7 @@ function App() {
                 <Route path="/shop" element={<ShopPage />} />
                 <Route path="/about" element={<AboutPage />} />
                 <Route path="/contact" element={<ContactPage />} />
+                <Route path="/our-awards" element={<AwardsPage />} />
                 <Route path="/search-results" element={<SearchResults />} />
                 <Route path="/sign-up" element={<SignUpPage />} />{" "}
                 {/* A route for the SignUpPage component */}
