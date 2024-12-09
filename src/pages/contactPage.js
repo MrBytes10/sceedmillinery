@@ -59,7 +59,8 @@ const ContactPage = () => {
   return (
     <div>
       <Header />
-      <div className="container mx-auto px-1">
+      <div className=" mx-auto px-1">
+        {/* //can add container before mx  for margins */}
         <section
           style={{
             backgroundImage: `url(${contactPageBackground})`,

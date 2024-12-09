@@ -15,7 +15,8 @@ const AboutPage = () => {
   return (
     <div className="bg-gray-100">
       <Header />
-      <main className="container mx-auto px-1 py-0">
+      <main className=" mx-auto px-1 py-0">
+        {/*container*/}
         <section
           className="relative h-[296px] w-full"
           style={{

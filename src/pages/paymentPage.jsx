@@ -32,17 +32,17 @@ const PaymentPage = () => {
   const location = useLocation();
   const navigate = useNavigate();
   const { cartItems, subtotal } = location.state;
-
+  const [totalAmount, setTotalAmount] = useState(0); // Add totalAmount state
   // Define supported payment methods with their details
   const PAYMENT_METHODS = {
-    CARD: {
-      id: "CARD",
-      name: "Credit/Debit Card",
-      icons: [VisaIcon, MasterCardIcon],
-      countries: ["all"],
-      description: "Pay securely with your credit or debit card",
-      processorFields: [],
-    },
+    // CARD: {
+    //   id: "CARD",
+    //   name: "Credit/Debit Card",
+    //   icons: [VisaIcon, MasterCardIcon],
+    //   countries: ["all"],
+    //   description: "Pay securely with your credit or debit card",
+    //   processorFields: [],
+    // },
     MPESA: {
       id: "MPESA",
       name: "M-Pesa",
@@ -222,6 +222,18 @@ const PaymentPage = () => {
     fetchCities();
   }, [deliveryAddress.country]);
 
+  // Update totalAmount whenever subtotal, shippingCost, or tax changes
+  useEffect(() => {
+    console.log("Subtotal:", subtotal);
+    console.log("Shipping Cost:", shippingCost);
+    console.log("Tax:", tax);
+
+    const newTotalAmount = subtotal + shippingCost + tax;
+    console.log("Calculated Total Amount:", newTotalAmount);
+
+    setTotalAmount(newTotalAmount);
+  }, [subtotal, shippingCost, tax]);
+
   ////////// HANDLEPayment function to process payment and create order///////////
   const handlePayment = async () => {
     // Validation checks
@@ -303,7 +315,7 @@ const PaymentPage = () => {
           subTotal: subtotal,
           tax,
           totalAmount: subtotal + shippingCost + tax,
-          orderStatus: "Pending", // Include initial status/added
+          //orderStatus: "Pending", // Include initial status/added
         };
         // trying validation before sending order payload
         if (!orderPayload.userId) {
@@ -607,80 +619,6 @@ const PaymentPage = () => {
   };
   // End of handlePayment
 
-  //render payment methods function to display payment methods
-  const renderPaymentMethods = () => (
-    <div className="mt-6">
-      <h3 className="text-lg font-medium mb-4">Choose Payment Method</h3>
-      <p className="text-sm text-gray-500 mb-4">
-        All Transactions are Secure and Encrypted
-      </p>
-
-      <div className="space-y-4">
-        {getAvailablePaymentMethods().map((method) => (
-          <button
-            key={method.id}
-            onClick={() => setPaymentMethod(method.id)}
-            className={`w-full p-4 border rounded-lg hover:border-gray-400 transition-colors ${
-              paymentMethod === method.id
-                ? "border-indigo-600 bg-indigo-50"
-                : ""
-            }`}>
-            <div className="flex items-center justify-between">
-              <div className="flex items-center space-x-4">
-                <div className="flex space-x-2">
-                  {method.icons.map((Icon, index) => (
-                    <Icon key={index} className="w-10 h-10" alt={method.name} />
-                  ))}
-                </div>
-                <div className="text-left">
-                  <h4 className="font-medium">{method.name}</h4>
-                  <p className="text-sm text-gray-500">{method.description}</p>
-                </div>
-              </div>
-              <div className="flex items-center">
-                <div
-                  className={`w-6 h-6 border-2 rounded-full flex items-center justify-center ${
-                    paymentMethod === method.id
-                      ? "border-indigo-600"
-                      : "border-gray-300"
-                  }`}>
-                  {paymentMethod === method.id && (
-                    <div className="w-3 h-3 bg-indigo-600 rounded-full" />
-                  )}
-                </div>
-              </div>
-            </div>
-
-            {/* Additional fields for payment method if needed */}
-            {paymentMethod === method.id &&
-              method.processorFields.length > 0 && (
-                <div className="mt-4 pl-16">
-                  {method.processorFields.includes("phone") && (
-                    <div>
-                      <label className="block text-sm mb-1">
-                        Mobile Money Number
-                      </label>
-                      <input
-                        type="tel"
-                        className="w-full rounded-md p-2 border-2 border-gray-300 focus:outline-none focus:ring-2 focus:ring-indigo-600"
-                        placeholder="Enter your mobile money number"
-                        onChange={(e) =>
-                          setPaymentFields((prev) => ({
-                            ...prev,
-                            phoneNumber: e.target.value,
-                          }))
-                        }
-                      />
-                    </div>
-                  )}
-                </div>
-              )}
-          </button>
-        ))}
-      </div>
-    </div>
-  );
-
   return (
     <div className="flex flex-col min-h-screen">
       {/* Placing the ToastContainer at the page level */}
@@ -699,40 +637,41 @@ const PaymentPage = () => {
 
       <Header />
       <main className="flex-grow bg-gray-50">
-        <div className="container mx-auto px-4 py-4">
-          <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-            <div className="lg:col-span-2">
-              <div className="bg-white rounded-lg p-4 shadow-md">
-                <DeliveryAddressForm
-                  deliveryAddress={deliveryAddress}
-                  countries={countries}
-                  cities={cities}
-                  handleInputChange={handleInputChange}
-                  setDeliveryAddress={setDeliveryAddress}
-                />
+        {/* //<div className="container mx-auto px-4 py-4"> */}
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+          <div className="lg:col-span-2">
+            <div className="bg-white rounded-lg p-4 shadow-md">
+              <DeliveryAddressForm
+                deliveryAddress={deliveryAddress}
+                countries={countries}
+                cities={cities}
+                handleInputChange={handleInputChange}
+                setDeliveryAddress={setDeliveryAddress}
+              />
 
-                <ShippingOptions
-                  selectedShipping={selectedShipping}
-                  handleShippingSelection={handleShippingSelection}
-                  shippingCost={shippingCost}
-                />
+              <ShippingOptions
+                selectedShipping={selectedShipping}
+                handleShippingSelection={handleShippingSelection}
+                shippingCost={shippingCost}
+              />
 
-                <PaymentMethodSelection
-                  paymentMethod={paymentMethod}
-                  setPaymentMethod={setPaymentMethod}
-                  setPaymentFields={setPaymentFields}
-                  getAvailablePaymentMethods={getAvailablePaymentMethods}
-                />
-              </div>
-              <button
-                className="mt-4 w-full bg-indigo-600 text-white py-3 rounded-md hover:bg-indigo-700 transition-colors disabled:bg-gray-400 disabled:cursor-not-allowed"
-                onClick={handlePayment}
-                disabled={processingPayment || !paymentMethod}>
-                {processingPayment ? "Processing Payment..." : "Place Order"}
-              </button>
-              {/* //button to test mpesa payment // Add this button temporarily for
+              <PaymentMethodSelection
+                paymentMethod={paymentMethod}
+                setPaymentMethod={setPaymentMethod}
+                setPaymentFields={setPaymentFields}
+                getAvailablePaymentMethods={getAvailablePaymentMethods}
+                totalAmount={totalAmount}
+              />
+            </div>
+            <button
+              className="mt-4 w-full bg-indigo-600 text-white py-3 rounded-md hover:bg-indigo-700 transition-colors disabled:bg-gray-400 disabled:cursor-not-allowed"
+              onClick={handlePayment}
+              disabled={processingPayment || !paymentMethod}>
+              {processingPayment ? "Processing Payment..." : "Place Order"}
+            </button>
+            {/* //button to test mpesa payment // Add this button temporarily for
               testing */}
-              {/* <button
+            {/* <button
                 onClick={async () => {
                   try {
                     const testPayload = {
@@ -765,17 +704,17 @@ const PaymentPage = () => {
                 className="mt-2 px-4 py-2 bg-blue-500 text-white rounded">
                 Test M-Pesa Integration
               </button> */}
-              {error && (
-                <div className="mt-4 bg-red-100 text-red-500 p-2 rounded">
-                  {error}
-                </div>
-              )}
-              {/* Test toast */}
-              {/* // Add these test buttons right after your error display and
+            {error && (
+              <div className="mt-4 bg-red-100 text-red-500 p-2 rounded">
+                {error}
+              </div>
+            )}
+            {/* Test toast */}
+            {/* // Add these test buttons right after your error display and
               before the "Go Back" button */}
-              {/* <div className="mt-4 space-y-2"> */}
-              {/* Test buttons for different toast types */}
-              {/* <div className="flex gap-2">
+            {/* <div className="mt-4 space-y-2"> */}
+            {/* Test buttons for different toast types */}
+            {/* <div className="flex gap-2">
                   <button
                     className="px-4 py-2 bg-green-500 text-white rounded"
                     onClick={() => toast.success("This is a success message!")}>
@@ -818,30 +757,30 @@ const PaymentPage = () => {
                   </button>
                 </div>
               </div> */}
-              {/* Your existing Go Back button */}
-              {/* Go back button */}
-              <button
-                className="mt-2 w-full text-gray-600 flex items-center justify-center space-x-2 hover:text-gray-800 border"
-                onClick={() => navigate(-1)}>
-                <span>
-                  <ChevronLeft />
-                </span>
-                <span>Go Back & Continue Shopping</span>
-              </button>
-            </div>
+            {/* Your existing Go Back button */}
+            {/* Go back button */}
+            <button
+              className="mt-2 w-full text-gray-600 flex items-center justify-center space-x-2 hover:text-gray-800 border"
+              onClick={() => navigate(-1)}>
+              <span>
+                <ChevronLeft />
+              </span>
+              <span>Go Back & Continue Shopping</span>
+            </button>
+          </div>
 
-            <div className="lg:col-span-1">
-              <OrderSummary
-                cartItems={cartItems}
-                subtotal={subtotal}
-                selectedShipping={selectedShipping}
-                shippingCost={shippingCost}
-                tax={tax}
-                error={error}
-              />
-            </div>
+          <div className="lg:col-span-1">
+            <OrderSummary
+              cartItems={cartItems}
+              subtotal={subtotal}
+              selectedShipping={selectedShipping}
+              shippingCost={shippingCost}
+              tax={tax}
+              error={error}
+            />
           </div>
         </div>
+        {/* </div> */}
       </main>
       <Footer />
     </div>

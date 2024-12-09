@@ -247,7 +247,9 @@ const HomePage = () => {
       /> */}
 
       {/* Main content */}
-      <main className="flex-grow container mx-auto px-1 mt-8">
+      <main className="flex-grow mx-auto px-1 mt-8">
+        {/*container*/}
+
         {/* Filter and product grid */}
         <div
           className="flex flex-col md:flex-row gap-8"

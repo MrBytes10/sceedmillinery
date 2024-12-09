@@ -95,7 +95,8 @@ const CartPage = () => {
   return (
     <div className="flex flex-col min-h-screen">
       <Header />
-      <div className="container mx-auto px-1">
+      <div className=" mx-auto px-1">
+        {/*container*/}
         <div
           style={{ backgroundColor: "#FFFFFF" }}
           className="h-10 w-full border font-bold text-black flex justify-center items-center">

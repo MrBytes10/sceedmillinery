@@ -12,7 +12,7 @@ function Footer() {
   return (
     <div className=" mx-auto px-0">
       <footer className="bg-black text-white py-8">
-        <div className="container mx-auto px-4">
+        {/* <div className="container mx-auto px-4"> */}
           {/* Changed grid-cols-4 to grid-cols-1 on mobile and grid-cols-4 on medium screens and up */}
           <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
             {/* Newsletter Section */}
@@ -162,7 +162,7 @@ function Footer() {
               </a>
             </div>
           </div>
-        </div>
+        {/* </div> */}
       </footer>
     </div>
   );
