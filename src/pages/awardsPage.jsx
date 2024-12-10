@@ -70,7 +70,7 @@ const AwardsPage = () => {
           <div className="container mx-auto px-4">
             <div className="flex flex-col items-center text-center">
               <Trophy className="w-16 h-16 text-yellow-400 mb-6" />
-              <h1 className="text-4xl font-bold mb-4">Our Achievements</h1>
+              <h1 className="text-4xl font-bold mb-4">Our Awards</h1>
               <p className="text-xl text-gray-300 max-w-2xl">
                 Celebrating excellence and innovation in fashion accessories
               </p>
@@ -89,7 +89,7 @@ const AwardsPage = () => {
                 }`}>
                 {/* Image Gallery */}
                 <div className="mb-12">
-                  <div className="relative bg-[customgray] aspect-video rounded-lg overflow-hidden">
+                  <div className="relative bg-[customgray] aspect-video rounded-lg overflow-hidden flex h-[85vh] w-full items-centerjustify-center">
                     {/* Main Image */}
                     <img
                       src={award.images[selectedImage].src}
@@ -118,13 +118,13 @@ const AwardsPage = () => {
                   </div>
 
                   {/* Thumbnail Navigation */}
-                  
+
                   <div className="flex justify-center gap-4 mt-4">
                     {award.images.map((image, idx) => (
                       <button
                         key={idx}
                         onClick={() => setSelectedImage(idx)}
-                        className={`relative w-24 h-12 rounded-lg overflow-hidden ${
+                        className={`relative w-24 h-16 rounded-lg overflow-hidden ${
                           idx === selectedImage ? "ring-2 ring-yellow-500" : ""
                         }`}>
                         <img
