@@ -51,6 +51,22 @@ const PaymentPage = () => {
       description: "Pay with M-Pesa mobile money",
       processorFields: ["phone"],
     },
+    MTN: {
+      id: "MTN",
+      name: "MTN Mobile Money",
+      icons: [MTNIcon],
+      countries: ["all"],
+      description: "Pay with MTN Mobile Money",
+      processorFields: ["phone"],
+    },
+    BANK: {
+      id: "BANK",
+      name: "Bank Transfer",
+      icons: [BankIcon],
+      countries: ["all"],
+      description: "Pay directly from your bank account",
+      processorFields: [],
+    },
     // TIGO: {
     //   id: "TIGO",
     //   // name: "Tigo Pesa",
@@ -67,22 +83,7 @@ const PaymentPage = () => {
     //   description: "Pay with Airtel Money",
     //   processorFields: ["phone"],
     // },
-    MTN: {
-      id: "MTN",
-      name: "MTN Mobile Money",
-      icons: [MTNIcon],
-      countries: ["UG", "RW", "ZM"],
-      description: "Pay with MTN Mobile Money",
-      processorFields: ["phone"],
-    },
-    BANK: {
-      id: "BANK",
-      name: "Bank Transfer",
-      icons: [BankIcon],
-      countries: ["all"],
-      description: "Pay directly from your bank account",
-      processorFields: [],
-    },
+
     // PAYPAL: {
     //   id: "PAYPAL",
     //   name: "PayPal",

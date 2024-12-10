@@ -118,13 +118,13 @@ const AwardsPage = () => {
                   </div>
 
                   {/* Thumbnail Navigation */}
-                  {/* Thumbnail Navigation */}
+                  
                   <div className="flex justify-center gap-4 mt-4">
                     {award.images.map((image, idx) => (
                       <button
                         key={idx}
                         onClick={() => setSelectedImage(idx)}
-                        className={`relative w-24 h-16 rounded-lg overflow-hidden ${
+                        className={`relative w-24 h-12 rounded-lg overflow-hidden ${
                           idx === selectedImage ? "ring-2 ring-yellow-500" : ""
                         }`}>
                         <img

@@ -188,8 +188,8 @@ const PaymentMethodSelector = ({
                 if (
                   method.id === "BANK" ||
                   method.id === "MPESA" ||
-                  method.id === "MTN" ||
-                  method.id === "CARD"
+                  method.id === "MTN"
+                  // method.id === "CARD"
                 ) {
                   showPaymentInstructions(method); // Show modal for selected payment method
                 } else {
