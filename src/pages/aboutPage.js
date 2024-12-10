@@ -111,7 +111,7 @@ const AboutPage = () => {
                 exceptional experiences.
               </p>
             </div>
-            <ul className="list-disc pl-6 text-sm">
+            {/* <ul className="list-disc pl-6 text-sm">
               <li className="mb-4">
                 Personalized Service: We offer a highly personalized service,
                 working closely with each client to ensure their fascinator
@@ -146,9 +146,7 @@ const AboutPage = () => {
                 experience is memorable, and every product is nothing short of
                 perfection.
               </li>
-
-              {/* Add more list items as needed */}
-            </ul>
+            </ul> */}
           </section>
 
           {/* Our Core Activities*/}
@@ -172,7 +170,7 @@ const AboutPage = () => {
                 innovation, and customer satisfaction.
               </p>
             </div>
-            <ul className="list-disc pl-6 text-sm">
+            {/* <ul className="list-disc pl-6 text-sm">
               <li className="mb-4">
                 Design & Development: Our creative process begins with
                 innovative design and meticulous development, ensuring each
@@ -223,8 +221,7 @@ const AboutPage = () => {
                 help us innovate and stay ahead of trends, offering our
                 customers the latest in fashionable headwear.
               </li>
-              {/* Add more list items as needed */}
-            </ul>
+            </ul> */}
             <p className="text-center text-sm font-bold">
               These activities are the foundation of Sceed Millinery, enabling
               us to consistently deliver high-quality, bespoke fascinators that
@@ -250,7 +247,7 @@ const AboutPage = () => {
                 our customers.
               </p>
             </div>
-            <ul className="list-disc pl-6 text-sm">
+            {/* <ul className="list-disc pl-6 text-sm">
               <li className="mb-4">
                 Luxurious Handcrafted Headpieces: Each fascinator is a work of
                 art, meticulously handcrafted to exude luxury and elegance,
@@ -281,8 +278,7 @@ const AboutPage = () => {
                 choice for women seeking exquisite, one-of-a-kind fascinators
                 that elevate their style.
               </li>
-              {/* Add more list items as needed */}
-            </ul>
+            </ul> */}
           </section>
         </section>
 
