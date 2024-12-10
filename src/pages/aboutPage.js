@@ -4,7 +4,7 @@ import React from "react";
 import Header from "../components/Header";
 import Footer from "../components/Footer";
 import sceedLogo from "../images/sceedWhiteLogo444.png";
-import abtTailorMadeModel from "../images/abtTailorMadeElegance.png";
+import abtTailorMadeModel from "../images/Homepage-Pic-copy2.jpg";
 import transformOutfitsModel from "../images/transformOutfits.png";
 import { ReactComponent as HandShakeIcon } from "../assets/icons/HandShakeIcon.svg";
 import { ReactComponent as OurCoreActivities } from "../assets/icons/ourCoreActivities.svg";
