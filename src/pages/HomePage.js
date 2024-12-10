@@ -45,6 +45,7 @@ const HomePage = () => {
 
   const [currentPage, setCurrentPage] = useState(1);
   const productsPerPage = 12; // Number of products to show per page
+  const [isFilterVisible, setIsFilterVisible] = useState(false); // New state for filter visibility
 
   // Fetch products from the backend
   // the fetchProducts function:
@@ -252,24 +253,27 @@ const HomePage = () => {
 
         {/* Filter and product grid */}
         <div
-          className="flex flex-col md:flex-row gap-8"
-          ref={productsSectionRef}>
-          <div
-            ref={filterRef}
-            className={`md:w-1/4 ${filterSticky ? "md:sticky md:top-20" : ""}`}
-            style={{ height: "fit-content" }}>
-            <Filter
-              priceRange={priceRange}
-              setPriceRange={setPriceRange}
-              discountFilters={discountFilters}
-              setDiscountFilters={setDiscountFilters}
-              inStock={inStock}
-              setInStock={setInStock}
-              onApplyFilters={() => {
-                // This will trigger a re-render of the ProductGrid
-                // You can also add any additional filter logic here
-              }}
-            />
+          ref={productsSectionRef}
+          className="flex flex-col md:flex-row gap-8">
+          <div className="md:w-1/4">
+            <button
+              onClick={() => setIsFilterVisible(!isFilterVisible)} // Toggle filter visibility
+              className="bg-blue-500 text-white p-2 rounded">
+              {isFilterVisible ? "Hide Filters" : "Show Filters"}
+            </button>
+            {isFilterVisible && ( // Conditionally render the Filter component
+              <Filter
+                priceRange={priceRange}
+                setPriceRange={setPriceRange}
+                discountFilters={discountFilters}
+                setDiscountFilters={setDiscountFilters}
+                inStock={inStock}
+                setInStock={setInStock}
+                onApplyFilters={() => {
+                  // This will trigger a re-render of the ProductGrid
+                }}
+              />
+            )}
           </div>
 
           <div ref={productGridRef} className="md:w-3/4">
