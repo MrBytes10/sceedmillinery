@@ -70,11 +70,12 @@ const AboutPage = () => {
               create.
             </p>
           </div>
-          <div className="md:w-1/2 pr-8">
+          <div className="md:w-1/2 pr-8 flex items-center">
             <img
               src={abtTailorMadeModel}
               alt="Model wearing Sceed Millinery fascinator"
-              className="w-full rounded-lg"
+              className="w-full rounded-lg h-[80vh] mr-0"
+              style={{ maxHeight: "100%", objectFit: "cover" }} // Ensures the image does not exceed the height of its container
             />
           </div>
         </section>
@@ -296,21 +297,20 @@ const AboutPage = () => {
               looks that stand out.
             </h2>
             <p className="text-sm leading-relaxed">
-              At Sceed Millinery, we pride ourselves on crafting high-quality
+              {/* At Sceed Millinery, we pride ourselves on crafting high-quality
               fascinators that embody elegance and sophistication. With a proven
               track record in the fashion industry, our products are trusted by
               countless women who seek to elevate their style. Each piece is
               meticulously designed and handcrafted using only the finest
-              materials, ensuring durability and comfort.
+              materials, ensuring durability and comfort. */}
             </p>{" "}
             <p>
-              Our fascinators are more than just accessories; they are
-              transformative additions to any outfit. Whether you're dressing
-              for a wedding, a race day, or a special occasion, our fascinators
-              add the perfect touch of glamour and style. They effortlessly turn
-              ordinary looks into stunning, fashion-forward statements, helping
-              you stand out in any crowd. Discover how Sceed Millinery can take
-              your outfit to the next level and make every moment a stylish one.
+              Whether you're dressing for a wedding, a race day, or a special
+              occasion, our fascinators add the perfect touch of glamour and
+              style. They effortlessly turn ordinary looks into stunning,
+              fashion-forward statements, helping you stand out in any crowd.
+              Discover how Sceed Millinery can take your outfit to the next
+              level and make every moment a stylish one.
             </p>
           </div>
         </section>
