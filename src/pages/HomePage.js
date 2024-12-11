@@ -28,7 +28,7 @@ const HomePage = () => {
   const [error, setError] = useState(null);
   const [priceRange, setPriceRange] = useState(1000);
   const [filterSticky, setFilterSticky] = useState(false);
-  const [showAdditionalSections, setShowAdditionalSections] = useState(false);
+  const [showAdditionalSections, setShowAdditionalSections] = useState(true);
 
   const filterRef = useRef(null);
   const productGridRef = useRef(null);
