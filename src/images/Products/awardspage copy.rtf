@@ -1,0 +1,300 @@
+{\rtf1\ansi\ansicpg1252\deff0\nouicompat\deflang1033{\fonttbl{\f0\fnil\fcharset0 Calibri;}}
+{\colortbl ;\red0\green0\blue255;}
+{\*\generator Riched20 10.0.19041}\viewkind4\uc1 
+\pard\sa200\sl276\slmult1\f0\fs22\lang9 import React, \{ useState \} from "react";\par
+import \{ Award, Trophy, Star, ChevronRight, ChevronLeft \} from "lucide-react";\par
+import Header from "../components/Header";\par
+import Footer from "../components/Footer";\par
+\par
+const AwardsPage = () => \{\par
+  const [selectedAward, setSelectedAward] = useState(0);\par
+  const [selectedImage, setSelectedImage] = useState(0);\par
+\par
+  // Awards data array\par
+  const awards = [\par
+    \{\par
+      id: 1,\par
+      title: "Gold Winner - Fashion Accessories",\par
+      organization: "KEOnline Digitally Fit Awards 2024",\par
+      category: "Fashion Accessories",\par
+      date: "December 6, 2024",\par
+      description:\par
+        "Recognized for creating outstanding online impact in East Africa's fashion accessories industry.",\par
+      type: "Gold Winner",\par
+      achievements: [\par
+        "Top Digitally Fit Brand in Fashion Accessories",\par
+        "Excellence in Online Brand Presence",\par
+        "Outstanding Digital Innovation",\par
+      ],\par
+      images: [\par
+        \{\par
+          src: "{{\field{\*\fldinst{HYPERLINK https://res.cloudinary.com/dlm0am5pt/image/upload/v1733780265/FaithHoldingAward_ufhews.jpg }}{\fldrslt{https://res.cloudinary.com/dlm0am5pt/image/upload/v1733780265/FaithHoldingAward_ufhews.jpg\ul0\cf0}}}}\f0\fs22 ",\par
+          // Replace with actual image path\par
+          alt: "Awards Ceremony Moment",\par
+          caption: "Receiving the award at the ceremony",\par
+        \},\par
+\par
+        \{\par
+          src: "{{\field{\*\fldinst{HYPERLINK https://res.cloudinary.com/dlm0am5pt/image/upload/v1733780263/FascinatorAward_czjruk.jpg }}{\fldrslt{https://res.cloudinary.com/dlm0am5pt/image/upload/v1733780263/FascinatorAward_czjruk.jpg\ul0\cf0}}}}\f0\fs22 ", // Replace with actual image path\par
+          alt: "Gold Winner Trophy",\par
+          caption: "KEOnline Digitally Fit Awards Trophy",\par
+        \},\par
+\par
+        \{\par
+          src: "{{\field{\*\fldinst{HYPERLINK https://res.cloudinary.com/dlm0am5pt/image/upload/v1733780265/AwardCertificate_locqno.jpg }}{\fldrslt{https://res.cloudinary.com/dlm0am5pt/image/upload/v1733780265/AwardCertificate_locqno.jpg\ul0\cf0}}}}\f0\fs22 ",\par
+          // Replace with actual image path\par
+          alt: "Certificate of Excellence - KEOnline Digitally Fit Awards",\par
+          caption: "Official Certificate of Excellence",\par
+        \},\par
+      ],\par
+    \},\par
+  ];\par
+\par
+  const nextImage = () => \{\par
+    setSelectedImage(\par
+      (prev) => (prev + 1) % awards[selectedAward].images.length\par
+    );\par
+  \};\par
+\par
+  const prevImage = () => \{\par
+    setSelectedImage(\par
+      (prev) =>\par
+        (prev - 1 + awards[selectedAward].images.length) %\par
+        awards[selectedAward].images.length\par
+    );\par
+  \};\par
+\par
+  return (\par
+    <div>\par
+      <Header />\par
+      <div className="min-h-screen bg-gradient-to-b from-gray-50 to-white">\par
+        \{/* Hero Section */\}\par
+        <div className="bg-gray-900 text-white py-16">\par
+          <div className="container mx-auto px-4">\par
+            <div className="flex flex-col items-center text-center">\par
+              <Trophy className="w-16 h-16 text-yellow-400 mb-6" />\par
+              <h1 className="text-4xl font-bold mb-4">Our Achievements</h1>\par
+              <p className="text-xl text-gray-300 max-w-2xl">\par
+                Celebrating excellence and innovation in fashion accessories\par
+              </p>\par
+            </div>\par
+          </div>\par
+        </div>\par
+\par
+        \{/* Awards Gallery */\}\par
+        <div className="container mx-auto px-4 py-16">\par
+          <div className="max-w-6xl mx-auto">\par
+            \{awards.map((award, index) => (\par
+              <div\par
+                key=\{award.id\}\par
+                className=\{`transition-opacity duration-300 $\{\par
+                  index === selectedAward ? "block" : "hidden"\par
+                \}`\}>\par
+                \{/* Image Gallery */\}\par
+                <div className="mb-12">\par
+                  <div className="relative bg-[customgray] aspect-video rounded-lg overflow-hidden">\par
+                    \{/* Main Image */\}\par
+                    <img\par
+                      src=\{award.images[selectedImage].src\}\par
+                      alt=\{award.images[selectedImage].alt\}\par
+                      className="w-full h-full object-contain"\par
+                    />\par
+\par
+                    \{/* Navigation Arrows */\}\par
+                    <button\par
+                      onClick=\{prevImage\}\par
+                      className="absolute left-4 top-1/2 -translate-y-1/2 p-2 rounded-full bg-black/50 hover:bg-black/75 text-white transition-colors">\par
+                      <ChevronLeft className="w-6 h-6" />\par
+                    </button>\par
+                    <button\par
+                      onClick=\{nextImage\}\par
+                      className="absolute right-4 top-1/2 -translate-y-1/2 p-2 rounded-full bg-black/50 hover:bg-black/75 text-white transition-colors">\par
+                      <ChevronRight className="w-6 h-6" />\par
+                    </button>\par
+\par
+                    \{/* Caption */\}\par
+                    <div className="absolute bottom-0 left-0 right-0 bg-black/75 text-white p-4">\par
+                      <p className="text-center">\par
+                        \{award.images[selectedImage].caption\}\par
+                      </p>\par
+                    </div>\par
+                  </div>\par
+\par
+                  \{/* Thumbnail Navigation */\}\par
+                  \{/* Thumbnail Navigation */\}\par
+                  <div className="flex justify-center gap-4 mt-4">\par
+                    \{award.images.map((image, idx) => (\par
+                      <button\par
+                        key=\{idx\}\par
+                        onClick=\{() => setSelectedImage(idx)\}\par
+                        className=\{`relative w-24 h-16 rounded-lg overflow-hidden $\{\par
+                          idx === selectedImage ? "ring-2 ring-yellow-500" : ""\par
+                        \}`\}>\par
+                        <img\par
+                          src=\{image.src\}\par
+                          alt=\{`Thumbnail $\{idx + 1\}`\}\par
+                          className="w-full h-full object-cover"\par
+                        />\par
+                      </button>\par
+                    ))\}\par
+                  </div>\par
+                </div>\par
+\par
+                \{/* Award Details Card */\}\par
+                <div className="bg-white rounded-lg shadow-xl overflow-hidden">\par
+                  \{/* Award Header */\}\par
+                  <div className="bg-gradient-to-r from-yellow-500 to-yellow-600 p-6 text-white">\par
+                    <div className="flex items-center justify-between">\par
+                      <div>\par
+                        <h2 className="text-2xl font-bold">\{award.title\}</h2>\par
+                        <p className="text-yellow-100">\{award.organization\}</p>\par
+                      </div>\par
+                      <Award className="w-12 h-12" />\par
+                    </div>\par
+                  </div>\par
+\par
+                  \{/* Award Details */\}\par
+                  <div className="p-6">\par
+                    <div className="grid md:grid-cols-2 gap-8">\par
+                      \{/* Left Column - Details */\}\par
+                      <div className="space-y-6">\par
+                        <div>\par
+                          <h3 className="text-lg font-semibold text-gray-800">\par
+                            Award Details\par
+                          </h3>\par
+                          <div className="mt-2 space-y-2">\par
+                            <p className="flex items-center text-gray-600">\par
+                              <Star className="w-5 h-5 mr-2 text-yellow-500" />\par
+                              Category: \{award.category\}\par
+                            </p>\par
+                            <p className="flex items-center text-gray-600">\par
+                              <Star className="w-5 h-5 mr-2 text-yellow-500" />\par
+                              Awarded: \{award.date\}\par
+                            </p>\par
+                            <p className="flex items-center text-gray-600">\par
+                              <Star className="w-5 h-5 mr-2 text-yellow-500" />\par
+                              Type: \{award.type\}\par
+                            </p>\par
+                          </div>\par
+                        </div>\par
+\par
+                        <div>\par
+                          <h3 className="text-lg font-semibold text-gray-800">\par
+                            Key Achievements\par
+                          </h3>\par
+                          <ul className="mt-2 space-y-2">\par
+                            \{award.achievements.map((achievement, index) => (\par
+                              <li key=\{index\} className="flex items-start">\par
+                                <Trophy className="w-5 h-5 mr-2 text-yellow-500 flex-shrink-0 mt-1" />\par
+                                <span className="text-gray-600">\par
+                                  \{achievement\}\par
+                                </span>\par
+                              </li>\par
+                            ))\}\par
+                          </ul>\par
+                        </div>\par
+                      </div>\par
+\par
+                      \{/* Right Column - Description */\}\par
+                      <div className="space-y-6">\par
+                        <div className="bg-gray-50 p-6 rounded-lg">\par
+                          <h3 className="text-lg font-semibold text-gray-800 mb-3">\par
+                            About the Award\par
+                          </h3>\par
+                          <p className="text-gray-600 leading-relaxed">\par
+                            \{award.description\}\par
+                          </p>\par
+                        </div>\par
+\par
+                        <div className="bg-yellow-50 p-6 rounded-lg">\par
+                          <h3 className="text-lg font-semibold text-yellow-800 mb-2">\par
+                            Recognition Highlights\par
+                          </h3>\par
+                          <p className="text-yellow-700">\par
+                            This prestigious award recognizes our commitment to\par
+                            digital excellence and innovation in East Africa's\par
+                            fashion industry.\par
+                          </p>\par
+                        </div>\par
+                      </div>\par
+                    </div>\par
+                  </div>\par
+                </div>\par
+              </div>\par
+            ))\}\par
+          </div>\par
+        </div>\par
+      </div>\par
+\par
+      <Footer />\par
+    </div>\par
+  );\par
+\};\par
+\par
+export default AwardsPage;\par
+\par
+// // sceed_frontend/src/pages/AwardsPage.js\par
+\par
+// import React from "react";\par
+// import \{ Card \} from "antd";\par
+// import \{ Trophy \} from "lucide-react"; // Importing a trophy icon from Lucide\par
+// import \{ ReactComponent as AwardsIcon \} from "../assets/icons/AwardsIcon.svg"; // Example icon for awards section\par
+// import Header from "../components/Header";\par
+// import Footer from "../components/Footer";\par
+\par
+// const awardsData = [\par
+//   \{\par
+//     title: "Best Fashion Accessories",\par
+//     year: 2023,\par
+//     description: "Awarded for excellence in design and craftsmanship.",\par
+//   \},\par
+//   \{\par
+//     title: "Customer Choice Award",\par
+//     year: 2022,\par
+//     description:\par
+//       "Recognized for outstanding customer service and satisfaction.",\par
+//   \},\par
+//   \{\par
+//     title: "Innovative Design Award",\par
+//     year: 2021,\par
+//     description:\par
+//       "Celebrated for creativity and innovation in fashion accessories.",\par
+//   \},\par
+//   // Add more awards as needed\par
+// ];\par
+\par
+// const AwardsPage = () => \{\par
+//   return (\par
+//     <div>\par
+//       <Header />\par
+//       <section className="bg-gray-50 p-8">\par
+//         <div className="container mx-auto">\par
+//           <h2 className="text-3xl font-bold text-center mb-6">\par
+//             Our Awards & Recognitions\par
+//           </h2>\par
+//           <div className="flex flex-wrap justify-center">\par
+//             \{awardsData.map((award, index) => (\par
+//               <Card\par
+//                 key=\{index\}\par
+//                 className="m-4 w-80 shadow-lg rounded-lg"\par
+//                 style=\{\{ backgroundColor: "rgba(255, 255, 255, 0.9)" \}\}\par
+//                 cover=\{<AwardsIcon className="w-full h-32 object-cover" />\}>\par
+//                 <div className="flex items-center mb-2">\par
+//                   <Trophy className="text-yellow-500 mr-2" />\par
+//                   <h3 className="text-xl font-semibold">\{award.title\}</h3>\par
+//                 </div>\par
+//                 <p className="text-gray-600">\{award.year\}</p>\par
+//                 <p className="text-gray-500">\{award.description\}</p>\par
+//               </Card>\par
+//             ))\}\par
+//           </div>\par
+//         </div>\par
+//       </section>\par
+//       <Footer />\par
+//     </div>\par
+//   );\par
+// \};\par
+\par
+// export default AwardsPage;\par
+}
+ 

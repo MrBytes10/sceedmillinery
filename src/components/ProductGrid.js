@@ -53,7 +53,7 @@ const ProductCard = ({ product }) => {
 
         <button
           onClick={handleFavoriteClick}
-          className="absolute top-2 right-2 z-10 p-2 rounded-full bg-white/10 hover:bg-white transition-colors"
+          className="absolute top-2 right-8 z-10 p-2 rounded-full bg-white/10 hover:bg-white transition-colors"
           aria-label={
             isInFavorites(product.id)
               ? "Remove from favorites"
@@ -71,7 +71,7 @@ const ProductCard = ({ product }) => {
         <img
           src={productImage}
           alt={product.name}
-          className="w-full h-40 object-cover"
+          className="w-full h-40 object-contain"
         />
       </div>
 
