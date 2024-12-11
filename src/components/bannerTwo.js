@@ -1,7 +1,7 @@
 //sceed_frontend/src/components/TailorMadeSection.js
 
 import React from "react";
-import tailorMadeModel from "../images/tailor-made-model.png";
+import tailorMadeModel from "../images/FaithwithModel1.jpg";
 
 function TailorMadeSection() {
   return (
