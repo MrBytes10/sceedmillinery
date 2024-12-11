@@ -137,7 +137,7 @@ function Footer() {
               <div className="flex items-center justify-center bg-white w-20 h-9 p-0 rounded-md">
                 <UgandanFlag className="h-full mr-1 ml-1" aria-hidden="true" />
                 <span className="text-sm font-normal text-black leading-5">
-                  UGX
+                  UG
                 </span>
               </div>
               <div className="ml-2">

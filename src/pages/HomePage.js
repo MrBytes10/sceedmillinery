@@ -229,7 +229,7 @@ const HomePage = () => {
         <>
           <BannerOne />
           <BannerTwo />
-          <Gallery images={galleryImages} />
+          {/* <Gallery images={galleryImages} /> */}
         </>
 
         <Footer />
@@ -292,7 +292,7 @@ const HomePage = () => {
           <>
             <BannerOne />
             <BannerTwo />
-            <Gallery images={galleryImages} />
+            {/* <Gallery images={galleryImages} /> */}
           </>
         )}
       </main>
