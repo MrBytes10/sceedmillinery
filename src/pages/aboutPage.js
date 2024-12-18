@@ -29,11 +29,13 @@ const AboutPage = () => {
               className="w-[334px] h-[150px] mb-6 md:absolute md:left-1/2 md:transform md:-translate-x-1/2 md:top-6"
             />
             <p className="font-poppins font-medium text-white text-sm md:text-base text-center max-w-[754px] mt-6 md:mt-0 md:absolute md:left-1/2 md:transform md:-translate-x-1/2 md:top-[165px]">
-              First Uganda based Milliner 💃💃💃. We were honoured to design
+              {/* First Uganda based Milliner 💃💃💃. We were honoured to design
               headwear for our prestigious clients
-              <br />
-              Invest in timeless headpieces and shop ready to wear range of
-              Fascinators.
+              <br /> */}
+              <p></p>
+              <br></br>
+              Invest in timeless headpieces with our ready to wear bespoke
+              collection.
             </p>
           </div>
         </section>
@@ -45,10 +47,9 @@ const AboutPage = () => {
           }}>
           <div className="md:w-1/2">
             <h2 className="text-2xl font-Poppins mb-4">
-              Tailor-Made Elegance: Personalized Fascinators Crafted Just for
-              You
+              Custom-Made Elegance: Personalized Headwear Crafted Just for You
             </h2>
-            <p className="text-sm leading-relaxed">
+            {/* <p className="text-sm leading-relaxed">
               We believe that every client is unique, and our approach to
               crafting fascinators reflects this philosophy. Each of our
               products is tailor-made to suit the specific preferences and needs
@@ -57,18 +58,22 @@ const AboutPage = () => {
               valuing their input and ideas throughout the design process, to
               create fascinators that not only meet but exceed their
               expectations.
-            </p>
+            </p> */}
             {"     "}
             <p>
               Our commitment to personalized service and quality craftsmanship
               sets us apart. We see our clients as partners, and our goal is to
               create not just stunning fascinators but also a collaborative
-              experience that is as satisfying as the final product. At Sceed
-              Millinery, we cherish the relationships we build with our
+              experience.
+            </p>
+            <br></br>
+            <p className="text-sm leading-relaxed">
+              {/* At Sceed Millinery, we cherish the relationships we build with our
               customers, and we are dedicated to making each interaction as
               rewarding and enjoyable as the beautiful, bespoke fascinators we
-              create.
+              create. */}
             </p>
+            {"     "}
           </div>
           <div className="md:w-1/2 pr-8 flex items-center">
             <img
@@ -106,10 +111,14 @@ const AboutPage = () => {
                 Our Commitment to Customer Relationships
               </p>
               <p className="text-center text-sm font-bold">
-                At Sceed Millinery, our customers are at the heart of everything
+                {/* At Sceed Millinery, our customers are at the heart of everything
                 we do. We are committed to building strong, lasting
                 relationships through a range of personalized services and
-                exceptional experiences.
+                exceptional experiences. */}
+                At Sceed Millinery, we cherish the relationships we build with
+                our customers, and we are dedicated to making each interaction
+                as rewarding and enjoyable as the beautiful, bespoke fascinators
+                we create.
               </p>
             </div>
             {/* <ul className="list-disc pl-6 text-sm">
@@ -158,17 +167,17 @@ const AboutPage = () => {
             }}>
             <div className="flex flex-col items-center mb-8">
               {/* Icon placeholder */}
-              <OurCoreActivities className="w-12 h-12 mb-4 bg-gray-10" />
+              <ValuePropositions className="w-12 h-12 mb-4 bg-gray-10" />
 
               <h2 className="text-3xl font-bold text-center mb-8">
                 Our Core Activities
               </h2>
 
               <p className="text-center text-sm font-bold">
-                At Sceed Millinery, every step of our process is thoughtfully
-                designed to deliver exceptional products and experiences to our
-                customers. Our key activities reflect our dedication to quality,
-                innovation, and customer satisfaction.
+                Our key activities reflect our dedication to quality,
+                innovation, and customer satisfaction; enabling us to
+                consistently deliver high-quality, bespoke headwear that our
+                clients treasure.
               </p>
             </div>
             {/* <ul className="list-disc pl-6 text-sm">
@@ -223,63 +232,9 @@ const AboutPage = () => {
                 customers the latest in fashionable headwear.
               </li>
             </ul> */}
-            <p className="text-center text-sm font-bold">
-              These activities are the foundation of Sceed Millinery, enabling
-              us to consistently deliver high-quality, bespoke fascinators that
-              our clients love.
-            </p>
-          </section>
-
-          <section
-            className="p-8 rounded-lg shadow-md mb-0 font-bold"
-            style={{
-              backgroundColor: "rgba(255, 255, 255, 0.8)", // White background with 80% opacity
-            }}>
-            <div className="flex flex-col items-center mb-8">
-              {/* Icon placeholder */}
-              <ValuePropositions className="w-12 h-12 mb-4 bg-gray-10" />
-              <h2 className="text-3xl font-semibold text-center mb-8">
-                Value Propositions
-              </h2>
-              <p className="text-center text-sm font-bold">
-                we offer a unique blend of luxury, quality, and exclusivity that
-                sets our fascinators apart. Our value propositions reflect our
-                commitment to delivering exceptional products and experiences to
-                our customers.
-              </p>
-            </div>
-            {/* <ul className="list-disc pl-6 text-sm">
-              <li className="mb-4">
-                Luxurious Handcrafted Headpieces: Each fascinator is a work of
-                art, meticulously handcrafted to exude luxury and elegance,
-                perfect for any special occasion.
-              </li>
-              <li className="mb-4">
-                High-Quality Materials: We use only the finest materials,
-                ensuring that our headpieces are not only beautiful but also
-                durable and comfortable to wear.
-              </li>
-              <li className="mb-4">
-                Photoshoots & Styling: We provide professional photoshoots and
-                styling services, helping our clients showcase their fascinators
-                in the best possible light.
-              </li>
-              <li className="mb-4">
-                Custom-Made Designs: Our bespoke designs are tailored to each
-                client's unique style and preferences, offering a personalized
-                touch that enhances their individual look.
-              </li>
-              <li className="mb-4">
-                Exclusive Taste: Sceed Millinery fascinators embody exclusivity
-                and sophistication, appealing to those with a refined sense of
-                fashion who desire something truly special.
-              </li>
-              <li className="mb-4">
-                These value propositions are what make Sceed Millinery the go-to
-                choice for women seeking exquisite, one-of-a-kind fascinators
-                that elevate their style.
-              </li>
-            </ul> */}
+            {/* <p className="text-center text-sm font-bold">
+              These activities are the foundation of Sceed Millinery, 
+            </p> */}
           </section>
         </section>
 
@@ -308,9 +263,17 @@ const AboutPage = () => {
               Whether you're dressing for a wedding, a race day, or a special
               occasion, our fascinators add the perfect touch of glamour and
               style. They effortlessly turn ordinary looks into stunning,
-              fashion-forward statements, helping you stand out in any crowd.
-              Discover how Sceed Millinery can take your outfit to the next
-              level and make every moment a stylish one.
+              fashion-forward statements.
+            </p>
+            <br></br>
+            <p>
+              <i>
+                <a href="/shop" target="_blank">
+                  <span><b>Click here</b></span> to discover how Sceed Millinery can
+                  take your outfit to the next level and make every moment a
+                  stylish one.
+                </a>
+              </i>
             </p>
           </div>
         </section>
