@@ -15,7 +15,7 @@ function TailorMadeSection() {
           unique as she is. That's why each piece is custom-crafted to reflect
           your individual style and preferences.
         </p>
-        <p className="text-sm sm:text-base leading-relaxed font-poppins">
+        <p className="text-sm sm:text-base mb-4 leading-relaxed font-poppins">
           We collaborate closely with our clients—valuing your ideas and
           input—to design fascinators that exceed expectations. More than
           accessories, our creations are the result of a thoughtful, personal
