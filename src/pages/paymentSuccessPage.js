@@ -71,7 +71,7 @@ const OrderConfirmationPage = () => {
               Order Successful: We will get in contact with you shortly
             </h1>
 
-            <p className="text-sm text-[#212121] leading-relaxed px-2 font-poppins font-[10px]">
+            <p className="text-sm text-[#212121] leading-relaxed px-2 font-poppins tracking-wide font-[10px]">
               Thank you for your order! We're excited to begin crafting your
               custom-made fascinator at Sceed Millinery. Our artisans are
               already at work, ensuring that your piece is created with the

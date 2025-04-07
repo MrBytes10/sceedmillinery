@@ -20,18 +20,18 @@ function Banner() {
 
       {/* Text section */}
       <div className="w-full md:w-1/2 mt-8 md:mt-0 flex flex-col justify-center">
-        <h2 className="text-lg sm:text-xl md:text-2xl font-poppins font-semibold mb-4 leading-tight">
+        <h2 className="text-lg sm:text-xl md:text-2xl font-playfair font-semibold tracking-wide mb-4 leading-tight">
           Elevate Your Style with Sceed Millinery
         </h2>
 
-        <p className="mb-4 text-sm sm:text-base leading-relaxed font-poppins">
+        <p className="mb-4 text-sm sm:text-base leading-relaxed font-poppins font tracking-wide">
           At Sceed Millinery, we create exquisite, handcrafted fascinators that
           blend elegance, sophistication, and style. Each piece is made from the
           finest materials and trusted by women who seek timeless fashion with a
           bold statement.
         </p>
 
-        <p className="text-sm sm:text-base leading-relaxed font-poppins">
+        <p className="text-sm sm:text-base leading-relaxed font-poppins tracking-wide">
           Whether for weddings, race days, or special occasions, our fascinators
           go beyond accessories — they transform your look with effortless
           glamour and fashion-forward flair. Discover how Sceed Millinery turns

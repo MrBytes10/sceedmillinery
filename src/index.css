@@ -11,14 +11,14 @@ body {
 /* bannerTwo.css */
 
 h2 {
-  font-family: "Poppins", sans-serif;
+  font-family: "Playfair Display", "Poppins", sans-serif;
   font-weight: 600; /* Use font-weight: 600 as per Figma */
   font-size: 24px; /* Change to 32px for larger screens */
   line-height: 37px; /* Line height */
 }
 
 p {
-  font-family: "Poppins", sans-serif;
+  font-family: "Playfair Display", "Poppins", sans-serif;
   font-weight: 400; /* Use font-weight: 400 as per Figma */
   font-size: 14px; /* Change to 14px */
 }

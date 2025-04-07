@@ -129,7 +129,7 @@ const Header = () => {
             alt="SceedMillinery"
             className="w-60 h-auto sm:w-[250px] sm:h-[100px] mb-1 sm:mb-0"
           />
-          {/* <p className="text-center text-base sm:text-lg lg:text-xl font-medium font-poppins sm:absolute sm:left-1/2 sm:transform sm:-translate-x-1/2 sm:top-1/2 sm:-translate-y-1/2">
+          {/* <p className="text-center text-base sm:text-lg lg:text-xl font-medium font-playfair font-semibold tracking-wide sm:absolute sm:left-1/2 sm:transform sm:-translate-x-1/2 sm:top-1/2 sm:-translate-y-1/2">
             Contemporary. Bespoke. Elegance
           </p> */}
         </div>
@@ -220,7 +220,7 @@ const Header = () => {
               <li>
                 <Link
                   to="/"
-                  className={`text-black hover:text-gray-600 font-medium font-poppins text-sm sm:text-base ${
+                  className={`text-black hover:text-gray-600 font-medium font-playfair font-semibold tracking-wide text-sm sm:text-base ${
                     isActive("/") ? "opacity-50" : ""
                   }`}>
                   Home
@@ -239,7 +239,7 @@ const Header = () => {
               <li>
                 <Link
                   to="/shop"
-                  className={`text-black hover:text-gray-600 font-medium font-poppins text-sm sm:text-base ${
+                  className={`text-black hover:text-gray-600 font-medium font-playfair font-semibold tracking-wide text-sm sm:text-base ${
                     isActive("/shop") ? "opacity-50" : ""
                   }`}>
                   Shop

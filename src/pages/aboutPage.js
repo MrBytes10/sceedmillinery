@@ -28,7 +28,7 @@ const AboutPage = () => {
               alt="Sceed Millinery Logo"
               className="w-[334px] h-[150px] mb-6 md:absolute md:left-1/2 md:transform md:-translate-x-1/2 md:top-6"
             />
-            <p className="font-poppins font-medium text-white text-sm md:text-base text-center max-w-[754px] mt-6 md:mt-0 md:absolute md:left-1/2 md:transform md:-translate-x-1/2 md:top-[165px]">
+            <p className="font-poppins tracking-wide font-medium text-white text-sm md:text-base text-center max-w-[754px] mt-6 md:mt-0 md:absolute md:left-1/2 md:transform md:-translate-x-1/2 md:top-[165px]">
               {/* First Uganda based Milliner 💃💃💃. We were honoured to design
               headwear for our prestigious clients
               <br /> */}
@@ -46,7 +46,7 @@ const AboutPage = () => {
             backgroundColor: "rgba(255, 255, 255, 0.8)", // White background with 80% opacity
           }}>
           <div className="md:w-1/2">
-            <h2 className="text-2xl font-Poppins mb-4">
+            <h2 className="text-2xl font-playfair font-semibold tracking-wide mb-4">
               Custom-Made Elegance: Personalized Headwear Crafted Just for You
             </h2>
             {/* <p className="text-sm leading-relaxed">
@@ -60,7 +60,7 @@ const AboutPage = () => {
               expectations.
             </p> */}
             {"     "}
-            <p>
+            <p className="font-poppins">
               Our commitment to personalized service and quality craftsmanship
               sets us apart. We see our clients as partners, and our goal is to
               create not just stunning fascinators but also a collaborative
@@ -98,7 +98,7 @@ const AboutPage = () => {
               //backgroundColor: "rgba(255, 255, 255, 0.8)", // White background with 80% opacity
               backgroundColor: "rgba(241,241,241,0.9)", // grey-ish background with 90% opacity
             }}>
-            <h2 className="text-3xl font-Poppins font-bold text-center mb-8">
+            <h2 className="text-3xl font-playfair tracking-wide font-bold text-center mb-8">
               How we do Business
             </h2>
             <div className="flex flex-col items-center mb-8">
@@ -110,7 +110,7 @@ const AboutPage = () => {
               <p className="text-center text-sm font-bold">
                 Our Commitment to Customer Relationships
               </p>
-              <p className="text-center text-sm font-bold">
+              <p className="text-center text-sm font-bold font-poppins">
                 {/* At Sceed Millinery, our customers are at the heart of everything
                 we do. We are committed to building strong, lasting
                 relationships through a range of personalized services and
@@ -173,7 +173,7 @@ const AboutPage = () => {
                 Our Core Activities
               </h2>
 
-              <p className="text-center text-sm font-bold">
+              <p className="text-center text-sm font-bold font-poppins">
                 Our key activities reflect our dedication to quality,
                 innovation, and customer satisfaction; enabling us to
                 consistently deliver high-quality, bespoke headwear that our
@@ -247,7 +247,7 @@ const AboutPage = () => {
             />
           </div>
           <div className="md:w-1/2">
-            <h2 className="text-2xl font-Poppins font-bold mb-4">
+            <h2 className="text-2xl font-playfair tracking-wide font-bold mb-4">
               Transform your outfits into Extraordinary, Elegant and Stylish
               looks that stand out.
             </h2>
@@ -259,19 +259,21 @@ const AboutPage = () => {
               meticulously designed and handcrafted using only the finest
               materials, ensuring durability and comfort. */}
             </p>{" "}
-            <p>
+            <p className="font-poppins">
               Whether you're dressing for a wedding, a race day, or a special
               occasion, our fascinators add the perfect touch of glamour and
               style. They effortlessly turn ordinary looks into stunning,
               fashion-forward statements.
             </p>
             <br></br>
-            <p>
+            <p className="font-poppins">
               <i>
                 <a href="/shop" target="_blank">
-                  <span><b>Click here</b></span> to discover how Sceed Millinery can
-                  take your outfit to the next level and make every moment a
-                  stylish one.
+                  <span>
+                    <b>Click here</b>
+                  </span>{" "}
+                  to discover how Sceed Millinery can take your outfit to the
+                  next level and make every moment a stylish one.
                 </a>
               </i>
             </p>

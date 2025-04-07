@@ -71,7 +71,7 @@ const RegistrationSuccessPage = () => {
               Your Account has been Successfully created
             </h1>
 
-            <p className="text-sm text-[#212121] leading-relaxed px-2 font-poppins font-[12px]">
+            <p className="text-sm text-[#212121] leading-relaxed px-2 font-poppins tracking-wide font-[12px]">
               Welcome to Sceed Millinery! Your account has been successfully
               created. You're now part of our exclusive community, where you'll
               enjoy easy access to our stunning collection of handcrafted

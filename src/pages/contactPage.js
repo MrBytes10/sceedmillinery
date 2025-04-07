@@ -79,7 +79,7 @@ const ContactPage = () => {
             </h1>
 
             <div className="text-center mb-12">
-              <p className="mb-8 text-gray-700 leading-relaxed">
+              <p className="mb-8 text-gray-700 leading-relaxed font-serif">
                 We would love to hear from you! Whether you have a question
                 about our products, need assistance with an order, or are
                 interested in a custom-made design, our team is here to help. At

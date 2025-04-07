@@ -76,7 +76,7 @@ const ProductCard = ({ product }) => {
       </div>
 
       <div className="p-4 flex flex-col flex-grow">
-        <h3 className="font-poppins text-xs mb-1 line-clamp-2">
+        <h3 className="font-playfair font-semibold tracking-wide text-xs mb-1 line-clamp-2">
           {product.name}
         </h3>
 
@@ -88,7 +88,7 @@ const ProductCard = ({ product }) => {
                 $ {product.originalPrice.toLocaleString()}
               </span>
             )}
-            <span className="font-poppins text-xs">
+            <span className="font-playfair font-semibold tracking-wide text-xs">
               $ {product.price.toLocaleString()}
             </span>
           </div>
