@@ -21,27 +21,21 @@ function Banner() {
       {/* Text section */}
       <div className="w-full md:w-1/2 mt-8 md:mt-0 flex flex-col justify-center">
         <h2 className="text-lg sm:text-xl md:text-2xl font-poppins font-semibold mb-4 leading-tight">
-          Transform your outfits into Extraordinary, Elegant, and Stylish looks
-          that stand out.
+          Elevate Your Style with Sceed Millinery
         </h2>
 
         <p className="mb-4 text-sm sm:text-base leading-relaxed font-poppins">
-          At Sceed Millinery, we pride ourselves on crafting high-quality
-          fascinators that embody elegance and sophistication. With a proven
-          track record in the fashion industry, our products are trusted by
-          countless women who seek to elevate their style. Each piece is
-          meticulously designed and handcrafted using only the finest materials,
-          ensuring durability and comfort.
+          At Sceed Millinery, we create exquisite, handcrafted fascinators that
+          blend elegance, sophistication, and style. Each piece is made from the
+          finest materials and trusted by women who seek timeless fashion with a
+          bold statement.
         </p>
 
         <p className="text-sm sm:text-base leading-relaxed font-poppins">
-          Our fascinators are more than just accessories; they are
-          transformative additions to any outfit. Whether you're dressing for a
-          wedding, a race day, or a special occasion, our fascinators add the
-          perfect touch of glamour and style. They effortlessly turn ordinary
-          looks into stunning, fashion-forward statements, helping you stand out
-          in any crowd. Discover how Sceed Millinery can take your outfit to the
-          next level and make every moment a stylish one.
+          Whether for weddings, race days, or special occasions, our fascinators
+          go beyond accessories — they transform your look with effortless
+          glamour and fashion-forward flair. Discover how Sceed Millinery turns
+          ordinary moments into unforgettable style statements.
         </p>
       </div>
     </div>

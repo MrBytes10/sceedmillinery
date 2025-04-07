@@ -8,25 +8,22 @@ function TailorMadeSection() {
     <div className="bg-white p-6 md:p-8 mb-8 rounded-lg shadow-md flex flex-col md:flex-row">
       <div className="w-full md:w-2/3 md:pr-8">
         <h2 className="text-xl sm:text-2xl md:text-3xl font-semibold font-poppins mb-4">
-          Tailor-Made Elegance: Personalized Fascinators Crafted Just for You
+          Custom-made & Ready to Wear Elegance
         </h2>
         <p className="text-sm sm:text-base mb-4 leading-relaxed font-poppins">
-          We believe that every client is unique, and our approach to crafting
-          fascinators reflects this philosophy. Each of our products is
-          tailor-made to suit the specific preferences and needs of our clients,
-          ensuring that every piece is a true reflection of their individual
-          style. We work closely with our customers, valuing their input and
-          ideas throughout the design process, to create fascinators that not
-          only meet but exceed their expectations.
+          At Sceed Millinery, we believe every woman deserves a fascinator as
+          unique as she is. That's why each piece is custom-crafted to reflect
+          your individual style and preferences.
         </p>
         <p className="text-sm sm:text-base leading-relaxed font-poppins">
-          Our commitment to personalized service and quality craftsmanship sets
-          us apart. We see our clients as partners, and our goal is to create
-          not just stunning fascinators but also a collaborative experience that
-          is as satisfying as the final product. At Sceed Millinery, we cherish
-          the relationships we build with our customers, and we are dedicated to
-          making each interaction as rewarding and enjoyable as the beautiful,
-          bespoke fascinators we create.
+          We collaborate closely with our clients—valuing your ideas and
+          input—to design fascinators that exceed expectations. More than
+          accessories, our creations are the result of a thoughtful, personal
+          process and unmatched craftsmanship.
+        </p>
+        <p className="text-sm sm:text-base leading-relaxed font-poppins">
+          Experience the art of bespoke millinery, where every detail is
+          intricately made just for you.
         </p>
       </div>
       <div className="w-full md:w-1/3 mt-6 md:mt-0 flex items-stretch">
