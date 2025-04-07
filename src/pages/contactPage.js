@@ -90,8 +90,12 @@ const ContactPage = () => {
 
               <div className="mb-8">
                 <h2 className="mb-4 font-normal">How to Reach Us:</h2>
-                <p className="mb-2 font-bold">Phone: [+256 787 315801]</p>
-                <p className="font-bold">Email: [sceedmillinery@gmail.com]</p>
+                <p className="mb-2 font-bold font-serif">
+                  Phone: [+256 787 315801]
+                </p>
+                <p className="font-bold font-serif">
+                  Email: [sceedmillinery@gmail.com]
+                </p>
               </div>
 
               <div className="mb-8">
@@ -132,7 +136,7 @@ const ContactPage = () => {
 
             <div className="mb-8">
               <h2 className="text-center mb-4">Send Us a Message:</h2>
-              <p className="text-center text-gray-700 mb-8">
+              <p className="text-center text-gray-700 mb-8 font-serif">
                 Fill out the form below with your inquiry, and we'll get back to
                 you as soon as possible. We look forward to assisting you!
               </p>
